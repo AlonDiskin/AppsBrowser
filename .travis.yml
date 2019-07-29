@@ -14,4 +14,3 @@ script:
   - chmod +x gradlew
   - ./gradlew assembleDebug
   - ./gradlew test
-  - ./gradlew assembleDebugAndroidTest
