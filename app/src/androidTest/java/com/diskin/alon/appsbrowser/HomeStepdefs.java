@@ -30,4 +30,14 @@ class HomeStepdefs extends GreenCoffeeSteps {
     public void browserFeatureUiShouldBeShownInsideHomeScreen() {
         fail("not implemented yet");
     }
+
+    @When("^User navigates to settings feature$")
+    public void userNavigatesToSettingsFeature() {
+        fail("not implemented yet");
+    }
+
+    @Then("^Settings ui should be displayed inside home screen$")
+    public void settingsUiShouldBeDisplayedInsideHomeScreen() {
+        fail("not implemented yet");
+    }
 }
