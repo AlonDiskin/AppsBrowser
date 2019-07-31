@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/test_nav"
+    app:startDestination="@id/testBrowserFragment">
+
+    <fragment
+        android:id="@+id/testBrowserFragment"
+        android:name="com.diskin.alon.appsbrowser.home.FakeBrowserFragment"
+        android:label="fragment_test_browser"
+        tools:layout="@layout/fragment_fake_browser" />
+</navigation>
