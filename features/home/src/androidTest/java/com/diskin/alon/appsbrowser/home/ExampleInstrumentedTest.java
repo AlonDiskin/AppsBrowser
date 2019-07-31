@@ -1,4 +1,4 @@
-package com.diskin.alon.appsbrowser;
+package com.diskin.alon.appsbrowser.home;
 
 import android.content.Context;
 
@@ -22,6 +22,6 @@ public class ExampleInstrumentedTest {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        assertEquals("com.diskin.alon.appsbrowser", appContext.getPackageName());
+        assertEquals("com.diskin.alon.appsbrowser.home.test", appContext.getPackageName());
     }
 }
