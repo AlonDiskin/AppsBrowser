@@ -1,4 +1,4 @@
-package com.diskin.alon.appsbrowser.browser;
+package com.diskin.alon.appsbrowser.browser.integration;
 
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 

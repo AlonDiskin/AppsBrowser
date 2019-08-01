@@ -1,4 +1,4 @@
-package com.diskin.alon.appsbrowser.browser;
+package com.diskin.alon.appsbrowser.browser.integration;
 
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
