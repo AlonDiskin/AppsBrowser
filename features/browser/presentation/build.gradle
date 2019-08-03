@@ -83,5 +83,4 @@ dependencies {
     androidTestImplementation 'com.linkedin.dexmaker:dexmaker-mockito:2.12.1'
     androidTestAnnotationProcessor "com.google.dagger:dagger-compiler:$dagger_version"
     androidTestAnnotationProcessor "com.google.dagger:dagger-android-processor:$dagger_version"
-    androidTestImplementation 'com.mauriciotogneri:greencoffee:3.5.0'
 }

@@ -1,4 +1,4 @@
-package com.diskin.alon.appsbrowser.browser.feature;
+package com.diskin.alon.appsbrowser.browser.featuretest;
 
 
 import com.mauriciotogneri.greencoffee.GreenCoffeeSteps;

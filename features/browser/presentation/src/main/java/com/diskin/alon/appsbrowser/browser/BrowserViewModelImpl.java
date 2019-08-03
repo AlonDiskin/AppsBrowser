@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModel;
 
 import java.util.List;
 
-public final class BrowserViewModelImpl extends ViewModel implements BrowserViewModel {
+public class BrowserViewModelImpl extends ViewModel implements BrowserViewModel {
 
     @Override
     public LiveData<List<UserApp>> getUserApps() {

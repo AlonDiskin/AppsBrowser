@@ -1,4 +1,4 @@
-package com.diskin.alon.appsbrowser.browser.ui.di;
+package com.diskin.alon.appsbrowser.browser.di;
 
 import com.diskin.alon.appsbrowser.browser.BrowserFragment;
 import com.diskin.alon.appsbrowser.browser.BrowserViewModel;

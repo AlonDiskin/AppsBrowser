@@ -8,7 +8,7 @@ import com.diskin.alon.appsbrowser.browser.BrowserFragment;
 import com.diskin.alon.appsbrowser.browser.BrowserViewModel;
 import com.diskin.alon.appsbrowser.browser.R;
 import com.diskin.alon.appsbrowser.browser.UserApp;
-import com.diskin.alon.appsbrowser.browser.ui.di.UiTestInjector;
+import com.diskin.alon.appsbrowser.browser.di.TestInjector;
 import com.diskin.alon.appsbrowser.browser.util.RecyclerViewMatcher;
 
 import org.junit.Before;
@@ -46,7 +46,7 @@ public class BrowserFragmentTest {
     @Before
     public void setUp() {
         // inject test app and fragment test with fragment mocked dependents
-        UiTestInjector.inject(this);
+        TestInjector.inject(this);
 
         // stub mocked view model
         userAppsData = new MutableLiveData<>();
