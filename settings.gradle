@@ -1,1 +1,1 @@
-include ':app', ':features:home', ':features:browser', ':features:common'
+include ':app', ':features:home', ':features:browser:presentation', ':features:common'
