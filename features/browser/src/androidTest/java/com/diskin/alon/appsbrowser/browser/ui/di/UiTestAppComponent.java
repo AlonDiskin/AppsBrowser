@@ -1,8 +1,9 @@
-package com.diskin.alon.appsbrowser.browser.unit.di;
+package com.diskin.alon.appsbrowser.browser.ui.di;
 
 import androidx.annotation.NonNull;
 
-import com.diskin.alon.appsbrowser.browser.unit.BrowserFragmentTest;
+import com.diskin.alon.appsbrowser.browser.runner.TestApp;
+import com.diskin.alon.appsbrowser.browser.ui.BrowserFragmentTest;
 
 import javax.inject.Singleton;
 
@@ -12,13 +13,14 @@ import dagger.android.AndroidInjector;
 
 @Singleton
 @Component(modules = TestAppModule.class)
-public interface TestAppComponent extends AndroidInjector<TestApp> {
+public interface UiTestAppComponent extends AndroidInjector<TestApp> {
 
     @Component.Builder
     interface Builder {
 
-        TestAppComponent build();
+        UiTestAppComponent build();
     }
 
     void inject(@NonNull BrowserFragmentTest test);
+
 }

@@ -1,15 +1,18 @@
-package com.diskin.alon.appsbrowser.browser.integration;
+package com.diskin.alon.appsbrowser.browser.feature;
 
-import cucumber.api.java.en.Given;
-import cucumber.api.java.en.Then;
-import cucumber.api.java.en.When;
+
+import com.mauriciotogneri.greencoffee.GreenCoffeeSteps;
+import com.mauriciotogneri.greencoffee.annotations.Given;
+import com.mauriciotogneri.greencoffee.annotations.Then;
+import com.mauriciotogneri.greencoffee.annotations.When;
 
 import static junit.framework.TestCase.fail;
 
 /**
  * Step definitions for the 'list apps' feature scenarios.
  */
-public class ListAppsSteps {
+public class ListAppsSteps extends GreenCoffeeSteps {
+
     @Given("User has the next apps on device")
     public void userHasTheNextAppsOnDevice() {
         fail("not implemented yet");

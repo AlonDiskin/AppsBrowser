@@ -1,10 +1,15 @@
-Feature: List device apps
+Feature: Browser
 
+  In order to get information about my installed apps
+  As the user
+  I want to be able to browse through all me device's applications
+
+  @list-apps
+  Scenario: Device apps are displayed
   In order to see what applications are currently existing on my device
   As the user
   I want to get a listing of all installed applications
 
-  Scenario: Device apps are displayed
     Given User has the next apps on device
       | name     | size | icon         |
       | Facebook | 45.7 | "fac_ic.jpg" |
