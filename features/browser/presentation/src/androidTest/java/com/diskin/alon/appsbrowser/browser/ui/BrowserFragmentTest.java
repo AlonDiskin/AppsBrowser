@@ -69,10 +69,10 @@ public class BrowserFragmentTest {
     @Test
     public void shouldDisplayAppsUponViewModelUpdate() throws InterruptedException {
         List<UserApp> apps = Arrays.asList(
-                new UserApp("facebook","45", "fc", "file:///android_asset/youtubeicon.png"),
-                new UserApp("youtube","31", "yt", "file:///android_asset/youtubeicon.png"),
-                new UserApp("twitter","78.8", "tw", "file:///android_asset/youtubeicon.png"),
-                new UserApp("whatsApp","24.6", "wa", "file:///android_asset/youtubeicon.png"));
+                new UserApp("facebook","45 MB", "fc", "file:///android_asset/facebookicon.png"),
+                new UserApp("youtube","31 MB", "yt", "file:///android_asset/youtubeicon.png"),
+                new UserApp("twitter","78.8 MB", "tw", "file:///android_asset/twittericon.jpeg"),
+                new UserApp("whatsApp","24.6 MB", "wa", "file:///android_asset/whatsappicon.png"));
 
         // Given a resumed fragment
 
