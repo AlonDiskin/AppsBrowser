@@ -4,10 +4,10 @@ import androidx.fragment.app.testing.FragmentScenario;
 import androidx.lifecycle.MutableLiveData;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
-import com.diskin.alon.appsbrowser.browser.BrowserFragment;
-import com.diskin.alon.appsbrowser.browser.BrowserViewModel;
+import com.diskin.alon.appsbrowser.browser.controller.BrowserFragment;
+import com.diskin.alon.appsbrowser.browser.viewmodel.BrowserViewModel;
 import com.diskin.alon.appsbrowser.browser.R;
-import com.diskin.alon.appsbrowser.browser.UserApp;
+import com.diskin.alon.appsbrowser.browser.model.UserApp;
 import com.diskin.alon.appsbrowser.browser.di.TestInjector;
 import com.diskin.alon.appsbrowser.browser.util.RecyclerViewMatcher;
 

@@ -1,4 +1,4 @@
-package com.diskin.alon.appsbrowser.browser;
+package com.diskin.alon.appsbrowser.browser.controller;
 
 
 import android.content.Context;
@@ -11,6 +11,10 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.diskin.alon.appsbrowser.browser.R;
+import com.diskin.alon.appsbrowser.browser.model.UserApp;
+import com.diskin.alon.appsbrowser.browser.viewmodel.BrowserViewModel;
 
 import java.util.List;
 

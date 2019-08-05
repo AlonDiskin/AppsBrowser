@@ -1,4 +1,4 @@
-package com.diskin.alon.appsbrowser.browser;
+package com.diskin.alon.appsbrowser.browser.controller;
 
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
@@ -7,6 +7,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.diskin.alon.appsbrowser.browser.model.UserApp;
 import com.diskin.alon.appsbrowser.browser.databinding.UserAppBinding;
 
 import java.util.ArrayList;

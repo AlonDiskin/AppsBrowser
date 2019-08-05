@@ -1,9 +1,12 @@
-package com.diskin.alon.appsbrowser.browser;
+package com.diskin.alon.appsbrowser.browser.viewmodel;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
+
+import com.diskin.alon.appsbrowser.browser.model.UserApp;
+import com.diskin.alon.appsbrowser.common.ServiceExecutor;
 
 import java.util.List;
 

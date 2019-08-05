@@ -1,7 +1,9 @@
-package com.diskin.alon.appsbrowser.browser;
+package com.diskin.alon.appsbrowser.browser.controller;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.DiffUtil;
+
+import com.diskin.alon.appsbrowser.browser.model.UserApp;
 
 import java.util.List;
 

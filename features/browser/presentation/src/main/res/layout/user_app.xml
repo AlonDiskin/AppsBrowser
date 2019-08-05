@@ -6,7 +6,7 @@
     <data>
         <variable
             name="app"
-            type="com.diskin.alon.appsbrowser.browser.UserApp"/>
+            type="com.diskin.alon.appsbrowser.browser.model.UserApp"/>
     </data>
 
     <androidx.cardview.widget.CardView

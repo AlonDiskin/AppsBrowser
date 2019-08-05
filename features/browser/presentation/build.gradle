@@ -46,6 +46,7 @@ dependencies {
     def dagger_version = "2.20"
 
     implementation project(':features:common')
+    implementation project(':features:browser:applicationServices')
 
     // Support library
     implementation 'androidx.appcompat:appcompat:1.0.2'

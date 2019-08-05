@@ -3,6 +3,11 @@ package com.diskin.alon.appsbrowser.browser;
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule;
 import androidx.lifecycle.LiveData;
 
+import com.diskin.alon.appsbrowser.browser.model.UserApp;
+import com.diskin.alon.appsbrowser.browser.viewmodel.BrowserViewModelImpl;
+import com.diskin.alon.appsbrowser.browser.viewmodel.GetUserAppsRequest;
+import com.diskin.alon.appsbrowser.common.ServiceExecutor;
+
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Rule;
