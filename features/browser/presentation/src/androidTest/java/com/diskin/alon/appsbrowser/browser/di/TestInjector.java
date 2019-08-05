@@ -9,7 +9,7 @@ import com.diskin.alon.appsbrowser.browser.ui.BrowserFragmentTest;
 public class TestInjector {
 
     public static void inject(@NonNull BrowserFragmentTest test) {
-        TestAppComponent component = DaggerUiTestAppComponent.create();
+        TestAppComponent component = DaggerTestAppComponent.create();
         TestApp testApp = ApplicationProvider.getApplicationContext();
 
         component.inject(testApp);

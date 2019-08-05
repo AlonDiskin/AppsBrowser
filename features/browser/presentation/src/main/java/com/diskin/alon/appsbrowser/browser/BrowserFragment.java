@@ -1,6 +1,7 @@
 package com.diskin.alon.appsbrowser.browser;
 
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -32,30 +33,35 @@ public class BrowserFragment extends Fragment {
     }
 
     @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        // inject fragment dependencies
+        AndroidSupportInjection.inject(this);
+    }
+
+    @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_browser, container, false);
+        // inflate the layout for this fragment
+        return inflater.inflate(R.layout.fragment_browser, container, false);
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
 
         // setup user apps recycler view
         appsAdapter = new UserAppsAdapter();
         RecyclerView recyclerView = view.findViewById(R.id.userApps);
 
         recyclerView.setAdapter(appsAdapter);
-        return view;
-    }
 
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        // inject fragment dependencies
-        AndroidSupportInjection.inject(this);
-
-        // start observing user apps
+        // start observing user apps, once view is crated and able to show them
         viewModel.getUserApps().observe(this,this::updateUserApps);
     }
 
     private void updateUserApps(@NonNull List<UserApp> userApps) {
+        // update apps layout adapter
         appsAdapter.updateApps(userApps);
     }
 }
