@@ -67,11 +67,12 @@ public class BrowserFragmentTest {
     }
 
     @Test
-    public void shouldDisplayAppsUponViewModelUpdate() {
-        List<UserApp> apps = Arrays.asList(new UserApp("facebook","45", "fc", ""),
-                new UserApp("youtube","31", "yt", ""),
-                new UserApp("twitter","78.8", "tw", ""),
-                new UserApp("whatsApp","24.6", "wa", ""));
+    public void shouldDisplayAppsUponViewModelUpdate() throws InterruptedException {
+        List<UserApp> apps = Arrays.asList(
+                new UserApp("facebook","45", "fc", "file:///android_asset/youtubeicon.png"),
+                new UserApp("youtube","31", "yt", "file:///android_asset/youtubeicon.png"),
+                new UserApp("twitter","78.8", "tw", "file:///android_asset/youtubeicon.png"),
+                new UserApp("whatsApp","24.6", "wa", "file:///android_asset/youtubeicon.png"));
 
         // Given a resumed fragment
 
@@ -89,5 +90,7 @@ public class BrowserFragmentTest {
                             hasDescendant(withText(app.getName())),
                             hasDescendant(withText(app.getSize())))));
         }
+
+        Thread.sleep(5000);
     }
 }
