@@ -1,6 +1,8 @@
 include ':app',
-        ':features:browser:applicationServices',
+        ':features:browser:domain',
         ':features:home',
+        ':features:common:applicationServices',
+        ':features:common:presentation',
+        ':features:browser:applicationServices',
         ':features:browser:presentation',
-        ':features:common',
         ':features:browser:featureTest'

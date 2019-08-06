@@ -67,7 +67,7 @@ public class BrowserFragmentTest {
     }
 
     @Test
-    public void shouldDisplayAppsUponViewModelUpdate() throws InterruptedException {
+    public void shouldDisplayAppsUponViewModelUpdate() {
         List<UserApp> apps = Arrays.asList(
                 new UserApp("facebook","45 MB", "fc", "file:///android_asset/facebookicon.png"),
                 new UserApp("youtube","31 MB", "yt", "file:///android_asset/youtubeicon.png"),
@@ -90,7 +90,5 @@ public class BrowserFragmentTest {
                             hasDescendant(withText(app.getName())),
                             hasDescendant(withText(app.getSize())))));
         }
-
-        Thread.sleep(5000);
     }
 }
