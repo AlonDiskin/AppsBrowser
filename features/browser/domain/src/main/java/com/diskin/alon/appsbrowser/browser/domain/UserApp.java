@@ -53,4 +53,14 @@ public class UserApp {
         result = 31 * result + (iconUri != null ? iconUri.hashCode() : 0);
         return result;
     }
+
+    @Override
+    public String toString() {
+        return "UserApp{" +
+                "id='" + id + '\'' +
+                ", name='" + name + '\'' +
+                ", size=" + size +
+                ", iconUri='" + iconUri + '\'' +
+                '}';
+    }
 }

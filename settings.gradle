@@ -1,4 +1,5 @@
 include ':app',
+        ':features:browser:data',
         ':features:browser:domain',
         ':features:home',
         ':features:common:applicationServices',

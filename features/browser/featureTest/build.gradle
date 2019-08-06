@@ -29,6 +29,9 @@ dependencies {
 
     implementation project(':features:common:presentation')
     implementation project(':features:browser:presentation')
+    implementation project(':features:browser:applicationServices')
+    implementation project(':features:browser:domain')
+    implementation project(':features:browser:data')
 
     implementation 'androidx.appcompat:appcompat:1.0.2'
     testImplementation 'junit:junit:4.12'
