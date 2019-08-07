@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/browserFragment"
-        android:name="com.diskin.alon.appsbrowser.browser.BrowserFragment"
+        android:name="com.diskin.alon.appsbrowser.browser.controller.BrowserFragment"
         android:label="@string/app_name"
         tools:layout="@layout/fragment_browser"/>
 </navigation>
