@@ -8,10 +8,11 @@ import android.net.Uri;
 import androidx.annotation.NonNull;
 
 import com.diskin.alon.appsbrowser.browser.applicationservices.UserAppsRepository;
-import com.diskin.alon.appsbrowser.browser.domain.UserApp;
+import com.diskin.alon.appsbrowser.browser.domain.UserAppEntity;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import io.reactivex.Observable;
@@ -27,18 +28,19 @@ public class UserAppsRepositoryImpl implements UserAppsRepository {
     }
 
     @Override
-    public Observable<List<UserApp>> getUserAppsByName() {
+    public Observable<List<UserAppEntity>> getUserAppsByName() {
         return Observable.just(getAppsList())
                 .subscribeOn(Schedulers.io());
     }
 
     /**
-     * Returns a list of all non system existing apps on user device.
+     * Returns a list of all non system existing apps on user device, sorted
+     * by name in ascending order.
      */
-    private List<UserApp> getAppsList() {
+    private List<UserAppEntity> getAppsList() {
         PackageManager pm = application.getPackageManager();
         List<ApplicationInfo> packages = pm.getInstalledApplications(PackageManager.GET_META_DATA);
-        List<UserApp> userApps = new ArrayList<>(packages.size());
+        List<UserAppEntity> userApps = new ArrayList<>(packages.size());
 
         for (ApplicationInfo appInfo : packages) {
             // get info for non system apps only
@@ -52,13 +54,14 @@ public class UserAppsRepositoryImpl implements UserAppsRepository {
                         + appInfo.icon);
 
                 // add to user apps result list
-                userApps.add(new UserApp(appId,
+                userApps.add(new UserAppEntity(appId,
                         appName,
                         appSize,
                         uri.toString()));
             }
         }
 
+        Collections.sort(userApps,(o1, o2) -> o1.getName().compareTo(o2.getName()));
         return userApps;
     }
 }

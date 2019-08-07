@@ -7,9 +7,9 @@ import java.util.Objects;
  */
 public class UserApp {
 
+    private final String id;
     private final String name;
     private final String size;
-    private final String id;
     private final String iconUri;
 
     /**
@@ -19,10 +19,10 @@ public class UserApp {
      * @param id app system identifier.
      * @param iconUri app icon resource identifier.
      */
-    public UserApp(String name, String size, String id, String iconUri) {
+    public UserApp(String id, String name, String size, String iconUri) {
+        this.id = id;
         this.name = name;
         this.size = size;
-        this.id = id;
         this.iconUri = iconUri;
     }
 

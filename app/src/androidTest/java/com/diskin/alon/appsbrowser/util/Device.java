@@ -1,4 +1,4 @@
-package com.diskin.alon.appsbrowser;
+package com.diskin.alon.appsbrowser.util;
 
 import android.content.Context;
 import android.content.Intent;
@@ -9,40 +9,32 @@ import androidx.test.uiautomator.By;
 import androidx.test.uiautomator.UiDevice;
 import androidx.test.uiautomator.Until;
 
-import com.mauriciotogneri.greencoffee.GreenCoffeeSteps;
-import com.mauriciotogneri.greencoffee.annotations.And;
-import com.mauriciotogneri.greencoffee.annotations.Given;
-import com.mauriciotogneri.greencoffee.annotations.Then;
-import com.mauriciotogneri.greencoffee.annotations.When;
-
 import static androidx.test.core.app.ApplicationProvider.getApplicationContext;
-import static androidx.test.espresso.Espresso.onView;
-import static androidx.test.espresso.assertion.ViewAssertions.matches;
-import static androidx.test.espresso.matcher.ViewMatchers.isCompletelyDisplayed;
-import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.platform.app.InstrumentationRegistry.getInstrumentation;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.IsNull.notNullValue;
 
 /**
- * Step definitions for the home feature scenarios.
+ *
  */
-class HomeStepdefs extends GreenCoffeeSteps {
+public class Device {
 
     private static final int LAUNCH_TIMEOUT = 5000;
     private static final String APP_PACKAGE = "com.diskin.alon.appsbrowser";
-    private UiDevice mDevice;
+    private static UiDevice mDevice = UiDevice.getInstance(getInstrumentation());
 
-    @Given("^User is in device home screen$")
-    public void userIsInDeviceHomeScreen() {
-        mDevice= UiDevice.getInstance(getInstrumentation());
-
+    /**
+     *
+     */
+    public static void openHomeScreen() {
         // Start from the home screen
         mDevice.pressHome();
     }
 
-    @When("^User launch application$")
-    public void userLaunchApplication() {
+    /**
+     *
+     */
+    public static void launchApp() {
         // Wait for launcher
         final String launcherPackage = getLauncherPackageName();
         assertThat(launcherPackage, notNullValue());
@@ -59,24 +51,12 @@ class HomeStepdefs extends GreenCoffeeSteps {
         mDevice.wait(Until.hasObject(By.pkg(APP_PACKAGE).depth(0)), LAUNCH_TIMEOUT);
     }
 
-    @Then("^Home screen should be displayed$")
-    public void homeScreenShouldBeDisplayed() {
-        onView(withId(R.id.main_activity_layout))
-                .check(matches(isCompletelyDisplayed()));
-    }
-
-    @And("^Browser feature ui should be shown inside home screen$")
-    public void browserFeatureUiShouldBeShownInsideHomeScreen() {
-        onView(withId(R.id.browser_layout))
-                .check(matches(isCompletelyDisplayed()));
-    }
-
     /**
      * Uses package manager to find the package name of the device launcher. Usually this package
      * is "com.android.launcher" but can be different at times. This is a generic solution which
      * works on all platforms.`
      */
-    private String getLauncherPackageName() {
+    private static String getLauncherPackageName() {
         // Create launcher Intent
         final Intent intent = new Intent(Intent.ACTION_MAIN);
         intent.addCategory(Intent.CATEGORY_HOME);

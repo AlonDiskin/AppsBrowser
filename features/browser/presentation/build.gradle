@@ -39,13 +39,13 @@ android {
         enabled = true
         enabledForTests = true
     }
-
 }
 
 dependencies {
     def dagger_version = "2.20"
 
     implementation project(':features:common:presentation')
+    implementation project(':features:common:applicationServices')
     implementation project(':features:browser:applicationServices')
 
     // Support library

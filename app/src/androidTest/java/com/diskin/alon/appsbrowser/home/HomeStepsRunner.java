@@ -1,4 +1,4 @@
-package com.diskin.alon.appsbrowser;
+package com.diskin.alon.appsbrowser.home;
 
 import com.mauriciotogneri.greencoffee.GreenCoffeeConfig;
 import com.mauriciotogneri.greencoffee.GreenCoffeeTest;
@@ -11,24 +11,24 @@ import org.junit.runners.Parameterized;
 import java.io.IOException;
 
 /**
- * {@link HomeStepdefs} test runner.
+ * Browser feature acceptance criteria step definitions runner.
  */
 @RunWith(Parameterized.class)
-public class BrowserStepsRunner extends GreenCoffeeTest {
-    public BrowserStepsRunner(ScenarioConfig scenario) {
+public class HomeStepsRunner extends GreenCoffeeTest {
+    public HomeStepsRunner(ScenarioConfig scenario) {
         super(scenario);
     }
 
     @Parameterized.Parameters(name = "{0}")
     public static Iterable<ScenarioConfig> scenarios() throws IOException {
         return new GreenCoffeeConfig()
-                .withFeatureFromAssets("assets/feature/browser.feature")
+                .withFeatureFromAssets("assets/feature/home.feature")
                 .scenarios();
     }
 
     @Test
     public void test() {
         // Start steps test
-        start(new BrowserSteps());
+        start(new HomeSteps());
     }
 }

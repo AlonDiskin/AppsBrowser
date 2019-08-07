@@ -1,6 +1,6 @@
 package com.diskin.alon.appsbrowser.browser.applicationservices;
 
-import com.diskin.alon.appsbrowser.browser.domain.UserApp;
+import com.diskin.alon.appsbrowser.browser.domain.UserAppEntity;
 import com.diskin.alon.appsbrowser.common.applicationservices.Mapper;
 
 import org.junit.Before;
@@ -18,9 +18,7 @@ import io.reactivex.Observable;
 import junitparams.JUnitParamsRunner;
 import junitparams.Parameters;
 
-import static org.hamcrest.CoreMatchers.any;
 import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.CoreMatchers.isA;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -38,15 +36,15 @@ public class GetUserAppsUseCaseTest {
     @Mock
     public UserAppsRepository repository;
     @Mock
-    public Mapper<UserApp,UserAppDto> mapper;
+    public Mapper<UserAppEntity,UserAppDto> mapper;
 
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
         // stub mapper
-        when(mapper.map(ArgumentMatchers.any(UserApp.class)))
+        when(mapper.map(ArgumentMatchers.any(UserAppEntity.class)))
                 .thenAnswer(invocation -> {
-                    UserApp userApp = invocation.getArgument(0);
+                    UserAppEntity userApp = invocation.getArgument(0);
 
                     return new UserAppDto(userApp.getId(),
                             userApp.getName(),
@@ -58,7 +56,7 @@ public class GetUserAppsUseCaseTest {
 
     @Test
     @Parameters(method = "executionParams")
-    public void shouldFetchUserApps_whenExecuted(List<UserApp> repositoryApps,List<UserAppDto> expectedApps) {
+    public void shouldFetchUserApps_whenExecuted(List<UserAppEntity> repositoryApps, List<UserAppDto> expectedApps) {
         // Given ann initialized use case, and existing apps in repository
         when(repository.getUserAppsByName()).thenReturn(Observable.just(repositoryApps));
 
@@ -71,10 +69,10 @@ public class GetUserAppsUseCaseTest {
 
     public static Object[][] executionParams() {
         return new Object[][] {
-                new Object[] {new ArrayList<UserApp>(),new ArrayList<UserAppDto>()},
+                new Object[] {new ArrayList<UserAppEntity>(),new ArrayList<UserAppDto>()},
                 new Object[] {Arrays.asList(
-                        new UserApp("id1","app1",23.4,"url1"),
-                        new UserApp("id2","app2",43.4,"url2")),
+                        new UserAppEntity("id1","app1",23.4,"url1"),
+                        new UserAppEntity("id2","app2",43.4,"url2")),
                         Arrays.asList(
                                 new UserAppDto("id1","app1",23.4,"url1"),
                                 new UserAppDto("id2","app2",43.4,"url2"))}

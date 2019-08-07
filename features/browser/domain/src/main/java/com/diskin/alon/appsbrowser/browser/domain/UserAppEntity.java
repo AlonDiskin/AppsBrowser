@@ -1,12 +1,12 @@
 package com.diskin.alon.appsbrowser.browser.domain;
 
-public class UserApp {
+public class UserAppEntity {
     private final String id;
     private final String name;
     private final double size;
     private final String iconUri;
 
-    public UserApp(String id, String name, double size, String iconUri) {
+    public UserAppEntity(String id, String name, double size, String iconUri) {
         this.id = id;
         this.name = name;
         this.size = size;
@@ -34,7 +34,7 @@ public class UserApp {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        UserApp userApp = (UserApp) o;
+        UserAppEntity userApp = (UserAppEntity) o;
 
         if (Double.compare(userApp.size, size) != 0) return false;
         if (id != null ? !id.equals(userApp.id) : userApp.id != null) return false;
@@ -56,7 +56,7 @@ public class UserApp {
 
     @Override
     public String toString() {
-        return "UserApp{" +
+        return "UserAppEntity{" +
                 "id='" + id + '\'' +
                 ", name='" + name + '\'' +
                 ", size=" + size +

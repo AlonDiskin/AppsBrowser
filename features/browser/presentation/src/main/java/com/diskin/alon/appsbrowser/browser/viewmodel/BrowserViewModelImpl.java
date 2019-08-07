@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.diskin.alon.appsbrowser.browser.model.UserApp;
+import com.diskin.alon.appsbrowser.common.EspressoIdlingResource;
 import com.diskin.alon.appsbrowser.common.ServiceExecutor;
 
 import java.util.List;
@@ -44,9 +45,16 @@ public class BrowserViewModelImpl extends ViewModel implements BrowserViewModel 
      * apps state when new lists are emitted.
      */
     private void fetchUserApps() {
+        EspressoIdlingResource.increment();
         Disposable disposable = serviceExecutor.execute(new GetUserAppsRequest(null))
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(apps -> userApps.setValue(apps),Throwable::printStackTrace);
+                .subscribe(apps -> {
+                    EspressoIdlingResource.decrement();
+                    userApps.setValue(apps);
+                },throwable -> {
+                    EspressoIdlingResource.decrement();
+                    throwable.printStackTrace();
+                });
 
         disposables.add(disposable);
     }

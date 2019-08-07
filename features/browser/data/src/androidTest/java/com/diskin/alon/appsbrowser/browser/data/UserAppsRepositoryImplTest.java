@@ -6,7 +6,7 @@ import android.util.Log;
 import androidx.test.core.app.ApplicationProvider;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
-import com.diskin.alon.appsbrowser.browser.domain.UserApp;
+import com.diskin.alon.appsbrowser.browser.domain.UserAppEntity;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -31,10 +31,10 @@ public class UserAppsRepositoryImplTest {
 
     @Test
     public void name() {
-        List<UserApp> userApps = repository.getUserAppsByName().blockingFirst();
+        List<UserAppEntity> userApps = repository.getUserAppsByName().blockingFirst();
 
         Log.d(TAG, "name: " + userApps.size());
-        for (UserApp userApp : userApps) {
+        for (UserAppEntity userApp : userApps) {
             Log.d(TAG, userApp.toString());
         }
 

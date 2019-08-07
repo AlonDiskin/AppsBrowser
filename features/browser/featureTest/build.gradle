@@ -10,7 +10,8 @@ android {
         versionCode 1
         versionName "1.0"
 
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner "com.diskin.alon.appsbrowser.browser.featuretest.runner.CustomTestRunner"
+        multiDexEnabled true
 
     }
 
@@ -21,26 +22,51 @@ android {
         }
     }
 
+    compileOptions {
+        sourceCompatibility 1.8
+        targetCompatibility 1.8
+    }
+
+    dataBinding {
+        enabled = true
+        enabledForTests = true
+    }
+
 }
 
 dependencies {
     def dagger_version = "2.20"
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
+    // Multidex support
+    implementation 'androidx.multidex:multidex:2.0.0'
+
+    // Feature modules
     implementation project(':features:common:presentation')
+    implementation project(':features:common:applicationServices')
     implementation project(':features:browser:presentation')
     implementation project(':features:browser:applicationServices')
     implementation project(':features:browser:domain')
     implementation project(':features:browser:data')
 
+    // Support library
     implementation 'androidx.appcompat:appcompat:1.0.2'
-    testImplementation 'junit:junit:4.12'
 
+    // Fragment scenario testing
+    implementation "androidx.fragment:fragment-testing:1.2.0-alpha01"
+    implementation "androidx.test:core:1.2.1-alpha02"
+    implementation 'androidx.fragment:fragment:1.0.0'
+
+    testImplementation 'junit:junit:4.12'
 
     // Instrumentation testing
     androidTestImplementation 'androidx.test:core:1.2.0'
+    androidTestImplementation "androidx.lifecycle:lifecycle-extensions:2.0.0"
+    androidTestImplementation "androidx.recyclerview:recyclerview:1.0.0"
     androidTestImplementation 'androidx.test:runner:1.2.0'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
+    androidTestImplementation 'io.reactivex.rxjava2:rxandroid:2.1.1'
+    androidTestImplementation 'io.reactivex.rxjava2:rxjava:2.2.6'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
     androidTestImplementation 'androidx.test.espresso:espresso-contrib:3.2.0'
     androidTestImplementation 'com.linkedin.dexmaker:dexmaker-mockito:2.12.1'

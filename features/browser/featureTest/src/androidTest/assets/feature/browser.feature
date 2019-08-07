@@ -6,15 +6,11 @@ Feature: Browser
 
   @list-apps
   Scenario: Device apps are displayed
-  In order to see what applications are currently existing on my device
-  As the user
-  I want to get a listing of all installed applications
-
     Given User has the next apps on device
-      | name     | size | icon         |
-      | Facebook | 45.7 | "fac_ic.jpg" |
-      | YouTube  | 55.8 | "yt_ic.jpg"  |
-      | Google   | 21.2 | "gog_ic.jpg" |
-      | WhatsApp | 37.3 | "wha_ic.jpg" |
+      | name     | size | icon                                   | id |
+      | Facebook | 45.7 | file:///android_asset/facebookicon.png | 1  |
+      | YouTube  | 55.8 | file:///android_asset/youtubeicon.png  | 2  |
+      | Google   | 21.2 | file:///android_asset/twittericon.jpeg | 3  |
+      | WhatsApp | 37.3 | file:///android_asset/whatsappicon.png | 4  |
     When User opens browser screen
-    Then All device apps should be displayed
+    Then All device apps should be displayed sorted by name in ascending order
