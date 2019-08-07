@@ -1,12 +1,7 @@
 package com.diskin.alon.appsbrowser.browser.featuretest.steps;
 
-
-import androidx.fragment.app.testing.FragmentScenario;
-
 import com.diskin.alon.appsbrowser.browser.applicationservices.UserAppsRepository;
-import com.diskin.alon.appsbrowser.browser.controller.BrowserFragment;
 import com.diskin.alon.appsbrowser.browser.domain.UserAppEntity;
-import com.diskin.alon.appsbrowser.browser.featuretest.util.RecyclerViewMatcher;
 import com.mauriciotogneri.greencoffee.GreenCoffeeSteps;
 import com.mauriciotogneri.greencoffee.annotations.Given;
 import com.mauriciotogneri.greencoffee.annotations.Then;
@@ -21,19 +16,15 @@ import javax.inject.Inject;
 import gherkin.ast.TableRow;
 import io.reactivex.Observable;
 
-import static androidx.test.espresso.Espresso.onView;
-import static androidx.test.espresso.assertion.ViewAssertions.matches;
-import static androidx.test.espresso.matcher.ViewMatchers.hasDescendant;
-import static androidx.test.espresso.matcher.ViewMatchers.withText;
-import static org.hamcrest.core.AllOf.allOf;
+import static junit.framework.TestCase.fail;
 import static org.mockito.Mockito.when;
 
 /**
- * Step definitions for the 'list apps' feature rule.
+ * Step definitions for the 'app detail' feature rule.
  */
-public class ListAppsSteps extends GreenCoffeeSteps {
+public class AppDetailSteps extends GreenCoffeeSteps {
 
-    private static final String TAG = "ListAppsSteps";
+    private static final String TAG = "AppDetailSteps";
     private List<UserAppEntity> userAppEntities = new ArrayList<>();
 
     @Inject
@@ -61,25 +52,13 @@ public class ListAppsSteps extends GreenCoffeeSteps {
         when(repository.getUserAppsByName()).thenReturn(Observable.just(userAppEntities));
     }
 
-    @When("^User opens browser screen$")
-    public void userOpensBrowserScreen() throws InterruptedException {
-        // launch browser screen
-        FragmentScenario<BrowserFragment> scenario = FragmentScenario.launchInContainer(BrowserFragment.class,
-                null, com.diskin.alon.appsbrowser.browser.R.style.AppTheme,null);
-        Thread.sleep(6000);
+    @When("^User clicks on listed \"([^\"]*)\" entry$")
+    public void userClicksOnListedEntry(String appName) {
+        fail("not implemented yet");
     }
 
-    @Then("^All device apps should be displayed sorted by name in ascending order$")
-    public void allDeviceAppsShouldBeDisplayedSortedByNameInAscendingOrder() {
-        // verify all user apps that was fetched from repository are displayed in a
-        for (int i = 0;i < userAppEntities.size();i++) {
-
-            UserAppEntity app = userAppEntities.get(i);
-
-            onView(RecyclerViewMatcher.withRecyclerView(com.diskin.alon.appsbrowser.browser.R.id.userApps).atPosition(i))
-                    .check(matches(allOf(
-                            hasDescendant(withText(app.getName())),
-                            hasDescendant(withText(app.getSize() + " MB")))));
-        }
+    @Then("^User should be redirected to app detail in settings application$")
+    public void userShouldBeRedirectedToAppDetailInSettingsApplication() {
+        fail("not implemented yet");
     }
 }
