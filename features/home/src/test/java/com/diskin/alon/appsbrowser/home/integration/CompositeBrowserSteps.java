@@ -27,7 +27,7 @@ public class CompositeBrowserSteps {
     @Then("Browser feature ui should be displayed in home screen")
     public void browserFeatureUiShouldBeDisplayedInHomeScreen() {
         // verify fake browser ui is displayed
-        onView(withId(R.id.test_browser_layout))
+        onView(withId(R.id.fake_browser_layout))
                 .check(matches(isCompletelyDisplayed()));
     }
 }

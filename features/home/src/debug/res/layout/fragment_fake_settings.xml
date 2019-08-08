@@ -1,16 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/fake_browser_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".FakeBrowserFragment">
+    android:id="@+id/fake_settings_layout"
+    tools:context=".FakeSettingsFragment">
 
     <!-- TODO: Update blank fragment layout -->
     <TextView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="center"
-        android:text="@string/test_browser_screen_label" />
+        android:text="@string/hello_blank_fragment" />
 
 </FrameLayout>

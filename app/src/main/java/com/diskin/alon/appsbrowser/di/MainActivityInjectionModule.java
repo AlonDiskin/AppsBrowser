@@ -1,4 +1,4 @@
-package com.diskin.alon.appsbrowser.home.di;
+package com.diskin.alon.appsbrowser.di;
 
 import com.diskin.alon.appsbrowser.home.MainActivity;
 

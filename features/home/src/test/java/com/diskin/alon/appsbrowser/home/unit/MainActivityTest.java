@@ -4,6 +4,7 @@ import android.view.View;
 
 import androidx.appcompat.widget.Toolbar;
 import androidx.test.core.app.ActivityScenario;
+import androidx.test.core.app.ApplicationProvider;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
 import com.diskin.alon.appsbrowser.home.HomeNavigator;
@@ -18,11 +19,13 @@ import org.robolectric.annotation.Config;
 
 import javax.inject.Inject;
 
-import static androidx.test.core.app.ApplicationProvider.getApplicationContext;
 import static androidx.test.espresso.Espresso.onView;
+import static androidx.test.espresso.Espresso.openActionBarOverflowOrOptionsMenu;
+import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
+import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.ArgumentMatchers.eq;
@@ -34,6 +37,7 @@ import static org.mockito.Mockito.verify;
 @RunWith(AndroidJUnit4.class)
 @Config(application = TestApp.class)
 public class MainActivityTest {
+
     // System under test
     private ActivityScenario<MainActivity> scenario;
 
@@ -56,7 +60,7 @@ public class MainActivityTest {
             Toolbar toolbar = activity.findViewById(R.id.toolbar);
 
             assertThat(toolbar.getTitle().toString(),
-                    equalTo(getApplicationContext().getString(R.string.app_name)));
+                    equalTo(ApplicationProvider.getApplicationContext().getString(R.string.app_name)));
 
             onView(withId(R.id.toolbar))
                     .check(matches(isDisplayed()));
@@ -72,6 +76,34 @@ public class MainActivityTest {
             View navHost = activity.findViewById(R.id.nav_host_fragment);
             verify(navigator).openBrowser(eq(navHost));
         });
+    }
 
+    @Test
+    public void shouldNavigateToSettings_whenUserClicksOnSettingsOptionItem() {
+        // Given a resumed activity
+
+        // When user clicks on settings option menu item
+        openActionBarOverflowOrOptionsMenu(ApplicationProvider.getApplicationContext());
+        onView(withText(R.string.title_action_settings))
+                .perform(click());
+
+        // Then navigator should open settings
+        scenario.onActivity(activity -> {
+            View navHost = activity.findViewById(R.id.nav_host_fragment);
+            verify(navigator).openSettings(navHost);
+        });
+    }
+
+    @Test
+    public void shouldRegisterToolbarToNavigatorUpdates() {
+        // Given a resumed activity
+
+        // Then activity should register its toolbar to be updated by navigator
+        scenario.onActivity(activity -> {
+            View navHost = activity.findViewById(R.id.nav_host_fragment);
+            Toolbar toolbar = activity.findViewById(R.id.toolbar);
+
+            verify(navigator).addToolbar(eq(toolbar),eq(navHost));
+        });
     }
 }

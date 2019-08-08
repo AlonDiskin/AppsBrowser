@@ -1,6 +1,8 @@
 package com.diskin.alon.appsbrowser.home;
 
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -20,18 +22,38 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
         // Inject activity dependencies
         AndroidInjection.inject(this);
+        super.onCreate(savedInstanceState);
         // setup activity layout
         setContentView(R.layout.activity_main);
 
-        // setup toolbar
+        // setup activity toolbar
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         // show browser screen
         navigator.openBrowser(getNavHost());
+
+        // setup toolbar navigation support
+        navigator.addToolbar(toolbar,getNavHost());
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // React to menu items selection
+        if (item.getItemId() == R.id.action_settings) {
+            // navigate to feature b
+            navigator.openSettings(getNavHost());
+        }
+
+        return true;
     }
 
     /**

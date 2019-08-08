@@ -38,6 +38,8 @@ dependencies {
     // common modules
     implementation project(':features:common:presentation')
     implementation project(':features:common:applicationServices')
+    // settings feature module
+    implementation project(':features:settings')
 
     // Support library
     implementation 'androidx.appcompat:appcompat:1.0.2'

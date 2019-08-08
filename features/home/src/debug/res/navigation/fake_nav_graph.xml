@@ -10,4 +10,11 @@
         android:name="com.diskin.alon.appsbrowser.home.FakeBrowserFragment"
         android:label="fragment_test_browser"
         tools:layout="@layout/fragment_fake_browser" />
+
+    <fragment
+        android:id="@+id/testSettingsFragment"
+        android:name="com.diskin.alon.appsbrowser.home.FakeSettingsFragment"
+        android:label="@string/title_fake_settings_fragment"
+        tools:layout="@layout/fragment_fake_settings" />
+
 </navigation>
