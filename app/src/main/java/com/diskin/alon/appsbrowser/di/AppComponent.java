@@ -3,7 +3,6 @@ package com.diskin.alon.appsbrowser.di;
 import android.app.Application;
 
 import com.diskin.alon.appsbrowser.AppsBrowserApp;
-import com.diskin.alon.appsbrowser.home.di.MainActivityInjectionModule;
 
 import javax.inject.Singleton;
 
