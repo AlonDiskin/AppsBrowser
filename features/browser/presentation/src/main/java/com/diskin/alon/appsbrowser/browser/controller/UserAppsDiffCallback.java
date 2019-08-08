@@ -34,7 +34,7 @@ public class UserAppsDiffCallback extends DiffUtil.Callback {
 
     @Override
     public boolean areItemsTheSame(int oldItemPosition, int newItemPosition) {
-        return oldApps.get(oldItemPosition).getId().equals(newApps.get(newItemPosition).getId());
+        return oldApps.get(oldItemPosition).getPackageName().equals(newApps.get(newItemPosition).getPackageName());
     }
 
     @Override

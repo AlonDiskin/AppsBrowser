@@ -14,3 +14,17 @@ Feature: Browser
       | WhatsApp | 37.3 | file:///android_asset/whatsappicon.png | 4  |
     When User opens browser screen
     Then All device apps should be displayed sorted by name in ascending order
+
+  @app-detail
+  Scenario Outline: App detail displayed
+    Given User has the next apps on device
+      | name     | size | icon                                   | id |
+      | Facebook | 45.7 | file:///android_asset/facebookicon.png | 1  |
+      | YouTube  | 55.8 | file:///android_asset/youtubeicon.png  | 2  |
+    When User opens browser screen
+    And User clicks on listed "<app>" entry
+    Then User should be redirected to app detail in settings application
+    Examples:
+      | app      |
+      | Facebook |
+      | YouTube  |

@@ -7,7 +7,7 @@ import java.util.Objects;
  */
 public class UserApp {
 
-    private final String id;
+    private final String packageName;
     private final String name;
     private final String size;
     private final String iconUri;
@@ -16,11 +16,11 @@ public class UserApp {
      * Create a new {@link UserApp} instance.
      * @param name app name.
      * @param size app size in megabits.
-     * @param id app system identifier.
+     * @param packageName app system identifier.
      * @param iconUri app icon resource identifier.
      */
-    public UserApp(String id, String name, String size, String iconUri) {
-        this.id = id;
+    public UserApp(String packageName, String name, String size, String iconUri) {
+        this.packageName = packageName;
         this.name = name;
         this.size = size;
         this.iconUri = iconUri;
@@ -34,8 +34,8 @@ public class UserApp {
         return size;
     }
 
-    public String getId() {
-        return id;
+    public String getPackageName() {
+        return packageName;
     }
 
     public String getIconUri() {
@@ -51,7 +51,7 @@ public class UserApp {
 
         if (!Objects.equals(name, app.name)) return false;
         if (!Objects.equals(size, app.size)) return false;
-        if (!Objects.equals(id, app.id)) return false;
+        if (!Objects.equals(packageName, app.packageName)) return false;
         return Objects.equals(iconUri, app.iconUri);
     }
 
@@ -59,7 +59,7 @@ public class UserApp {
     public int hashCode() {
         int result = name != null ? name.hashCode() : 0;
         result = 31 * result + (size != null ? size.hashCode() : 0);
-        result = 31 * result + (id != null ? id.hashCode() : 0);
+        result = 31 * result + (packageName != null ? packageName.hashCode() : 0);
         result = 31 * result + (iconUri != null ? iconUri.hashCode() : 0);
         return result;
     }

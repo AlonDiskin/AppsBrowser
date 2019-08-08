@@ -7,14 +7,20 @@
         <variable
             name="app"
             type="com.diskin.alon.appsbrowser.browser.model.UserApp"/>
+        <variable
+            name="clickListener"
+            type="com.diskin.alon.appsbrowser.browser.controller.UserAppsAdapter.UserAppClickListener" />
     </data>
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/cardBackground"
-        android:layout_margin="1dp"
-        app:cardCornerRadius="2dp">
+        android:layout_margin="3dp"
+        app:cardCornerRadius="2dp"
+        android:focusable="true"
+        android:clickable="true"
+        android:foreground="?android:attr/selectableItemBackground"
+        android:onClick="@{() -> clickListener.onClick(app)}">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
