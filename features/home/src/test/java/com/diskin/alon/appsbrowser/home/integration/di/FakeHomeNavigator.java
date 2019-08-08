@@ -14,7 +14,7 @@ import com.diskin.alon.appsbrowser.home.R;
 public class FakeHomeNavigator implements HomeNavigator {
     @Override
     public void openBrowser(@NonNull View navView) {
-        Navigation.findNavController(navView).setGraph(R.navigation.fake_nav);
+        Navigation.findNavController(navView).setGraph(R.navigation.fake_nav_graph);
     }
 
     @Override
