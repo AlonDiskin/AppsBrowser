@@ -1,6 +1,7 @@
 package com.diskin.alon.appsbrowser.browser.di;
 
 import com.diskin.alon.appsbrowser.browser.controller.BrowserFragment;
+import com.diskin.alon.appsbrowser.browser.controller.BrowserNavigator;
 import com.diskin.alon.appsbrowser.browser.viewmodel.BrowserViewModel;
 
 import org.mockito.Mockito;
@@ -19,6 +20,12 @@ public abstract class TestAppModule {
     @Provides
     public static BrowserViewModel provideBrowserViewModel() {
         return Mockito.mock(BrowserViewModel.class);
+    }
+
+    @Singleton
+    @Provides
+    public static BrowserNavigator provideBrowserNavigator() {
+        return Mockito.mock(BrowserNavigator.class);
     }
 
     @ContributesAndroidInjector

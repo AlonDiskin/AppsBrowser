@@ -1,6 +1,5 @@
 package com.diskin.alon.appsbrowser.browser.controller;
 
-
 import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -22,7 +21,6 @@ import javax.inject.Inject;
 
 import dagger.android.support.AndroidSupportInjection;
 
-
 /**
  * Browser screen ui controller.
  */
@@ -30,6 +28,8 @@ public class BrowserFragment extends Fragment {
 
     @Inject
     BrowserViewModel viewModel;
+    @Inject
+    BrowserNavigator navigator;
     private UserAppsAdapter appsAdapter;
 
     public BrowserFragment() {
@@ -55,7 +55,7 @@ public class BrowserFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         // setup user apps recycler view
-        appsAdapter = new UserAppsAdapter();
+        appsAdapter = new UserAppsAdapter(app -> navigator.openAppDetail(app.getPackageName()));
         RecyclerView recyclerView = view.findViewById(R.id.userApps);
 
         recyclerView.setAdapter(appsAdapter);

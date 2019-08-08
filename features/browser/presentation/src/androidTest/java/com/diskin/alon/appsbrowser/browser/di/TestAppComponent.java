@@ -1,7 +1,5 @@
 package com.diskin.alon.appsbrowser.browser.di;
 
-import androidx.annotation.NonNull;
-
 import com.diskin.alon.appsbrowser.browser.runner.TestApp;
 import com.diskin.alon.appsbrowser.browser.ui.BrowserFragmentTest;
 
@@ -21,6 +19,6 @@ public interface TestAppComponent extends AndroidInjector<TestApp> {
         TestAppComponent build();
     }
 
-    void inject(@NonNull BrowserFragmentTest test);
+    void inject(BrowserFragmentTest test);
 
 }

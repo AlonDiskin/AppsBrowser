@@ -21,7 +21,8 @@ Feature: Browser
       | name     | size | icon                                   | id |
       | Facebook | 45.7 | file:///android_asset/facebookicon.png | 1  |
       | YouTube  | 55.8 | file:///android_asset/youtubeicon.png  | 2  |
-    When User clicks on listed "<app>" entry
+    When User opens browser screen
+    And User clicks on listed "<app>" entry
     Then User should be redirected to app detail in settings application
     Examples:
       | app      |

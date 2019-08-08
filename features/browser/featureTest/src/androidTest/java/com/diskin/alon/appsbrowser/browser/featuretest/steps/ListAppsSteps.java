@@ -62,11 +62,10 @@ public class ListAppsSteps extends GreenCoffeeSteps {
     }
 
     @When("^User opens browser screen$")
-    public void userOpensBrowserScreen() throws InterruptedException {
+    public void userOpensBrowserScreen() {
         // launch browser screen
         FragmentScenario<BrowserFragment> scenario = FragmentScenario.launchInContainer(BrowserFragment.class,
                 null, com.diskin.alon.appsbrowser.browser.R.style.AppTheme,null);
-        Thread.sleep(6000);
     }
 
     @Then("^All device apps should be displayed sorted by name in ascending order$")

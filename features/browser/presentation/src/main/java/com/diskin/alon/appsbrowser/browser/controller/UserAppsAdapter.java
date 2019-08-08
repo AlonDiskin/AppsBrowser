@@ -17,8 +17,11 @@ public class UserAppsAdapter extends RecyclerView.Adapter<UserAppsAdapter.UserAp
 
     @NonNull
     private List<UserApp> apps;
+    @NonNull
+    private final UserAppClickListener listener;
 
-    public UserAppsAdapter() {
+    public UserAppsAdapter(@NonNull UserAppClickListener listener) {
+        this.listener = listener;
         this.apps = new ArrayList<>();
     }
 
@@ -28,7 +31,7 @@ public class UserAppsAdapter extends RecyclerView.Adapter<UserAppsAdapter.UserAp
         UserAppBinding binding = UserAppBinding.inflate(LayoutInflater.from(parent.getContext()),
                 parent,false);
 
-        return new UserAppHolder(binding);
+        return new UserAppHolder(binding,listener);
     }
 
     @Override
@@ -55,14 +58,20 @@ public class UserAppsAdapter extends RecyclerView.Adapter<UserAppsAdapter.UserAp
         @NonNull
         private UserAppBinding binding;
 
-        public UserAppHolder(@NonNull UserAppBinding binding) {
+        public UserAppHolder(@NonNull UserAppBinding binding, @NonNull UserAppClickListener listener) {
             super(binding.getRoot());
             this.binding = binding;
+            this.binding.setClickListener(listener);
         }
 
         public void bind(@NonNull UserApp app) {
             binding.setApp(app);
             binding.executePendingBindings();
         }
+    }
+
+    public interface UserAppClickListener {
+
+        void onClick(@NonNull UserApp app);
     }
 }

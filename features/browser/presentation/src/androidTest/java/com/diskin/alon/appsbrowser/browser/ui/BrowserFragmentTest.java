@@ -2,14 +2,16 @@ package com.diskin.alon.appsbrowser.browser.ui;
 
 import androidx.fragment.app.testing.FragmentScenario;
 import androidx.lifecycle.MutableLiveData;
+import androidx.test.espresso.contrib.RecyclerViewActions;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
-import com.diskin.alon.appsbrowser.browser.controller.BrowserFragment;
-import com.diskin.alon.appsbrowser.browser.viewmodel.BrowserViewModel;
 import com.diskin.alon.appsbrowser.browser.R;
-import com.diskin.alon.appsbrowser.browser.model.UserApp;
+import com.diskin.alon.appsbrowser.browser.controller.BrowserFragment;
+import com.diskin.alon.appsbrowser.browser.controller.BrowserNavigator;
 import com.diskin.alon.appsbrowser.browser.di.TestInjector;
+import com.diskin.alon.appsbrowser.browser.model.UserApp;
 import com.diskin.alon.appsbrowser.browser.util.RecyclerViewMatcher;
+import com.diskin.alon.appsbrowser.browser.viewmodel.BrowserViewModel;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -21,27 +23,33 @@ import java.util.List;
 import javax.inject.Inject;
 
 import static androidx.test.espresso.Espresso.onView;
+import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.matcher.ViewMatchers.hasDescendant;
+import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.core.AllOf.allOf;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 /**
- * {@link BrowserFragment} ui integration test class.
+ * {@link BrowserFragment} hermetic ui integration test class.
  */
 @RunWith(AndroidJUnit4.class)
 public class BrowserFragmentTest {
+
     // System under test
     private FragmentScenario<BrowserFragment> scenario;
 
     // SUT mocked dependent on components
     @Inject
     BrowserViewModel viewModel;
+    @Inject
+    BrowserNavigator navigator;
 
     // Test stubs
-    private MutableLiveData<List<UserApp>> userAppsData;
+    private MutableLiveData<List<UserApp>> userAppsData = new MutableLiveData<>();
 
     @Before
     public void setUp() {
@@ -49,8 +57,6 @@ public class BrowserFragmentTest {
         TestInjector.inject(this);
 
         // stub mocked view model
-        userAppsData = new MutableLiveData<>();
-
         when(viewModel.getUserApps()).thenReturn(userAppsData);
 
         // launch fragment under test
@@ -77,7 +83,6 @@ public class BrowserFragmentTest {
         // Given a resumed fragment
 
         // When view model updates its user apps listing
-        //scenario.onFragment(fragment -> fragment.getActivity().runOnUiThread())
         userAppsData.postValue(apps);
 
         // Then fragment should display updated apps list
@@ -89,6 +94,29 @@ public class BrowserFragmentTest {
                     .check(matches(allOf(
                             hasDescendant(withText(app.getName())),
                             hasDescendant(withText(app.getSize())))));
+        }
+    }
+
+    @Test
+    public void shouldNavigateToAppDetail_whenAppEntryClicked() {
+        // Given a resumed fragment with displayed user apps
+        List<UserApp> apps = Arrays.asList(
+                new UserApp("facebook","45 MB", "fc", "file:///android_asset/facebookicon.png"),
+                new UserApp("youtube","31 MB", "yt", "file:///android_asset/youtubeicon.png"),
+                new UserApp("twitter","78.8 MB", "tw", "file:///android_asset/twittericon.jpeg"),
+                new UserApp("whatsApp","24.6 MB", "wa", "file:///android_asset/whatsappicon.png"));
+        userAppsData.postValue(apps);
+
+        for (int i = 0; i < apps.size();i++) {
+            UserApp selectedApp = apps.get(i);
+
+            // When user clicks on an user app view in shown layout
+            onView(withId(R.id.userApps))
+                    .perform(RecyclerViewActions.scrollToPosition(i))
+                    .perform(RecyclerViewActions.actionOnItemAtPosition(i,click()));
+
+            // Then navigator should open clicked app detail
+            verify(navigator).openAppDetail(eq(selectedApp.getPackageName()));
         }
     }
 }
