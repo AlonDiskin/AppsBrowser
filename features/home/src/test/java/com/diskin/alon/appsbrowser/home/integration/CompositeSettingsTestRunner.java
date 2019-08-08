@@ -9,7 +9,7 @@ import org.junit.runner.RunWith;
 import org.robolectric.annotation.Config;
 
 /**
- * 'composite browser' feature steps runner.
+ * 'composite settings' feature rule steps runner.
  */
 @RunWith(AndroidJUnit4.class)
 @Config(application = TestApp.class)

@@ -32,11 +32,11 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        // setup toolbar navigation support
-        navigator.addToolbar(toolbar,getNavHost());
-
         // show browser screen
         navigator.openBrowser(getNavHost());
+
+        // setup toolbar navigation support
+        navigator.addToolbar(toolbar,getNavHost());
     }
 
     @Override

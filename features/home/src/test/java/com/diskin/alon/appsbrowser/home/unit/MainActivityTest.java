@@ -37,6 +37,7 @@ import static org.mockito.Mockito.verify;
 @RunWith(AndroidJUnit4.class)
 @Config(application = TestApp.class)
 public class MainActivityTest {
+
     // System under test
     private ActivityScenario<MainActivity> scenario;
 

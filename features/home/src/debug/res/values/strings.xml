@@ -3,7 +3,7 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="app_name">AppsBrowser</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="title_settings_fragment">Settings</string>
+    <string name="title_fake_settings_fragment">Settings</string>
     <string name="test_browser_screen_label">Test browser screen</string>
 
 </resources>
