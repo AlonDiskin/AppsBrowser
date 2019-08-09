@@ -21,12 +21,6 @@ android {
         }
     }
 
-    testOptions {
-        unitTests {
-            includeAndroidResources = true
-        }
-    }
-
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
@@ -39,6 +33,7 @@ dependencies {
     // Support library
     implementation 'androidx.appcompat:appcompat:1.0.2'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    implementation 'androidx.preference:preference:1.1.0-rc01'
 
     // Fragment testing
     implementation "androidx.fragment:fragment-testing:1.2.0-alpha02"
@@ -46,13 +41,12 @@ dependencies {
 
     // local testing
     testImplementation 'junit:junit:4.12'
-    testImplementation 'org.robolectric:robolectric:4.3'
-    testImplementation 'androidx.test:runner:1.2.0'
-    testImplementation 'androidx.test.ext:junit:1.1.1'
-    testImplementation 'androidx.test.espresso:espresso-core:3.2.0'
-    testImplementation 'org.mockito:mockito-core:2.23.4'
-    testAnnotationProcessor 'com.google.dagger:dagger-compiler:2.20'
-    testAnnotationProcessor 'com.google.dagger:dagger-android-processor:2.20'
-    testImplementation 'io.cucumber:cucumber-java:4.3.1'
-    testImplementation 'io.cucumber:cucumber-junit:4.3.1'
+
+    // Instrumentation
+    androidTestImplementation 'androidx.test:core:1.2.0'
+    androidTestImplementation 'androidx.test:runner:1.2.0'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.1'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+    androidTestImplementation 'androidx.test.espresso:espresso-contrib:3.2.0'
+    androidTestImplementation 'com.mauriciotogneri:greencoffee:3.5.0'
 }
