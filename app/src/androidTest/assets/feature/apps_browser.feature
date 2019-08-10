@@ -25,3 +25,5 @@ Feature: Application features e2e acceptance tests
     And Navigates to settings screen
     And Set theme to dark
     Then App visual theme should be changed to dark
+    When User exist app and returns
+    Then App theme should be dark

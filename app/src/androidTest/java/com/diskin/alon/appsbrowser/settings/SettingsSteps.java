@@ -46,4 +46,14 @@ public class SettingsSteps extends GreenCoffeeSteps {
     public void appVisualThemeShouldBeChangedToDark() {
         fail("not implemented yet");
     }
+
+    @When("^User exist app and returns$")
+    public void userExistAppAndReturns() {
+        fail();
+    }
+
+    @Then("^App theme should be dark$")
+    public void appThemeShouldBeDark() {
+        fail();
+    }
 }

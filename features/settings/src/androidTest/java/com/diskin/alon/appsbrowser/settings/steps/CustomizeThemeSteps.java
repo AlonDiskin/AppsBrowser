@@ -1,8 +1,12 @@
 package com.diskin.alon.appsbrowser.settings.steps;
 
+import android.content.Context;
+import android.preference.PreferenceManager;
+
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.fragment.app.testing.FragmentScenario;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.test.core.app.ApplicationProvider;
 import androidx.test.espresso.contrib.RecyclerViewActions;
 
 import com.diskin.alon.appsbrowser.settings.R;
@@ -31,49 +35,67 @@ import static org.hamcrest.MatcherAssert.assertThat;
 public class CustomizeThemeSteps extends GreenCoffeeSteps {
 
     @Given("^App theme is set as\"([^\"]*)\"$")
-    public void appThemeIsSetAs(String arg0) throws Throwable {
+    public void appThemeIsSetAs(String theme) {
+        // set app theme according to test theme arg
+        Context context = ApplicationProvider.getApplicationContext();
+        int nightMode;
+        String themeValue;
 
+        if (theme.equals("dark")) {
+            nightMode = AppCompatDelegate.MODE_NIGHT_YES;
+            themeValue = "1";
 
+        } else {
+            nightMode = AppCompatDelegate.MODE_NIGHT_NO;
+            themeValue = "0";
+        }
+
+        AppCompatDelegate.setDefaultNightMode(nightMode);
+        PreferenceManager.getDefaultSharedPreferences(context)
+                .edit()
+                .putString(context.getString(R.string.theme_pref_key),themeValue)
+                .commit();
     }
 
     @When("User open settings screen")
     public void userOpenSettingsScreen() {
-//        FragmentScenario.launchInContainer(SettingsFragment.class,
-//                null, R.style.Theme_AppCompat_DayNight_DarkActionBar,null);
+        FragmentScenario.launchInContainer(SettingsFragment.class,
+                null, R.style.Theme_AppCompat_DayNight_DarkActionBar,null);
     }
 
     @And("Open theme setting menu")
     public void openThemeSettingMenu() {
-//        onView(withClassName(equalTo(RecyclerView.class.getName())))
-//                .perform(RecyclerViewActions.actionOnItem(
-//                        hasDescendant(withText(R.string.theme_pref_title)),click()));
+        onView(withClassName(equalTo(RecyclerView.class.getName())))
+                .perform(RecyclerViewActions.actionOnItem(
+                        hasDescendant(withText(R.string.theme_pref_title)),click()));
     }
 
     @When("^User selects a \"([^\"]*)\" theme$")
-    public void userSelectsATheme(String theme) throws InterruptedException {
-//        if (theme.equals("dark")) {
-//            onView(withText("Dark"))
-//                    .inRoot(isDialog())
-//                    .perform(click());
-//        } else {
-//            onView(withText("Light"))
-//                    .inRoot(isDialog())
-//                    .perform(click());
-//        }
-//
-//        Thread.sleep(4000);
+    public void userSelectsATheme(String theme) {
+        String selectedThemeMenuItem;
+
+        if (theme.equals("dark")) {
+            selectedThemeMenuItem = "Dark";
+        } else {
+            selectedThemeMenuItem = "Light";
+        }
+
+        onView(withText(selectedThemeMenuItem))
+                .inRoot(isDialog())
+                .perform(click());
     }
 
     @Then("^App visual theme should change to \"([^\"]*)\"$")
     public void appVisualThemeShouldChangeTo(String theme) {
-//        if (theme.equals("dark")) {
-//            assertThat(AppCompatDelegate.getDefaultNightMode(),equalTo(AppCompatDelegate.MODE_NIGHT_YES));
-//
-//        } else {
-//            assertThat(AppCompatDelegate.getDefaultNightMode(),equalTo(AppCompatDelegate.MODE_NIGHT_NO));
-//        }
+        int expectedNightMode;
 
-        // verify current theme matches night values
-        fail("not implemented yet");
+        if (theme.equals("dark")) {
+            expectedNightMode = AppCompatDelegate.MODE_NIGHT_YES;
+
+        } else {
+            expectedNightMode = AppCompatDelegate.MODE_NIGHT_NO;
+        }
+
+        assertThat(AppCompatDelegate.getDefaultNightMode(),equalTo(expectedNightMode));
     }
 }
