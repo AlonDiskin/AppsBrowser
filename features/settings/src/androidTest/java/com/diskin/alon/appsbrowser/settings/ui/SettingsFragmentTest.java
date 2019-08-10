@@ -1,7 +1,10 @@
 package com.diskin.alon.appsbrowser.settings.ui;
 
 import android.content.Context;
+import android.content.pm.ActivityInfo;
 
+import androidx.appcompat.app.AppCompatDelegate;
+import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.testing.FragmentScenario;
 import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -26,6 +29,8 @@ import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withClassName;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.not;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.AllOf.allOf;
 
 /**
@@ -45,7 +50,7 @@ public class SettingsFragmentTest {
         // launch fragment, in tes activity container with app compat theme,for pref dialog
         // inflation during test cases
         scenario = FragmentScenario.launchInContainer(SettingsFragment.class,
-                null, R.style.Theme_AppCompat_Light_DarkActionBar,null);
+                null, R.style.Theme_AppCompat_DayNight_DarkActionBar,null);
     }
 
     @Test
@@ -97,5 +102,33 @@ public class SettingsFragmentTest {
         onView(withText(R.string.theme_pref_title))
                 .inRoot(isDialog())
                 .check(matches(isDisplayed()));
+    }
+
+    @Test
+    public void shouldChangeAppTheme_whenNewThemeSelected() {
+        // Test case fixture
+        String currentThemeValue = PreferenceManager.getDefaultSharedPreferences(context)
+                .getString(context.getString(R.string.theme_pref_key),
+                        context.getString(R.string.theme_pref_default_value));
+        String selectedThemeEntry = currentThemeValue.equals("0") ? "Dark" : "Light";
+        int expectedNightMode = currentThemeValue.equals("0") ?
+                AppCompatDelegate.MODE_NIGHT_YES : AppCompatDelegate.MODE_NIGHT_NO;
+        final FragmentActivity[] fragmentActivity = {null};
+
+        scenario.onFragment(fragment -> fragmentActivity[0] = fragment.getActivity());
+
+        // Given a resumed fragment and configured theme pref
+
+        // When user selects a new theme
+        onView(withClassName(equalTo(RecyclerView.class.getName())))
+                .perform(RecyclerViewActions.actionOnItem(
+                        hasDescendant(withText(R.string.theme_pref_title)),click()));
+
+        onView(withText(selectedThemeEntry))
+                .inRoot(isDialog())
+                .perform(click());
+
+        // Then fragment should change app visual theme
+        assertThat(AppCompatDelegate.getDefaultNightMode(),equalTo(expectedNightMode));
     }
 }

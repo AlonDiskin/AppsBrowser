@@ -3,6 +3,7 @@ package com.diskin.alon.appsbrowser;
 import android.app.Activity;
 import android.app.Application;
 
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.fragment.app.Fragment;
 
 import com.diskin.alon.appsbrowser.di.DaggerAppComponent;

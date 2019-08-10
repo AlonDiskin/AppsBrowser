@@ -19,6 +19,7 @@ import static androidx.test.espresso.matcher.ViewMatchers.isCompletelyDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
+import static junit.framework.TestCase.fail;
 
 /**
  * Home feature acceptance criteria step definitions.
@@ -56,7 +57,8 @@ class HomeSteps extends GreenCoffeeSteps {
 
     @Then("^Settings ui should be shown as a composition in home screen$")
     public void settingsUiShouldBeShownAsACompositionInHomeScreen() {
-        onView(withId(com.diskin.alon.appsbrowser.settings.R.id.fragment_settings_layout))
-        .check(matches(isDisplayed()));
+//        onView(withId(com.diskin.alon.appsbrowser.settings.R.id.fragment_settings_layout))
+//        .check(matches(isDisplayed()));
+        fail("not implemented yet");
     }
 }

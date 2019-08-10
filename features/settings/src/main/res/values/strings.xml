@@ -1,6 +1,4 @@
 <resources>
-    <string name="app_name">settings</string>
-    <string name="settings_fragment_title">Settings</string>
     <string name="theme_pref_key">theme</string>
     <string name="theme_pref_title">App Theme</string>
     <string name="theme_pref_default_value">0</string>
