@@ -4,9 +4,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
+import android.os.RemoteException;
 
 import androidx.test.uiautomator.By;
 import androidx.test.uiautomator.UiDevice;
+import androidx.test.uiautomator.UiObject;
+import androidx.test.uiautomator.UiObjectNotFoundException;
+import androidx.test.uiautomator.UiSelector;
 import androidx.test.uiautomator.Until;
 
 import static androidx.test.core.app.ApplicationProvider.getApplicationContext;
@@ -65,5 +69,16 @@ public class Device {
         PackageManager pm = getInstrumentation().getContext().getPackageManager();
         ResolveInfo resolveInfo = pm.resolveActivity(intent, PackageManager.MATCH_DEFAULT_ONLY);
         return resolveInfo.activityInfo.packageName;
+    }
+
+    public static void pressBack() {
+        mDevice.pressBack();
+    }
+
+    public static void removeFromRecents() throws RemoteException, UiObjectNotFoundException {
+        mDevice.pressRecentApps();
+        //app = uiDevice.findObject(new UiSelector().textContains("SDK Test App"));
+        UiObject closeAllButton = mDevice.findObject(new UiSelector().textContains("Close"));
+        closeAllButton.click();
     }
 }
