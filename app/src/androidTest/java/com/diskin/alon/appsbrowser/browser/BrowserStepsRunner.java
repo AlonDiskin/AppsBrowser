@@ -27,7 +27,8 @@ public class BrowserStepsRunner extends GreenCoffeeTest {
     @Parameterized.Parameters(name = "{0}")
     public static Iterable<ScenarioConfig> scenarios() throws IOException {
         return new GreenCoffeeConfig()
-                .withFeatureFromAssets("assets/feature/browser.feature")
+                .withFeatureFromAssets("assets/feature/apps_browser.feature")
+                .withTags("@browser")
                 .scenarios();
     }
 

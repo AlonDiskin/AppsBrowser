@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.net.Uri;
-import android.util.Log;
 
 import androidx.test.core.app.ApplicationProvider;
 import androidx.test.espresso.intent.Intents;
@@ -13,6 +12,7 @@ import com.diskin.alon.appsbrowser.browser.model.UserApp;
 import com.diskin.alon.appsbrowser.util.Device;
 import com.diskin.alon.appsbrowser.util.RecyclerViewMatcher;
 import com.mauriciotogneri.greencoffee.GreenCoffeeSteps;
+import com.mauriciotogneri.greencoffee.annotations.And;
 import com.mauriciotogneri.greencoffee.annotations.Given;
 import com.mauriciotogneri.greencoffee.annotations.Then;
 import com.mauriciotogneri.greencoffee.annotations.When;
@@ -35,6 +35,7 @@ import static androidx.test.espresso.intent.matcher.IntentMatchers.hasFlag;
 import static androidx.test.espresso.matcher.ViewMatchers.hasDescendant;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
+import static junit.framework.TestCase.fail;
 import static org.hamcrest.core.AllOf.allOf;
 
 /**
@@ -52,8 +53,8 @@ public class BrowserSteps extends GreenCoffeeSteps {
         Device.openHomeScreen();
     }
 
-    @When("^User open application$")
-    public void userOpenApplication() {
+    @When("^User launch application$")
+    public void userLaunchApplication() {
         // launch application
         Device.launchApp();
         Intents.init();
@@ -106,5 +107,20 @@ public class BrowserSteps extends GreenCoffeeSteps {
                 hasData(Uri.parse("package:" + clickedAppPackage)),
                 hasAction(android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS),
                 hasFlag(Intent.FLAG_ACTIVITY_NEW_TASK)));
+    }
+
+    @When("^User return to browser screen$")
+    public void userReturnToBrowserScreen() {
+        Device.pressBack();
+    }
+
+    @And("^Sort apps by size in descending order$")
+    public void sortAppsBySizeInDescendingOrder() {
+        fail("not implemented yet");
+    }
+
+    @Then("^Apps should be displayed sorted by size in descending order$")
+    public void appsShouldBeDisplayedSortedBySizeInDescendingOrder() {
+        fail("not implemented yet");
     }
 }
