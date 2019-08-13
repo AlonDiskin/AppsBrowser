@@ -23,6 +23,7 @@ cache:
 script:
   - ./gradlew assembleDebug
   - ./gradlew testDebugUnitTest
+  - ./gradlew assembleAndroidTest
 
 notifications:
   email: false
