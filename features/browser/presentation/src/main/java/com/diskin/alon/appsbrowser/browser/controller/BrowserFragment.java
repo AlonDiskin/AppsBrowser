@@ -31,6 +31,7 @@ import dagger.android.support.AndroidSupportInjection;
  */
 public class BrowserFragment extends Fragment {
 
+    // saved instance state keys
     private static final String KEY_SORT = "sort";
     private static final String KEY_ORDER = "order";
 
@@ -74,12 +75,12 @@ public class BrowserFragment extends Fragment {
 
         recyclerView.setAdapter(appsAdapter);
 
-        // start observing user apps, once view is crated and able to show them by resolving instance state
+        // resolving instance state and start observing user apps
         if (savedInstanceState == null) {
             // if no prev state exist, fetch apps sorted by name in ascending order
             viewModel.getUserApps(AppsSorting.NAME,true).observe(this,this::updateUserApps);
         } else {
-            // Prev state exist, extract it
+            // prev state exist, extract it
             AppsSorting sorting = AppsSorting.values()[savedInstanceState.getInt(KEY_SORT)];
             boolean isAscending = savedInstanceState.getBoolean(KEY_ORDER);
 
@@ -134,6 +135,7 @@ public class BrowserFragment extends Fragment {
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
+        // save sorting values state
         Objects.requireNonNull(viewModel.getAppsSorting().getValue());
         Objects.requireNonNull(viewModel.getAscending().getValue());
 
