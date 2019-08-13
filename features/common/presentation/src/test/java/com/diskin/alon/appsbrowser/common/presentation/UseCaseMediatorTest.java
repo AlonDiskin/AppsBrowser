@@ -1,4 +1,4 @@
-package com.diskin.alon.appsbrowser.common;
+package com.diskin.alon.appsbrowser.common.presentation;
 
 import androidx.annotation.Nullable;
 
@@ -58,7 +58,7 @@ public class UseCaseMediatorTest {
 
     @Test
     @Parameters(method = "params")
-    public <P,R> void shouldExecuteUseCase_whenRequested(ServiceRequest<P,R> request,R result) {
+    public <P,R> void shouldExecuteUseCase_whenRequested(ServiceRequest<P,R> request, R result) {
         // Given an initialized mediator
 
         // When mediator is asked to execute a known request

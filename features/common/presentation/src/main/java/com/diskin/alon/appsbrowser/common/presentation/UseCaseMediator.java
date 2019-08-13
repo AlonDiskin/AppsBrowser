@@ -1,4 +1,4 @@
-package com.diskin.alon.appsbrowser.common;
+package com.diskin.alon.appsbrowser.common.presentation;
 
 import androidx.annotation.NonNull;
 
@@ -14,7 +14,7 @@ import java.util.Objects;
  */
 public class UseCaseMediator implements ServiceExecutor {
 
-    private static final String TAG = "UseCaseMediator";
+    private static final String TAG = "com.diskin.alon.appsbrowser.common.presentation.UseCaseMediator";
     private static final String REQUEST_ERROR = "unknown service execution request";
 
     @NonNull

@@ -5,9 +5,8 @@ import androidx.lifecycle.LiveData;
 
 import com.diskin.alon.appsbrowser.browser.WhiteBox;
 import com.diskin.alon.appsbrowser.browser.model.UserApp;
-import com.diskin.alon.appsbrowser.browser.viewmodel.BrowserViewModelImpl;
-import com.diskin.alon.appsbrowser.browser.viewmodel.GetUserAppsRequest;
-import com.diskin.alon.appsbrowser.common.ServiceExecutor;
+
+import com.diskin.alon.appsbrowser.common.presentation.ServiceExecutor;
 
 import org.junit.Before;
 import org.junit.BeforeClass;

@@ -5,9 +5,10 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import com.diskin.alon.appsbrowser.browser.model.AppsSorting;
 import com.diskin.alon.appsbrowser.browser.model.UserApp;
-import com.diskin.alon.appsbrowser.common.EspressoIdlingResource;
-import com.diskin.alon.appsbrowser.common.ServiceExecutor;
+import com.diskin.alon.appsbrowser.common.presentation.EspressoIdlingResource;
+import com.diskin.alon.appsbrowser.common.presentation.ServiceExecutor;
 
 import java.util.List;
 
@@ -63,4 +64,33 @@ public class BrowserViewModelImpl extends ViewModel implements BrowserViewModel 
     public LiveData<List<UserApp>> getUserApps() {
         return userApps;
     }
+
+    @NonNull
+    @Override
+    public LiveData<List<UserApp>> getUserApps(@NonNull AppsSorting sorting, boolean ascending) {
+        return null;
+    }
+
+    @NonNull
+    @Override
+    public LiveData<AppsSorting> getAppsSorting() {
+        return null;
+    }
+
+    @NonNull
+    @Override
+    public LiveData<Boolean> getAscending() {
+        return null;
+    }
+
+    @Override
+    public void sortApps(@NonNull AppsSorting sorting) {
+
+    }
+
+    @Override
+    public void orderApps(boolean ascending) {
+
+    }
+
 }

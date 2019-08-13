@@ -3,9 +3,8 @@ package com.diskin.alon.appsbrowser.browser.featuretest.stepsrunner;
 import androidx.test.espresso.IdlingRegistry;
 
 import com.diskin.alon.appsbrowser.browser.featuretest.di.TestInjector;
-import com.diskin.alon.appsbrowser.browser.featuretest.steps.ListAppsSteps;
 import com.diskin.alon.appsbrowser.browser.featuretest.steps.ProvideSortingSteps;
-import com.diskin.alon.appsbrowser.common.EspressoIdlingResource;
+import com.diskin.alon.appsbrowser.common.presentation.EspressoIdlingResource;
 import com.mauriciotogneri.greencoffee.GreenCoffeeConfig;
 import com.mauriciotogneri.greencoffee.GreenCoffeeTest;
 import com.mauriciotogneri.greencoffee.Scenario;

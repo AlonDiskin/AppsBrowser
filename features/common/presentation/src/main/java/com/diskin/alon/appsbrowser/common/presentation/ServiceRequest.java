@@ -1,4 +1,4 @@
-package com.diskin.alon.appsbrowser.common;
+package com.diskin.alon.appsbrowser.common.presentation;
 
 import androidx.annotation.Nullable;
 

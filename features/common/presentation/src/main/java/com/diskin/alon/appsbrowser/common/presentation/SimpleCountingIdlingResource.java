@@ -1,4 +1,4 @@
-package com.diskin.alon.appsbrowser.common;
+package com.diskin.alon.appsbrowser.common.presentation;
 
 import androidx.test.espresso.IdlingResource;
 
@@ -14,7 +14,7 @@ public class SimpleCountingIdlingResource implements IdlingResource {
     private volatile ResourceCallback resourceCallback;
 
     /**
-     * Creates a SimpleCountingIdlingResource
+     * Creates a com.diskin.alon.appsbrowser.common.presentation.SimpleCountingIdlingResource
      *
      * @param resourceName the resource name this resource should report to Espresso.
      */
