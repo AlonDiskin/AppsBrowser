@@ -11,6 +11,7 @@ import com.diskin.alon.appsbrowser.browser.controller.BrowserFragment;
 import com.diskin.alon.appsbrowser.browser.controller.BrowserNavigator;
 import com.diskin.alon.appsbrowser.browser.di.TestInjector;
 import com.diskin.alon.appsbrowser.browser.model.AppsSorting;
+import com.diskin.alon.appsbrowser.browser.model.AppsSorting.SortingType;
 import com.diskin.alon.appsbrowser.browser.model.UserApp;
 import com.diskin.alon.appsbrowser.browser.util.RecyclerViewMatcher;
 import com.diskin.alon.appsbrowser.browser.viewmodel.BrowserViewModel;
@@ -35,7 +36,6 @@ import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.core.AllOf.allOf;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyBoolean;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.times;
@@ -62,7 +62,6 @@ public class BrowserFragmentTest {
     // Test stubs
     private MutableLiveData<List<UserApp>> userAppsData = new MutableLiveData<>();
     private MutableLiveData<AppsSorting> appsSortingData = new MutableLiveData<>();
-    private MutableLiveData<Boolean> appsOrderingData = new MutableLiveData<>();
 
     @Before
     public void setUp() {
@@ -70,30 +69,16 @@ public class BrowserFragmentTest {
         TestInjector.inject(this);
 
         // stub mocked view model
-        when(viewModel.getAppsSorting()).thenReturn(appsSortingData);
-        when(viewModel.getAscending()).thenReturn(appsOrderingData);
-        when(viewModel.getUserApps(any(AppsSorting.class),anyBoolean())).then(invocation -> {
-            // stub methods that depend on invocation of 'getUserApps'
-            runOnMainThread(() -> appsSortingData.setValue((AppsSorting) invocation.getArguments()[0]));
-            runOnMainThread(() -> appsOrderingData.setValue((Boolean) invocation.getArguments()[1]));
-
-            return userAppsData;
-        });
-
+        when(viewModel.getUserApps()).thenReturn(userAppsData);
+        when(viewModel.getSorting()).thenReturn(appsSortingData);
         doAnswer(invocation -> {
             runOnMainThread(() -> appsSortingData.setValue((AppsSorting) invocation.getArguments()[0]));
             return null;
         }).when(viewModel).sortApps(any(AppsSorting.class));
-        doAnswer(invocation -> {
-            runOnMainThread(() -> appsOrderingData.postValue((Boolean) invocation.getArguments()[0]));
-            return null;
-        }).when(viewModel).orderApps(anyBoolean());
 
         // launch fragment under test
         scenario = ActivityScenario.launch(FragmentTestActivity.class);
-        scenario.onActivity(activity -> {
-            activity.setFragment(new BrowserFragment(),TAG);
-        });
+        scenario.onActivity(activity -> activity.setFragment(new BrowserFragment(),TAG));
     }
 
     @Test
@@ -107,7 +92,7 @@ public class BrowserFragmentTest {
         // Given a resumed fragment
 
         // When view model updates its user apps listing
-        userAppsData.postValue(apps);
+        runOnMainThread(() -> userAppsData.setValue(apps));
 
         // Then fragment should display updated apps list
 
@@ -129,7 +114,8 @@ public class BrowserFragmentTest {
                 new UserApp("youtube","31 MB", "yt", "file:///android_asset/youtubeicon.png"),
                 new UserApp("twitter","78.8 MB", "tw", "file:///android_asset/twittericon.jpeg"),
                 new UserApp("whatsApp","24.6 MB", "wa", "file:///android_asset/whatsappicon.png"));
-        userAppsData.postValue(apps);
+
+        runOnMainThread(() -> userAppsData.setValue(apps));
 
         for (int i = 0; i < apps.size();i++) {
             UserApp selectedApp = apps.get(i);
@@ -148,9 +134,10 @@ public class BrowserFragmentTest {
     public void shouldFetchAscendingAppsSortedByName_whenResumedWithNoState() {
         // Given a resumed fragment with no prev state
 
-        // Then fragment should fetch observable listing of apps sorted by name in ascending order
-        // from view model
-        verify(viewModel).getUserApps(eq(AppsSorting.NAME),eq(true));
+        // Then fragment should fetch observable listing of user apps
+        verify(viewModel).getUserApps();
+        // And sort them by name in ascending order
+        verify(viewModel).sortApps(eq(new AppsSorting(SortingType.NAME,true)));
     }
 
     @Test
@@ -217,7 +204,7 @@ public class BrowserFragmentTest {
                 .perform(click());
 
         // Then view model should not receive a request to sort by name
-        verify(viewModel,times(0)).sortApps(eq(AppsSorting.NAME));
+        verify(viewModel).sortApps(any(AppsSorting.class));
     }
 
     @Test
@@ -231,17 +218,8 @@ public class BrowserFragmentTest {
         onView(withText(R.string.action_sort_by_size_title))
                 .perform(click());
 
-        // And select descending order
-        onView(withId(R.id.action_sort))
-                .perform(click());
-
-        onView(withText(R.string.action_ascending_title))
-                .perform(click());
-
         // Then view model should receive requests to re sort and reorder as selected
-        verify(viewModel).sortApps(eq(AppsSorting.SIZE));
-        verify(viewModel).orderApps(eq(false));
-
+        verify(viewModel).sortApps(eq(new AppsSorting(SortingType.SIZE,true)));
     }
 
     @Test
@@ -255,18 +233,16 @@ public class BrowserFragmentTest {
         onView(withText(R.string.action_sort_by_size_title))
                 .perform(click());
 
-        // And select descending order
-        onView(withId(R.id.action_sort))
-                .perform(click());
-
-        onView(withText(R.string.action_ascending_title))
-                .perform(click());
-
         // And fragment is recreated
         scenario.recreate();
 
         // Then fragment should fetch apps according to prev sorting state
-        verify(viewModel).getUserApps(eq(AppsSorting.SIZE),eq(false));
+
+        // get user apps 2 times per on create call
+        verify(viewModel,times(2)).getUserApps();
+
+        // sort with selected value 2 times: upon selection,and upon recreation
+        verify(viewModel,times(2)).sortApps(eq(new AppsSorting(SortingType.SIZE,true)));
     }
 
     @Test

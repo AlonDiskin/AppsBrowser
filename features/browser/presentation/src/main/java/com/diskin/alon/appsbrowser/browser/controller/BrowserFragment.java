@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.diskin.alon.appsbrowser.browser.R;
 import com.diskin.alon.appsbrowser.browser.model.AppsSorting;
+import com.diskin.alon.appsbrowser.browser.model.AppsSorting.SortingType;
 import com.diskin.alon.appsbrowser.browser.model.UserApp;
 import com.diskin.alon.appsbrowser.browser.viewmodel.BrowserViewModel;
 
@@ -75,26 +76,31 @@ public class BrowserFragment extends Fragment {
 
         recyclerView.setAdapter(appsAdapter);
 
-        // resolving instance state and start observing user apps
-        if (savedInstanceState == null) {
-            // if no prev state exist, fetch apps sorted by name in ascending order
-            viewModel.getUserApps(AppsSorting.NAME,true).observe(this,this::updateUserApps);
-        } else {
-            // prev state exist, extract it
-            AppsSorting sorting = AppsSorting.values()[savedInstanceState.getInt(KEY_SORT)];
-            boolean isAscending = savedInstanceState.getBoolean(KEY_ORDER);
+        // resolving instance state sorting state
 
-            viewModel.getUserApps(sorting,isAscending);
+        // set default sorting values
+        SortingType sorting = SortingType.NAME;
+        boolean isAscending = true;
+
+        if (savedInstanceState != null) {
+            // if pref state exist, extract it
+            sorting = SortingType.values()[savedInstanceState.getInt(KEY_SORT)];
+            isAscending = savedInstanceState.getBoolean(KEY_ORDER);
         }
+
+        // observe user apps from view model
+        viewModel.getUserApps().observe(this,this::updateUserApps);
+        // sort according to resolved instance sorting state
+        viewModel.sortApps(new AppsSorting(sorting,isAscending));
     }
 
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.menu_browser,menu);
-        // observe user sorting selections
-        viewModel.getAppsSorting().observe(this,appsSorting -> {
-            switch (appsSorting) {
+        // observe user sorting selection
+        viewModel.getSorting().observe(this, appsSorting -> {
+            switch (appsSorting.getType()) {
                 case NAME:
                     menu.findItem(R.id.action_sort_by_name)
                             .setChecked(true);
@@ -108,25 +114,26 @@ public class BrowserFragment extends Fragment {
                 default:
                     break;
             }
-        });
 
-        viewModel.getAscending().observe(this,ascending ->
-                menu.findItem(R.id.action_ascending).setChecked(ascending));
+            menu.findItem(R.id.action_ascending).setChecked(appsSorting.isAscending());
+        });
     }
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
+        AppsSorting currentSorting = Objects.requireNonNull(viewModel.getSorting().getValue(),
+                "sorting state should be already set!");
 
         // pass sorting selection to view model
         if (id == R.id.action_sort_by_name && !item.isChecked()) {
-            viewModel.sortApps(AppsSorting.NAME);
+            viewModel.sortApps(new AppsSorting(SortingType.NAME,currentSorting.isAscending()));
 
         } else if (id == R.id.action_sort_by_size) {
-            viewModel.sortApps(AppsSorting.SIZE);
+            viewModel.sortApps(new AppsSorting(SortingType.SIZE,currentSorting.isAscending()));
 
         } else if (id == R.id.action_ascending) {
-            viewModel.orderApps(!item.isChecked());
+            viewModel.sortApps(new AppsSorting(currentSorting.getType(),!item.isChecked()));
         }
 
         return super.onOptionsItemSelected(item);
@@ -136,11 +143,11 @@ public class BrowserFragment extends Fragment {
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
         // save sorting values state
-        Objects.requireNonNull(viewModel.getAppsSorting().getValue());
-        Objects.requireNonNull(viewModel.getAscending().getValue());
+        AppsSorting currentSorting = Objects.requireNonNull(viewModel.getSorting().getValue(),
+                "sorting state should be already set!");
 
-        outState.putInt(KEY_SORT,viewModel.getAppsSorting().getValue().ordinal());
-        outState.putBoolean(KEY_ORDER,viewModel.getAscending().getValue());
+        outState.putInt(KEY_SORT,currentSorting.getType().ordinal());
+        outState.putBoolean(KEY_ORDER,currentSorting.isAscending());
     }
 
     private void updateUserApps(@NonNull List<UserApp> userApps) {
