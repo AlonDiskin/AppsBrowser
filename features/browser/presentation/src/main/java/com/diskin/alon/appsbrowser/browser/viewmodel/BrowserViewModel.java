@@ -1,7 +1,9 @@
 package com.diskin.alon.appsbrowser.browser.viewmodel;
 
+import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 
+import com.diskin.alon.appsbrowser.browser.applicationservices.AppsSorting;
 import com.diskin.alon.appsbrowser.browser.model.UserApp;
 
 import java.util.List;
@@ -11,8 +13,11 @@ import java.util.List;
  */
 public interface BrowserViewModel {
 
-    /**
-     * Get an observable list of all existing user apps installed on his device.
-     */
+    @NonNull
     LiveData<List<UserApp>> getUserApps();
+
+    @NonNull
+    LiveData<AppsSorting> getSorting();
+
+    void sortApps(@NonNull AppsSorting sorting);
 }

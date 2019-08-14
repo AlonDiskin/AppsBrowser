@@ -4,18 +4,14 @@ Feature: Application features e2e acceptance tests
     Given User is in device home screen
     When User launch application
 
-  @home
-  Scenario: Home workflow
-    Then Home screen should be displayed
-    And Browser feature ui should be shown inside home screen
-    When User navigates to settings screen
-    Then Settings ui should be shown as a composition in home screen
-
   @browser
   Scenario: Browser workflow
     Then All device apps should be listed in home screen sorted by name
     When User clicks on app entry in middle of displayed list
     Then User should be redirected to app detail screen of device settings app
+    When User return to browser screen
+    And Sort apps by size in descending order
+    Then Apps should be displayed sorted by size in descending order
 
   @settings
   Scenario: Settings feature workflow

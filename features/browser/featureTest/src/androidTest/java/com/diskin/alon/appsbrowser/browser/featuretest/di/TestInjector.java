@@ -3,6 +3,7 @@ package com.diskin.alon.appsbrowser.browser.featuretest.di;
 import com.diskin.alon.appsbrowser.browser.featuretest.steps.AppDetailSteps;
 import com.diskin.alon.appsbrowser.browser.featuretest.steps.ListAppsSteps;
 import com.diskin.alon.appsbrowser.browser.featuretest.runner.FeatureTestApp;
+import com.diskin.alon.appsbrowser.browser.featuretest.steps.ProvideSortingSteps;
 
 public class TestInjector {
 
@@ -15,6 +16,10 @@ public class TestInjector {
     }
 
     public static void injectTest(ListAppsSteps test) {
+        appComponent.inject(test);
+    }
+
+    public static void injectTest(ProvideSortingSteps test) {
         appComponent.inject(test);
     }
 

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="action_sort_title">Sort</string>
+    <string name="action_sort_by_name_title">Sort by name</string>
+    <string name="action_sort_by_size_title">Sort by size</string>
+    <string name="action_ascending_title">Ascending</string>
+</resources>

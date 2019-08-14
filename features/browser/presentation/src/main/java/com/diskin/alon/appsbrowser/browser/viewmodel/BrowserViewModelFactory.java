@@ -4,7 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.diskin.alon.appsbrowser.common.ServiceExecutor;
+import com.diskin.alon.appsbrowser.common.presentation.ServiceExecutor;
 
 import javax.inject.Inject;
 import javax.inject.Provider;

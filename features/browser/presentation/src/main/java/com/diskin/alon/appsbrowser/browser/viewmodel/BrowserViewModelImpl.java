@@ -3,50 +3,55 @@ package com.diskin.alon.appsbrowser.browser.viewmodel;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.ViewModel;
 
+import com.diskin.alon.appsbrowser.browser.applicationservices.AppsSorting;
 import com.diskin.alon.appsbrowser.browser.model.UserApp;
-import com.diskin.alon.appsbrowser.common.EspressoIdlingResource;
-import com.diskin.alon.appsbrowser.common.ServiceExecutor;
+import com.diskin.alon.appsbrowser.common.presentation.BaseViewModel;
+import com.diskin.alon.appsbrowser.common.presentation.EspressoIdlingResource;
+import com.diskin.alon.appsbrowser.common.presentation.ServiceExecutor;
 
 import java.util.List;
 
 import javax.inject.Inject;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 
-public class BrowserViewModelImpl extends ViewModel implements BrowserViewModel {
+public class BrowserViewModelImpl extends BaseViewModel implements BrowserViewModel {
 
     @NonNull
-    private final ServiceExecutor serviceExecutor;
-    @NonNull
-    private MutableLiveData<List<UserApp>> userApps = new MutableLiveData<>();
-    @NonNull
-    private CompositeDisposable disposables = new CompositeDisposable();
+    private final MutableLiveData<AppsSorting> sorting = new MutableLiveData<>();
+    private final MutableLiveData<List<UserApp>> userApps = new MutableLiveData<>();
 
     @Inject
     public BrowserViewModelImpl(@NonNull ServiceExecutor serviceExecutor) {
-        this.serviceExecutor = serviceExecutor;
+        super(serviceExecutor);
+    }
 
-        // get apps observable from application services
-        fetchUserApps();
+    @NonNull
+    @Override
+    public LiveData<List<UserApp>> getUserApps() {
+        return userApps;
+    }
+
+    @NonNull
+    @Override
+    public LiveData<AppsSorting> getSorting() {
+        return sorting;
     }
 
     @Override
-    protected void onCleared() {
-        super.onCleared();
-        disposables.dispose();
+    public void sortApps(@NonNull AppsSorting sorting) {
+        // fetch user apps if sorting is different from current
+        if (this.sorting.getValue() == null || !this.sorting.getValue().equals(sorting)) {
+            this.sorting.setValue(sorting);
+            fetchUserApps(sorting);
+        }
     }
 
-    /**
-     * Fetches an observable list of {@link UserApp} from app services, and updates user
-     * apps state when new lists are emitted.
-     */
-    private void fetchUserApps() {
+    private void fetchUserApps(@NonNull AppsSorting sorting) {
         EspressoIdlingResource.increment();
-        Disposable disposable = serviceExecutor.execute(new GetUserAppsRequest(null))
+        Disposable disposable = getServiceExecutor().execute(new GetUserAppsRequest(sorting))
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(apps -> {
                     EspressoIdlingResource.decrement();
@@ -56,11 +61,6 @@ public class BrowserViewModelImpl extends ViewModel implements BrowserViewModel 
                     throwable.printStackTrace();
                 });
 
-        disposables.add(disposable);
-    }
-
-    @Override
-    public LiveData<List<UserApp>> getUserApps() {
-        return userApps;
+        addDisposable(disposable);
     }
 }

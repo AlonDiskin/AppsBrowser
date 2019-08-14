@@ -14,8 +14,8 @@ import com.diskin.alon.appsbrowser.browser.viewmodel.BrowserViewModelFactory;
 import com.diskin.alon.appsbrowser.browser.viewmodel.BrowserViewModelImpl;
 import com.diskin.alon.appsbrowser.browser.viewmodel.GetUserAppsRequest;
 import com.diskin.alon.appsbrowser.browser.viewmodel.UserAppDtosMapper;
-import com.diskin.alon.appsbrowser.common.ServiceExecutor;
-import com.diskin.alon.appsbrowser.common.UseCaseMediator;
+import com.diskin.alon.appsbrowser.common.presentation.ServiceExecutor;
+import com.diskin.alon.appsbrowser.common.presentation.UseCaseMediator;
 import com.diskin.alon.appsbrowser.common.applicationservices.Mapper;
 
 import java.util.List;

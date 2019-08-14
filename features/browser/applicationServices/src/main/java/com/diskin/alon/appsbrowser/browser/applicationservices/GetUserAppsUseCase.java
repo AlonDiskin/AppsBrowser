@@ -13,7 +13,7 @@ import io.reactivex.Observable;
 /**
  * Fetches an observable list of all existing user applications.
  */
-public class GetUserAppsUseCase implements UseCase<Void, Observable<List<UserAppDto>>> {
+public class GetUserAppsUseCase implements UseCase<AppsSorting, Observable<List<UserAppDto>>> {
 
     @NonNull
     private final UserAppsRepository repository;
@@ -27,8 +27,8 @@ public class GetUserAppsUseCase implements UseCase<Void, Observable<List<UserApp
     }
 
     @Override
-    public Observable<List<UserAppDto>> execute(Void param) {
-        return repository.getUserAppsByName()
+    public Observable<List<UserAppDto>> execute(AppsSorting param) {
+        return repository.getUserApps(param)
                 .flatMap(Observable::fromIterable)
                 .flatMap(userApp -> Observable.just(mapper.map(userApp)))
                 .toList()

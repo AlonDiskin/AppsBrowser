@@ -2,7 +2,7 @@ package com.diskin.alon.appsbrowser.browser;
 
 import androidx.test.espresso.IdlingRegistry;
 
-import com.diskin.alon.appsbrowser.common.EspressoIdlingResource;
+import com.diskin.alon.appsbrowser.common.presentation.EspressoIdlingResource;
 import com.mauriciotogneri.greencoffee.GreenCoffeeConfig;
 import com.mauriciotogneri.greencoffee.GreenCoffeeTest;
 import com.mauriciotogneri.greencoffee.Scenario;
@@ -27,7 +27,8 @@ public class BrowserStepsRunner extends GreenCoffeeTest {
     @Parameterized.Parameters(name = "{0}")
     public static Iterable<ScenarioConfig> scenarios() throws IOException {
         return new GreenCoffeeConfig()
-                .withFeatureFromAssets("assets/feature/browser.feature")
+                .withFeatureFromAssets("assets/feature/apps_browser.feature")
+                .withTags("@browser")
                 .scenarios();
     }
 

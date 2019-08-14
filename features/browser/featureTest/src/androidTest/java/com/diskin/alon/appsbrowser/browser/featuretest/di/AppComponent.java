@@ -3,6 +3,7 @@ package com.diskin.alon.appsbrowser.browser.featuretest.di;
 import com.diskin.alon.appsbrowser.browser.featuretest.steps.AppDetailSteps;
 import com.diskin.alon.appsbrowser.browser.featuretest.steps.ListAppsSteps;
 import com.diskin.alon.appsbrowser.browser.featuretest.runner.FeatureTestApp;
+import com.diskin.alon.appsbrowser.browser.featuretest.steps.ProvideSortingSteps;
 
 import javax.inject.Singleton;
 
@@ -20,4 +21,6 @@ public interface AppComponent extends AndroidInjector<FeatureTestApp> {
     void inject(ListAppsSteps test);
 
     void inject(AppDetailSteps test);
+
+    void inject(ProvideSortingSteps test);
 }
