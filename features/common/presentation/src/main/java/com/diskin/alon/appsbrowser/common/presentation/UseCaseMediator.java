@@ -1,6 +1,7 @@
 package com.diskin.alon.appsbrowser.common.presentation;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.diskin.alon.appsbrowser.common.applicationservices.Mapper;
 import com.diskin.alon.appsbrowser.common.applicationservices.UseCase;
@@ -14,7 +15,6 @@ import java.util.Objects;
  */
 public class UseCaseMediator implements ServiceExecutor {
 
-    private static final String TAG = "com.diskin.alon.appsbrowser.common.presentation.UseCaseMediator";
     private static final String REQUEST_ERROR = "unknown service execution request";
 
     @NonNull
@@ -67,5 +67,32 @@ public class UseCaseMediator implements ServiceExecutor {
         UseCase<P,R> useCase = dispatcher.get(request.getClass()).getUseCase();
 
         return useCase.execute(request.getRequestParam());
+    }
+
+    private static class RequestUseCase<P,R,S> {
+
+        @NonNull
+        private final UseCase<P,R> useCase;
+        @Nullable
+        private final Mapper<R,S> mapper;
+
+        public RequestUseCase(@NonNull UseCase<P, R> useCase, @Nullable Mapper<R, S> mapper) {
+            this.useCase = useCase;
+            this.mapper = mapper;
+        }
+
+        @NonNull
+        public UseCase<P, R> getUseCase() {
+            return useCase;
+        }
+
+        @Nullable
+        public Mapper<R, S> getMapper() {
+            return mapper;
+        }
+
+        public boolean isMapped() {
+            return mapper != null;
+        }
     }
 }

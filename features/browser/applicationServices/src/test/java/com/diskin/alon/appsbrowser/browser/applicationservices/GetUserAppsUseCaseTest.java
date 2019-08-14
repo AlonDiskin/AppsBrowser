@@ -20,7 +20,7 @@ import junitparams.Parameters;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.mockito.Mockito.verify;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 
 /**
@@ -56,21 +56,21 @@ public class GetUserAppsUseCaseTest {
 
     @Test
     @Parameters(method = "executionParams")
-    public void shouldFetchUserApps_whenExecuted(List<UserAppEntity> repositoryApps, List<UserAppDto> expectedApps) {
+    public void shouldFetchUserApps_whenExecuted(AppsSorting sorting,List<UserAppEntity> repositoryApps, List<UserAppDto> expectedApps) {
         // Given ann initialized use case, and existing apps in repository
-        when(repository.getUserAppsByName()).thenReturn(Observable.just(repositoryApps));
+        when(repository.getUserApps(eq(sorting))).thenReturn(Observable.just(repositoryApps));
 
         // When use case is executed
-        Observable<List<UserAppDto>> useCaseResult = useCase.execute(null);
+        Observable<List<UserAppDto>> useCaseResult = useCase.execute(sorting);
 
-        // Then use case should return an observable mapped list of repository apps
+        // Then use case should return an observable list user app dto, mapped from repository
         assertThat(useCaseResult.blockingFirst(),equalTo(expectedApps));
     }
 
     public static Object[][] executionParams() {
         return new Object[][] {
-                new Object[] {new ArrayList<UserAppEntity>(),new ArrayList<UserAppDto>()},
-                new Object[] {Arrays.asList(
+                new Object[] {new AppsSorting(AppsSorting.SortingType.NAME,true),new ArrayList<UserAppEntity>(),new ArrayList<UserAppDto>()},
+                new Object[] {new AppsSorting(AppsSorting.SortingType.SIZE,true),Arrays.asList(
                         new UserAppEntity("id1","app1",23.4,"url1"),
                         new UserAppEntity("id2","app2",43.4,"url2")),
                         Arrays.asList(

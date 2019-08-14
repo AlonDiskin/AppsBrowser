@@ -2,7 +2,7 @@ package com.diskin.alon.appsbrowser.browser.viewmodel;
 
 import androidx.annotation.Nullable;
 
-import com.diskin.alon.appsbrowser.browser.model.AppsSorting;
+import com.diskin.alon.appsbrowser.browser.applicationservices.AppsSorting;
 import com.diskin.alon.appsbrowser.browser.model.UserApp;
 import com.diskin.alon.appsbrowser.common.presentation.ServiceRequest;
 

@@ -7,6 +7,7 @@ import android.net.Uri;
 
 import androidx.annotation.NonNull;
 
+import com.diskin.alon.appsbrowser.browser.applicationservices.AppsSorting;
 import com.diskin.alon.appsbrowser.browser.applicationservices.UserAppsRepository;
 import com.diskin.alon.appsbrowser.browser.domain.UserAppEntity;
 
@@ -28,16 +29,15 @@ public class UserAppsRepositoryImpl implements UserAppsRepository {
     }
 
     @Override
-    public Observable<List<UserAppEntity>> getUserAppsByName() {
-        return Observable.just(getAppsList())
+    public Observable<List<UserAppEntity>> getUserApps(@NonNull AppsSorting sorting) {
+        return Observable.just(getAppsList(sorting))
                 .subscribeOn(Schedulers.io());
     }
 
     /**
-     * Returns a list of all non system existing apps on user device, sorted
-     * by name in ascending order.
+     * Returns a list of all non system existing apps on user device, sorted by given sort values.
      */
-    private List<UserAppEntity> getAppsList() {
+    private List<UserAppEntity> getAppsList(@NonNull AppsSorting sorting) {
         PackageManager pm = application.getPackageManager();
         List<ApplicationInfo> packages = pm.getInstalledApplications(PackageManager.GET_META_DATA);
         List<UserAppEntity> userApps = new ArrayList<>(packages.size());
@@ -61,7 +61,23 @@ public class UserAppsRepositoryImpl implements UserAppsRepository {
             }
         }
 
-        Collections.sort(userApps,(o1, o2) -> o1.getName().compareTo(o2.getName()));
+        switch (sorting.getType()) {
+            case NAME:
+                Collections.sort(userApps,(o1, o2) -> o1.getName().compareTo(o2.getName()));
+                break;
+
+            case SIZE:
+                Collections.sort(userApps,(o1, o2) -> Double.compare(o1.getSize(),o2.getSize()));
+                break;
+
+            default:
+                break;
+        }
+
+        if (!sorting.isAscending()) {
+            Collections.reverse(userApps);
+        }
+
         return userApps;
     }
 }

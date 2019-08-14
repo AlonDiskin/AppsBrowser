@@ -4,7 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
-import com.diskin.alon.appsbrowser.browser.model.AppsSorting;
+import com.diskin.alon.appsbrowser.browser.applicationservices.AppsSorting;
 import com.diskin.alon.appsbrowser.browser.model.UserApp;
 import com.diskin.alon.appsbrowser.common.presentation.BaseViewModel;
 import com.diskin.alon.appsbrowser.common.presentation.EspressoIdlingResource;

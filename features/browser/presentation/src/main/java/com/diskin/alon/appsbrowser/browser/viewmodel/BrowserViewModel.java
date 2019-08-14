@@ -3,7 +3,7 @@ package com.diskin.alon.appsbrowser.browser.viewmodel;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 
-import com.diskin.alon.appsbrowser.browser.model.AppsSorting;
+import com.diskin.alon.appsbrowser.browser.applicationservices.AppsSorting;
 import com.diskin.alon.appsbrowser.browser.model.UserApp;
 
 import java.util.List;

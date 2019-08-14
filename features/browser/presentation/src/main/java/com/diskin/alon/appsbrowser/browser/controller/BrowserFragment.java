@@ -15,8 +15,8 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.diskin.alon.appsbrowser.browser.R;
-import com.diskin.alon.appsbrowser.browser.model.AppsSorting;
-import com.diskin.alon.appsbrowser.browser.model.AppsSorting.SortingType;
+import com.diskin.alon.appsbrowser.browser.applicationservices.AppsSorting;
+import com.diskin.alon.appsbrowser.browser.applicationservices.AppsSorting.SortingType;
 import com.diskin.alon.appsbrowser.browser.model.UserApp;
 import com.diskin.alon.appsbrowser.browser.viewmodel.BrowserViewModel;
 

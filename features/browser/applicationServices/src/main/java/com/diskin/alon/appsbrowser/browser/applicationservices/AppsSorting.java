@@ -1,4 +1,4 @@
-package com.diskin.alon.appsbrowser.browser.model;
+package com.diskin.alon.appsbrowser.browser.applicationservices;
 
 import androidx.annotation.NonNull;
 
