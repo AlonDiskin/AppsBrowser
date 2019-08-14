@@ -129,7 +129,7 @@ public class BrowserFragment extends Fragment {
         if (id == R.id.action_sort_by_name && !item.isChecked()) {
             viewModel.sortApps(new AppsSorting(SortingType.NAME,currentSorting.isAscending()));
 
-        } else if (id == R.id.action_sort_by_size) {
+        } else if (id == R.id.action_sort_by_size && !item.isChecked()) {
             viewModel.sortApps(new AppsSorting(SortingType.SIZE,currentSorting.isAscending()));
 
         } else if (id == R.id.action_ascending) {

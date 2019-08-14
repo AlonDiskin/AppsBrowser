@@ -53,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
             navigator.openSettings(getNavHost());
         }
 
-        return true;
+        return false;
     }
 
     /**

@@ -2,8 +2,7 @@ package com.diskin.alon.appsbrowser.browser.featuretest.steps;
 
 import android.widget.CheckBox;
 
-import com.diskin.alon.appsbrowser.browser.featuretest.R;
-import com.diskin.alon.appsbrowser.browser.featuretest.util.RecyclerViewMatcher;
+import com.diskin.alon.appsbrowser.browser.R;
 import com.mauriciotogneri.greencoffee.annotations.And;
 import com.mauriciotogneri.greencoffee.annotations.Given;
 import com.mauriciotogneri.greencoffee.annotations.Then;
@@ -23,7 +22,6 @@ import static androidx.test.espresso.matcher.ViewMatchers.isAssignableFrom;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static com.diskin.alon.appsbrowser.browser.featuretest.util.RecyclerViewMatcher.withRecyclerView;
-import static junit.framework.TestCase.fail;
 import static org.hamcrest.core.AllOf.allOf;
 
 /**
@@ -100,7 +98,7 @@ public class ProvideSortingSteps extends BackgroundSteps {
             String name = expectedAppsData.get(i).getCells().get(nameCellIndex).getValue();
             double size = Double.parseDouble(expectedAppsData.get(i).getCells().get(sizeCellIndex).getValue());
 
-            onView(withRecyclerView(com.diskin.alon.appsbrowser.browser.R.id.userApps).atPosition(i))
+            onView(withRecyclerView(R.id.userApps).atPosition(i))
                     .check(matches(allOf(
                             hasDescendant(withText(name)),
                             hasDescendant(withText(size + " MB")))));
