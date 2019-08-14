@@ -1,6 +1,5 @@
 package com.diskin.alon.appsbrowser.browser.controller;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -47,16 +46,25 @@ public class BrowserFragment extends Fragment {
     }
 
     @Override
-    public void onAttach(@NonNull Context context) {
-        super.onAttach(context);
-        // inject fragment dependencies
-        AndroidSupportInjection.inject(this);
-    }
-
-    @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
+        // inject fragment
+        AndroidSupportInjection.inject(this);
+
+        // resolving instance state sorting state
+        // set default sorting values
+        SortingType sorting = SortingType.NAME;
+        boolean isAscending = true;
+
+        if (savedInstanceState != null) {
+            // if pref state exist, extract it
+            sorting = SortingType.values()[savedInstanceState.getInt(KEY_SORT)];
+            isAscending = savedInstanceState.getBoolean(KEY_ORDER);
+        }
+
+        // sort according to resolved instance sorting state
+        viewModel.sortApps(new AppsSorting(sorting,isAscending));
     }
 
     @Override
@@ -76,22 +84,8 @@ public class BrowserFragment extends Fragment {
 
         recyclerView.setAdapter(appsAdapter);
 
-        // resolving instance state sorting state
-
-        // set default sorting values
-        SortingType sorting = SortingType.NAME;
-        boolean isAscending = true;
-
-        if (savedInstanceState != null) {
-            // if pref state exist, extract it
-            sorting = SortingType.values()[savedInstanceState.getInt(KEY_SORT)];
-            isAscending = savedInstanceState.getBoolean(KEY_ORDER);
-        }
-
-        // observe user apps from view model
-        viewModel.getUserApps().observe(this,this::updateUserApps);
-        // sort according to resolved instance sorting state
-        viewModel.sortApps(new AppsSorting(sorting,isAscending));
+        // observe user apps from view model upon view creation
+        viewModel.getUserApps().observe(getViewLifecycleOwner(),this::updateUserApps);
     }
 
     @Override
