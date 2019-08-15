@@ -26,7 +26,7 @@ import static org.mockito.Mockito.when;
 
 public class BackgroundSteps extends GreenCoffeeSteps {
 
-    private static final String TAG = "BackgroundSteps";
+    protected static final String TAG = "BackgroundSteps";
     protected ActivityScenario<FragmentTestActivity> scenario;
     protected List<UserAppEntity> userAppEntities = new ArrayList<>();
     protected List<TableRow> appsTestData;

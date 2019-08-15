@@ -1,5 +1,6 @@
 package com.diskin.alon.appsbrowser.browser.featuretest.steps;
 
+import com.diskin.alon.appsbrowser.browser.controller.BrowserFragment;
 import com.diskin.alon.appsbrowser.browser.controller.BrowserNavigator;
 import com.diskin.alon.appsbrowser.browser.domain.UserAppEntity;
 import com.mauriciotogneri.greencoffee.annotations.And;
@@ -56,6 +57,12 @@ public class AppDetailSteps extends BackgroundSteps {
     @Then("^User should be redirected to app detail in settings application$")
     public void userShouldBeRedirectedToAppDetailInSettingsApplication() {
         // verify app detail screen is opened
-        verify(navigator).openAppDetail(eq(selectedAppId));
+        scenario.onActivity(activity -> {
+            BrowserFragment fragment = (BrowserFragment) activity.getSupportFragmentManager()
+                    .findFragmentByTag(TAG);
+
+            verify(navigator).openAppDetail(eq(fragment),eq(selectedAppId));
+        });
+
     }
 }
