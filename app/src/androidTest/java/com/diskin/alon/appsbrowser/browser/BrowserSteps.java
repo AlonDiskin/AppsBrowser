@@ -1,6 +1,5 @@
 package com.diskin.alon.appsbrowser.browser;
 
-import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.net.Uri;
@@ -32,12 +31,10 @@ import static androidx.test.espresso.contrib.RecyclerViewActions.scrollToPositio
 import static androidx.test.espresso.intent.Intents.intended;
 import static androidx.test.espresso.intent.matcher.IntentMatchers.hasAction;
 import static androidx.test.espresso.intent.matcher.IntentMatchers.hasData;
-import static androidx.test.espresso.intent.matcher.IntentMatchers.hasFlag;
 import static androidx.test.espresso.matcher.ViewMatchers.hasDescendant;
 import static androidx.test.espresso.matcher.ViewMatchers.isAssignableFrom;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
-import static junit.framework.TestCase.fail;
 import static org.hamcrest.core.AllOf.allOf;
 
 /**
@@ -107,8 +104,7 @@ public class BrowserSteps extends GreenCoffeeSteps {
         String clickedAppPackage = userApps.get(userApps.size() / 2).getPackageName();
         intended(allOf(
                 hasData(Uri.parse("package:" + clickedAppPackage)),
-                hasAction(android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS),
-                hasFlag(Intent.FLAG_ACTIVITY_NEW_TASK)));
+                hasAction(android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS)));
     }
 
     @When("^User return to browser screen$")

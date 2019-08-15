@@ -79,7 +79,8 @@ public class BrowserFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         // setup user apps recycler view
-        appsAdapter = new UserAppsAdapter(app -> navigator.openAppDetail(app.getPackageName()));
+        appsAdapter = new UserAppsAdapter(app -> navigator.openAppDetail(this,app.getPackageName()));
+
         RecyclerView recyclerView = view.findViewById(R.id.userApps);
 
         recyclerView.setAdapter(appsAdapter);

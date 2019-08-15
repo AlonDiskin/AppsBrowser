@@ -7,11 +7,11 @@ import androidx.test.espresso.contrib.RecyclerViewActions;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
 import com.diskin.alon.appsbrowser.browser.R;
+import com.diskin.alon.appsbrowser.browser.applicationservices.AppsSorting;
+import com.diskin.alon.appsbrowser.browser.applicationservices.AppsSorting.SortingType;
 import com.diskin.alon.appsbrowser.browser.controller.BrowserFragment;
 import com.diskin.alon.appsbrowser.browser.controller.BrowserNavigator;
 import com.diskin.alon.appsbrowser.browser.di.TestInjector;
-import com.diskin.alon.appsbrowser.browser.applicationservices.AppsSorting;
-import com.diskin.alon.appsbrowser.browser.applicationservices.AppsSorting.SortingType;
 import com.diskin.alon.appsbrowser.browser.model.UserApp;
 import com.diskin.alon.appsbrowser.browser.util.RecyclerViewMatcher;
 import com.diskin.alon.appsbrowser.browser.viewmodel.BrowserViewModel;
@@ -72,7 +72,8 @@ public class BrowserFragmentTest {
         when(viewModel.getUserApps()).thenReturn(userAppsData);
         when(viewModel.getSorting()).thenReturn(appsSortingData);
         doAnswer(invocation -> {
-            runOnMainThread(() -> appsSortingData.setValue((AppsSorting) invocation.getArguments()[0]));
+            //runOnMainThread(() -> appsSortingData.setValue((AppsSorting) invocation.getArguments()[0]));
+            appsSortingData.postValue((AppsSorting) invocation.getArguments()[0]);
             return null;
         }).when(viewModel).sortApps(any(AppsSorting.class));
 
@@ -92,7 +93,7 @@ public class BrowserFragmentTest {
         // Given a resumed fragment
 
         // When view model updates its user apps listing
-        runOnMainThread(() -> userAppsData.setValue(apps));
+        userAppsData.postValue(apps);
 
         // Then fragment should display updated apps list
 
@@ -115,7 +116,7 @@ public class BrowserFragmentTest {
                 new UserApp("twitter","78.8 MB", "tw", "file:///android_asset/twittericon.jpeg"),
                 new UserApp("whatsApp","24.6 MB", "wa", "file:///android_asset/whatsappicon.png"));
 
-        runOnMainThread(() -> userAppsData.setValue(apps));
+        userAppsData.postValue(apps);
 
         for (int i = 0; i < apps.size();i++) {
             UserApp selectedApp = apps.get(i);
@@ -126,7 +127,12 @@ public class BrowserFragmentTest {
                     .perform(RecyclerViewActions.actionOnItemAtPosition(i,click()));
 
             // Then navigator should open clicked app detail
-            verify(navigator).openAppDetail(eq(selectedApp.getPackageName()));
+            scenario.onActivity(activity -> {
+                BrowserFragment fragment = (BrowserFragment) activity.getSupportFragmentManager()
+                        .findFragmentByTag(TAG);
+
+                verify(navigator).openAppDetail(eq(fragment),eq(selectedApp.getPackageName()));
+            });
         }
     }
 
@@ -277,9 +283,5 @@ public class BrowserFragmentTest {
             assertThat("size sort should be checked",isSizeSortChecked,equalTo(true));
             assertThat("sort order should be descending",isAscendingChecked,equalTo(false));
         });
-    }
-
-    private void runOnMainThread(Runnable runnable) {
-        scenario.onActivity(activity -> activity.runOnUiThread(runnable));
     }
 }
