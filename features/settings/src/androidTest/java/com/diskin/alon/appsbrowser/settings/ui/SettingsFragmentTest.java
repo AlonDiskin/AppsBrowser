@@ -2,6 +2,7 @@ package com.diskin.alon.appsbrowser.settings.ui;
 
 import android.content.Context;
 import android.content.pm.ActivityInfo;
+import android.view.Menu;
 
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.fragment.app.FragmentActivity;
@@ -18,6 +19,7 @@ import com.diskin.alon.appsbrowser.settings.SettingsFragment;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mockito;
 
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
@@ -32,6 +34,7 @@ import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.AllOf.allOf;
+import static org.mockito.Mockito.verify;
 
 /**
  * {@link SettingsFragment} unit test.
@@ -130,5 +133,24 @@ public class SettingsFragmentTest {
 
         // Then fragment should change app visual theme
         assertThat(AppCompatDelegate.getDefaultNightMode(),equalTo(expectedNightMode));
+    }
+
+    @Test
+    public void shouldClearMenu_whenResumed() {
+        // Given a resumed fragment
+        Menu menu = Mockito.mock(Menu.class);
+
+        // Then fragment contributes to host activity menu
+        scenario.onFragment(fragment -> {
+            assertThat(fragment.hasOptionsMenu(),equalTo(true));
+        });
+
+        // When fragment is called to create its options menu items
+        scenario.onFragment(fragment -> {
+            fragment.onCreateOptionsMenu(menu,null);
+        });
+
+        // Then fragment should clear its menu from all items
+        verify(menu).clear();
     }
 }

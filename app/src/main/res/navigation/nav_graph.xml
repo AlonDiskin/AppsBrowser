@@ -8,7 +8,7 @@
     <fragment
         android:id="@+id/browserFragment"
         android:name="com.diskin.alon.appsbrowser.browser.controller.BrowserFragment"
-        android:label="@string/app_name"
+        android:label="AppsBrowser"
         tools:layout="@layout/fragment_browser">
         <action
             android:id="@+id/action_browserFragment_to_settingsFragment"
@@ -17,6 +17,5 @@
     <fragment
         android:id="@+id/settingsFragment"
         android:name="com.diskin.alon.appsbrowser.settings.SettingsFragment"
-        android:label="@string/settings_fragment_title"
-        tools:layout="@layout/fragment_settings"/>
+        android:label="@string/settings_fragment_title" />
 </navigation>
