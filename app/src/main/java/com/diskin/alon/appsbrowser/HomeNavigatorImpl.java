@@ -30,8 +30,9 @@ public class HomeNavigatorImpl implements HomeNavigator {
 
     @Override
     public void addToolbar(@NonNull Toolbar toolbar, @NonNull View navView) {
-        AppBarConfiguration appBarConfiguration =
-                new AppBarConfiguration.Builder(Navigation.findNavController(navView).getGraph()).build();
-        NavigationUI.setupWithNavController(toolbar, Navigation.findNavController(navView),appBarConfiguration);
+//        AppBarConfiguration appBarConfiguration =
+//                new AppBarConfiguration.Builder(Navigation.findNavController(navView).getGraph()).build();
+//        NavigationUI.setupWithNavController(toolbar, Navigation.findNavController(navView), appBarConfiguration);
+        NavigationUI.setupWithNavController(toolbar,Navigation.findNavController(navView));
     }
 }

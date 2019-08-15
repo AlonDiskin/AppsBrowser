@@ -7,6 +7,5 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="false"
-        android:name=".AppsBrowserApp"
-        android:theme="@style/AppTheme" />
+        android:name=".AppsBrowserApp"/>
 </manifest>
