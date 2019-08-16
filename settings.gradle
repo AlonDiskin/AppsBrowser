@@ -1,1 +1,10 @@
-include ':app'
+include ':app',
+        ':features:settings',
+        ':features:browser:data',
+        ':features:browser:domain',
+        ':features:home',
+        ':features:common:applicationServices',
+        ':features:common:presentation',
+        ':features:browser:applicationServices',
+        ':features:browser:presentation',
+        ':features:browser:featureTest'

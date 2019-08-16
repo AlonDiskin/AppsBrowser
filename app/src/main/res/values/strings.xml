@@ -1,3 +1,4 @@
 <resources>
-    <string name="app_name">AppsBrowser</string>
+
+    <string name="settings_fragment_title">Settings</string>
 </resources>
