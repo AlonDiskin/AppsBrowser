@@ -21,7 +21,7 @@ jobs:
             - ~/.gradle
           key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
       - run:
-          name: Run compile and run unit test
+          name: Run Tests
           command: ./gradlew assembleDebugUnitTest
       - store_artifacts: # for display in Artifacts: https://circleci.com/docs/2.0/artifacts/
           path: app/build/reports
@@ -50,19 +50,20 @@ jobs:
             - ~/.gradle
           key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
       - run:
-          name: Compile android tests
-          command: ./gradlew assembleAndroidTest
+          name: Run Tests
+          command: ./gradlew assembleDebugAndroidTest
       - store_artifacts: # for display in Artifacts: https://circleci.com/docs/2.0/artifacts/
           path: app/build/reports
           destination: reports
       - store_test_results: # for display in Test Summary: https://circleci.com/docs/2.0/collect-test-data/
           path: app/build/test-results
       # See https://circleci.com/docs/2.0/deployment-integrations/ for deploy examples
+
 workflows:
   version: 2
-    one_and_two:
-      jobs:
-        - one
-        - two
+  one_and_two:
+    jobs:
+      - one
+      - two
 
 
