@@ -11,11 +11,11 @@ import androidx.appcompat.widget.Toolbar;
 public interface HomeNavigator {
 
     /**
-     * Opens the browser screen.
+     * Sets the navigation graph for home screen.
      *
      * @param navView navigation host view in home screen.
      */
-    void openBrowser(@NonNull View navView);
+    void setGraph(@NonNull View navView);
 
     /**
      * Opens the settings feature screen.
@@ -30,5 +30,5 @@ public interface HomeNavigator {
      * @param toolbar the toolbar to receive the updates.
      * @param navView navigation host view in home screen.
      */
-    void addToolbar(@NonNull Toolbar toolbar, @NonNull View navView);
+    void setToolbarUpdates(@NonNull MainActivity activity, @NonNull Toolbar toolbar, @NonNull View navView);
 }

@@ -1,5 +1,6 @@
 package com.diskin.alon.appsbrowser;
 
+import android.app.Activity;
 import android.view.View;
 
 import androidx.annotation.NonNull;
@@ -9,6 +10,7 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import com.diskin.alon.appsbrowser.home.HomeNavigator;
+import com.diskin.alon.appsbrowser.home.MainActivity;
 
 import javax.inject.Inject;
 
@@ -19,7 +21,7 @@ public class HomeNavigatorImpl implements HomeNavigator {
     }
 
     @Override
-    public void openBrowser(@NonNull View navView) {
+    public void setGraph(@NonNull View navView) {
         Navigation.findNavController(navView).setGraph(R.navigation.nav_graph);
     }
 
@@ -29,10 +31,8 @@ public class HomeNavigatorImpl implements HomeNavigator {
     }
 
     @Override
-    public void addToolbar(@NonNull Toolbar toolbar, @NonNull View navView) {
-//        AppBarConfiguration appBarConfiguration =
-//                new AppBarConfiguration.Builder(Navigation.findNavController(navView).getGraph()).build();
-//        NavigationUI.setupWithNavController(toolbar, Navigation.findNavController(navView), appBarConfiguration);
+    public void setToolbarUpdates(@NonNull MainActivity activity, @NonNull Toolbar toolbar, @NonNull View navView) {
         NavigationUI.setupWithNavController(toolbar,Navigation.findNavController(navView));
+        NavigationUI.setupActionBarWithNavController(activity,Navigation.findNavController(navView));
     }
 }

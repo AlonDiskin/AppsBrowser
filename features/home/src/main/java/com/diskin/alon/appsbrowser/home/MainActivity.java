@@ -28,15 +28,15 @@ public class MainActivity extends AppCompatActivity {
         // setup activity layout
         setContentView(R.layout.activity_main);
 
-        // setup activity toolbar
+        // set activity toolbar
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         // show browser screen
-        navigator.openBrowser(getNavHost());
+        navigator.setGraph(getNavHost());
 
         // setup toolbar navigation support
-        navigator.addToolbar(toolbar,getNavHost());
+        navigator.setToolbarUpdates(this,toolbar,getNavHost());
     }
 
     @Override
