@@ -1,3 +1,3 @@
 # AppsBrowser
-[![Build Status](https://travis-ci.org/AlonDiskin/AppsBrowser.svg?branch=browser%2Fprovide-sorting)](https://travis-ci.org/AlonDiskin/AppsBrowser)    
+[![CircleCI](https://circleci.com/gh/AlonDiskin/AppsBrowser/tree/migrate-circleci.svg?style=svg)](https://circleci.com/gh/AlonDiskin/AppsBrowser/tree/migrate-circleci)      
 android application that provide the user with a detailed information of all her installed apps 
