@@ -62,7 +62,7 @@ jobs:
 
 workflows:
   version: 2
-    app_jobs:
+    build_tets:
       jobs:
         - unit_test
         - build_android_tests
