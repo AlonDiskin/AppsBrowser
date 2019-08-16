@@ -74,7 +74,7 @@ public class MainActivityTest {
         // Then activity should ask navigator to open browser
         scenario.onActivity(activity -> {
             View navHost = activity.findViewById(R.id.nav_host_fragment);
-            verify(navigator).openBrowser(eq(navHost));
+            verify(navigator).setGraph(eq(navHost));
         });
     }
 
@@ -103,7 +103,7 @@ public class MainActivityTest {
             View navHost = activity.findViewById(R.id.nav_host_fragment);
             Toolbar toolbar = activity.findViewById(R.id.toolbar);
 
-            verify(navigator).addToolbar(eq(toolbar),eq(navHost));
+            verify(navigator).setToolbarUpdates(eq(activity),eq(toolbar),eq(navHost));
         });
     }
 }

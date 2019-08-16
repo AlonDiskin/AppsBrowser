@@ -32,7 +32,7 @@ public class SplashActivity extends AppCompatActivity {
         final TextView appNameTv = findViewById(R.id.appNameLabel);
         ObjectAnimator animation = ObjectAnimator.ofFloat(appNameTv, "alpha", 0f,1f);
 
-        animation.setDuration(1200);
+        animation.setDuration(800);
         animation.setInterpolator(new DecelerateInterpolator());
         animation.addListener(new AnimatorListenerAdapter() {
             @Override
