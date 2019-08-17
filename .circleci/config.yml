@@ -21,11 +21,8 @@ jobs:
             - ~/.gradle
           key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
       - run:
-          name: Run Unit Tests Android Libraries
-          command: ./gradlew assembleDebugUnitTest
-      - run:
-          name: Run Unit Tests Java Libraries
-          command: ./gradlew test
+          name: Run All Unit Tests
+          command: ./gradlew assembleDebugUnitTest test
       - store_artifacts: # for display in Artifacts: https://circleci.com/docs/2.0/artifacts/
           path: app/build/reports
           destination: reports
