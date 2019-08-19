@@ -1,12 +1,9 @@
 package com.diskin.alon.appsbrowser.settings;
 
-import android.os.RemoteException;
-
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.test.core.app.ApplicationProvider;
 import androidx.test.espresso.contrib.RecyclerViewActions;
-import androidx.test.uiautomator.UiObjectNotFoundException;
 
 import com.diskin.alon.appsbrowser.util.Device;
 import com.mauriciotogneri.greencoffee.GreenCoffeeSteps;
@@ -64,10 +61,9 @@ public class SettingsSteps extends GreenCoffeeSteps {
     }
 
     @When("^User exist app and returns$")
-    public void userExistAppAndReturns() throws RemoteException, UiObjectNotFoundException {
+    public void userExistAppAndReturns() {
         Device.pressBack();
         Device.pressBack();
-        Device.removeFromRecents();
         Device.launchApp();
     }
 
