@@ -25,14 +25,13 @@ public class Device {
 
     private static final int LAUNCH_TIMEOUT = 5000;
     private static final String APP_PACKAGE = "com.diskin.alon.appsbrowser";
-    private static UiDevice mDevice = UiDevice.getInstance(getInstrumentation());
 
     /**
      *
      */
     public static void openHomeScreen() {
         // Start from the home screen
-        mDevice.pressHome();
+        UiDevice.getInstance(getInstrumentation()).pressHome();
     }
 
     /**
@@ -42,7 +41,7 @@ public class Device {
         // Wait for launcher
         final String launcherPackage = getLauncherPackageName();
         assertThat(launcherPackage, notNullValue());
-        mDevice.wait(Until.hasObject(By.pkg(launcherPackage).depth(0)), LAUNCH_TIMEOUT);
+        UiDevice.getInstance(getInstrumentation()).wait(Until.hasObject(By.pkg(launcherPackage).depth(0)), LAUNCH_TIMEOUT);
 
         // Launch the blueprint app
         Context context = getApplicationContext();
@@ -52,7 +51,7 @@ public class Device {
         context.startActivity(intent);
 
         // Wait for the app to appear
-        mDevice.wait(Until.hasObject(By.pkg(APP_PACKAGE).depth(0)), LAUNCH_TIMEOUT);
+        UiDevice.getInstance(getInstrumentation()).wait(Until.hasObject(By.pkg(APP_PACKAGE).depth(0)), LAUNCH_TIMEOUT);
     }
 
     /**
@@ -72,13 +71,13 @@ public class Device {
     }
 
     public static void pressBack() {
-        mDevice.pressBack();
+        UiDevice.getInstance(getInstrumentation()).pressBack();
     }
 
     public static void removeFromRecents() throws RemoteException, UiObjectNotFoundException {
-        mDevice.pressRecentApps();
+        UiDevice.getInstance(getInstrumentation()).pressRecentApps();
         //app = uiDevice.findObject(new UiSelector().textContains("SDK Test App"));
-        UiObject closeAllButton = mDevice.findObject(new UiSelector().textContains("Close"));
+        UiObject closeAllButton = UiDevice.getInstance(getInstrumentation()).findObject(new UiSelector().textContains("Close"));
         closeAllButton.click();
     }
 }
