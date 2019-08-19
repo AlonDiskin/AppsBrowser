@@ -5,8 +5,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.test.core.app.ApplicationProvider;
 import androidx.test.espresso.contrib.RecyclerViewActions;
 
+import com.diskin.alon.appsbrowser.background.BackgroundSteps;
 import com.diskin.alon.appsbrowser.util.Device;
-import com.mauriciotogneri.greencoffee.GreenCoffeeSteps;
 import com.mauriciotogneri.greencoffee.annotations.And;
 import com.mauriciotogneri.greencoffee.annotations.Given;
 import com.mauriciotogneri.greencoffee.annotations.Then;
@@ -25,16 +25,18 @@ import static org.hamcrest.MatcherAssert.assertThat;
 /**
  * 'Settings' feature acceptance criteria tests steps
  */
-public class SettingsSteps extends GreenCoffeeSteps {
+public class SettingsSteps extends BackgroundSteps {
 
+    @Override
     @Given("^User is in device home screen$")
     public void userIsInDeviceHomeScreen() {
-        Device.openHomeScreen();
+        super.userIsInDeviceHomeScreen();
     }
 
+    @Override
     @When("^User launch application$")
     public void userLaunchApplication() {
-        Device.launchApp();
+        super.userLaunchApplication();
     }
 
     @And("^Navigates to settings screen$")

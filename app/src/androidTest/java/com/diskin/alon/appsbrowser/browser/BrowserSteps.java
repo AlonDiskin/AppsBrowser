@@ -8,10 +8,10 @@ import android.widget.CheckBox;
 import androidx.test.core.app.ApplicationProvider;
 import androidx.test.espresso.intent.Intents;
 
+import com.diskin.alon.appsbrowser.background.BackgroundSteps;
 import com.diskin.alon.appsbrowser.browser.model.UserApp;
 import com.diskin.alon.appsbrowser.util.Device;
 import com.diskin.alon.appsbrowser.util.RecyclerViewMatcher;
-import com.mauriciotogneri.greencoffee.GreenCoffeeSteps;
 import com.mauriciotogneri.greencoffee.annotations.And;
 import com.mauriciotogneri.greencoffee.annotations.Given;
 import com.mauriciotogneri.greencoffee.annotations.Then;
@@ -40,22 +40,20 @@ import static org.hamcrest.core.AllOf.allOf;
 /**
  * Browser feature acceptance criteria step definitions.
  */
-public class BrowserSteps extends GreenCoffeeSteps {
-
-    private static final String TAG = "BrowserStepsTagTag";
+public class BrowserSteps extends BackgroundSteps {
 
     private List<UserApp> userApps = new ArrayList<>();
 
+    @Override
     @Given("^User is in device home screen$")
     public void userIsInDeviceHomeScreen() {
-        // set device to home screen
-        Device.openHomeScreen();
+        super.userIsInDeviceHomeScreen();
     }
 
+    @Override
     @When("^User launch application$")
     public void userLaunchApplication() {
-        // launch application
-        Device.launchApp();
+        super.userLaunchApplication();
         Intents.init();
     }
 
