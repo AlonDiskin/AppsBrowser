@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "9862866109",
+    "firebase_url": "https://appsbrowser-e415f.firebaseio.com",
+    "project_id": "appsbrowser-e415f",
+    "storage_bucket": "appsbrowser-e415f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:9862866109:android:8d5ae9868a117629",
+        "android_client_info": {
+          "package_name": "com.diskin.alon.appsbrowser"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "9862866109-c7f5t7tvvi2dcptblmmk7gjl31ueupes.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCMxmAYq-Iudlasy72rwEt6KJk6uvt-_A0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "9862866109-c7f5t7tvvi2dcptblmmk7gjl31ueupes.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
