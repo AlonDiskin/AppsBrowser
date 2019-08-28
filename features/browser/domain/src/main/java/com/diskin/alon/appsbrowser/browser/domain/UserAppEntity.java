@@ -1,5 +1,10 @@
 package com.diskin.alon.appsbrowser.browser.domain;
 
+import java.util.Objects;
+
+/**
+ * Domain entity that represents an existing user app
+ */
 public class UserAppEntity {
     private final String id;
     private final String name;
@@ -37,9 +42,9 @@ public class UserAppEntity {
         UserAppEntity userApp = (UserAppEntity) o;
 
         if (Double.compare(userApp.size, size) != 0) return false;
-        if (id != null ? !id.equals(userApp.id) : userApp.id != null) return false;
-        if (name != null ? !name.equals(userApp.name) : userApp.name != null) return false;
-        return iconUri != null ? iconUri.equals(userApp.iconUri) : userApp.iconUri == null;
+        if (!Objects.equals(id, userApp.id)) return false;
+        if (!Objects.equals(name, userApp.name)) return false;
+        return Objects.equals(iconUri, userApp.iconUri);
     }
 
     @Override

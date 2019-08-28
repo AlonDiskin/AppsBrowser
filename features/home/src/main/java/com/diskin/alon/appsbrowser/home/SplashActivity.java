@@ -10,7 +10,7 @@ import android.os.Bundle;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.TextView;
 
-import com.diskin.alon.appsbrowser.common.presentation.EspressoIdlingResource;
+import com.diskin.alon.appsbrowser.common.espressoidlingresource.EspressoIdlingResource;
 
 public class SplashActivity extends AppCompatActivity {
 

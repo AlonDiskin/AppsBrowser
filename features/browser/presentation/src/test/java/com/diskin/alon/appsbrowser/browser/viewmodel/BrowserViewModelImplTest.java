@@ -2,11 +2,17 @@ package com.diskin.alon.appsbrowser.browser.viewmodel;
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule;
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 
-import com.diskin.alon.appsbrowser.browser.applicationservices.AppsSorting;
-import com.diskin.alon.appsbrowser.browser.applicationservices.AppsSorting.SortingType;
+import com.diskin.alon.appsbrowser.browser.WhiteBox;
+import com.diskin.alon.appsbrowser.browser.applicationservices.model.AppsSearch;
+import com.diskin.alon.appsbrowser.browser.applicationservices.model.AppsSorting;
+import com.diskin.alon.appsbrowser.browser.applicationservices.model.AppsSorting.SortingType;
+import com.diskin.alon.appsbrowser.browser.model.GetSortedAppsRequest;
+import com.diskin.alon.appsbrowser.browser.model.SearchAppsRequest;
 import com.diskin.alon.appsbrowser.browser.model.UserApp;
 import com.diskin.alon.appsbrowser.common.presentation.ServiceExecutor;
+import com.diskin.alon.appsbrowser.common.presentation.ServiceRequest;
 
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -20,15 +26,21 @@ import java.util.Arrays;
 import java.util.List;
 
 import io.reactivex.android.plugins.RxAndroidPlugins;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.disposables.SerialDisposable;
+import io.reactivex.observers.TestObserver;
 import io.reactivex.schedulers.Schedulers;
 import io.reactivex.subjects.PublishSubject;
 import junitparams.JUnitParamsRunner;
 import junitparams.Parameters;
 
 import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.sameInstance;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.core.IsNot.not;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.isA;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -37,10 +49,10 @@ import static org.mockito.Mockito.when;
  */
 @RunWith(JUnitParamsRunner.class)
 public class BrowserViewModelImplTest {
-
     // System under test
     private BrowserViewModelImpl viewModel;
 
+    // Lifecycle testing rule
     @Rule
     public InstantTaskExecutorRule instantTaskExecutorRule = new InstantTaskExecutorRule();
 
@@ -61,7 +73,8 @@ public class BrowserViewModelImplTest {
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
-        when(serviceExecutor.execute(isA(GetUserAppsRequest.class))).thenReturn(appsObservableSubject);
+        //noinspection unchecked
+        when(serviceExecutor.execute(isA(ServiceRequest.class))).thenReturn(appsObservableSubject);
 
         viewModel = new BrowserViewModelImpl(serviceExecutor);
     }
@@ -75,7 +88,40 @@ public class BrowserViewModelImplTest {
         viewModel.sortApps(sorting);
 
         // Then view model should fetch apps from service executor with given sorting
-        verify(serviceExecutor).execute(eq(new GetUserAppsRequest(sorting)));
+        verify(serviceExecutor).execute(eq(new GetSortedAppsRequest(sorting)));
+    }
+
+    @Test
+    public void shouldRestAppsObservableSubscription_whenFetchesAppsObservable() {
+        // test case fixture
+        SerialDisposable serialDisposable = (SerialDisposable) WhiteBox
+                .getInternalState(viewModel,"serialDisposable");
+        Disposable prevDisposable = TestObserver.create();
+
+        serialDisposable.set(prevDisposable);
+        // Given an initialized view model with existing observable apps subscription
+
+        // When view model fetches apps observable via service executor
+        viewModel.sortApps(new AppsSorting(SortingType.NAME,false));
+
+        // Then view model should reset current apps observable subscription
+        assertThat(serialDisposable.get(),not(sameInstance(prevDisposable)));
+    }
+
+    @Test
+    public void shouldUnsubscribeFromAppsObservable_whenCleared() {
+        // test case fixture
+        SerialDisposable actualDisposable = (SerialDisposable) WhiteBox
+                .getInternalState(viewModel,"serialDisposable");
+        actualDisposable.set(TestObserver.create());
+
+        // Given an initialized view model with existing observable apps subscription
+
+        // When view model is cleared
+        viewModel.onCleared();
+
+        // Then view model should unsubscribe from apps observable
+        assertThat(actualDisposable.isDisposed(),equalTo(true));
     }
 
     @Test
@@ -90,7 +136,7 @@ public class BrowserViewModelImplTest {
         viewModel.sortApps(sorting);
 
         // Then view model should pass first request only to services executor
-        verify(serviceExecutor).execute(eq(new GetUserAppsRequest(sorting)));
+        verify(serviceExecutor).execute(eq(new GetSortedAppsRequest(sorting)));
     }
 
     @Test
@@ -102,13 +148,13 @@ public class BrowserViewModelImplTest {
         viewModel.sortApps(firstSorting);
 
         // Then view model should fetch apps via service executor
-        verify(serviceExecutor).execute(eq(new GetUserAppsRequest(firstSorting)));
+        verify(serviceExecutor).execute(eq(new GetSortedAppsRequest(firstSorting)));
 
         // When view model is asked to sort with different sorting
         viewModel.sortApps(secondSorting);
 
         // Then view model should fetch apps from service executor with given sorting
-        verify(serviceExecutor).execute(eq(new GetUserAppsRequest(secondSorting)));
+        verify(serviceExecutor).execute(eq(new GetSortedAppsRequest(secondSorting)));
     }
 
     @Test
@@ -129,6 +175,44 @@ public class BrowserViewModelImplTest {
 
         // Then observing client
         assertThat(userAppLiveData.getValue(),equalTo(apps));
+    }
+
+    @Test
+    public void shouldExecuteSearch_whenAppsSearchedAndSortingSet() {
+        // Given an initialized view model, with existing sorting value
+        String query = "query";
+        AppsSorting sorting = new AppsSorting(SortingType.NAME,true);
+
+        //noinspection unchecked
+        ((MutableLiveData<AppsSorting>) WhiteBox.getInternalState(viewModel,"sorting")).postValue(sorting);
+
+        // When view model asked to perform search
+        viewModel.searchApps(query);
+
+        // Then view model should execute a search service
+        verify(serviceExecutor).execute(new SearchAppsRequest(new AppsSearch(sorting,query)));
+    }
+
+    @Test
+    public void shouldNotExecuteSearch_whenAppsSearchedAndSortingNotSet() {
+        // Given an initialized view model, with nullable sorting value
+
+        // When view model is searched for apps
+        viewModel.searchApps("query");
+
+        // Then view model should not execute apps search
+        verify(serviceExecutor,times(0)).execute(isA(SearchAppsRequest.class));
+    }
+
+    @Test
+    public void shouldNotExecuteSearch_whenPassedEmptyQuery() {
+        // Given an initialized view model
+
+        // When view model is searched for apps
+        viewModel.searchApps("");
+
+        // Then view model should not execute apps search
+        verify(serviceExecutor,times(0)).execute(isA(SearchAppsRequest.class));
     }
 
     public static Object[] sortingParam() {

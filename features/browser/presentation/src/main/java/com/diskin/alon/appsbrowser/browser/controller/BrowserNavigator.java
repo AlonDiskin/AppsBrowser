@@ -7,7 +7,6 @@ import androidx.fragment.app.Fragment;
  * Browser feature navigator contract.
  */
 public interface BrowserNavigator {
-
     /**
      * Open a screen that displays app detail.
      *

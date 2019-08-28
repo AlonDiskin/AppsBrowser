@@ -10,7 +10,6 @@ import javax.inject.Inject;
 import javax.inject.Provider;
 
 public class BrowserViewModelFactory implements ViewModelProvider.Factory {
-
     @NonNull
     private final Provider<ServiceExecutor> serviceExecutorProvider;
 

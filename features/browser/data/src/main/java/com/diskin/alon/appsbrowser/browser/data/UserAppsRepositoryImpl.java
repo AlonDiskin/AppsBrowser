@@ -1,86 +1,67 @@
 package com.diskin.alon.appsbrowser.browser.data;
 
-import android.app.Application;
-import android.content.pm.ApplicationInfo;
-import android.content.pm.PackageManager;
-import android.net.Uri;
-
 import androidx.annotation.NonNull;
 
-import com.diskin.alon.appsbrowser.browser.applicationservices.AppsSorting;
-import com.diskin.alon.appsbrowser.browser.applicationservices.UserAppsRepository;
+import com.diskin.alon.appsbrowser.browser.applicationservices.interfaces.UserAppsRepository;
+import com.diskin.alon.appsbrowser.browser.applicationservices.model.AppsSorting;
 import com.diskin.alon.appsbrowser.browser.domain.UserAppEntity;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 import io.reactivex.Observable;
-import io.reactivex.schedulers.Schedulers;
 
 public class UserAppsRepositoryImpl implements UserAppsRepository {
-
     @NonNull
-    private final Application application;
+    private final AppsDataStore appsDataStore;
 
-    public UserAppsRepositoryImpl(@NonNull Application application) {
-        this.application = application;
+    public UserAppsRepositoryImpl(@NonNull AppsDataStore appsDataStore) {
+        this.appsDataStore = appsDataStore;
     }
 
     @Override
-    public Observable<List<UserAppEntity>> getUserApps(@NonNull AppsSorting sorting) {
-        return getAppsList(sorting)
-                .subscribeOn(Schedulers.io());
+    public Observable<List<UserAppEntity>> getSortedApps(@NonNull AppsSorting sorting) {
+        return appsDataStore.getAll().map(userAppEntities -> sortApps(userAppEntities,sorting));
     }
 
-    /**
-     * Returns an observable that emits a list of all non system existing apps on user device, sorted by given sort values.
-     */
-    private Observable<List<UserAppEntity>> getAppsList(@NonNull AppsSorting sorting) {
-        return Observable.create(emitter -> {
-            PackageManager pm = application.getPackageManager();
-            List<ApplicationInfo> packages = pm.getInstalledApplications(PackageManager.GET_META_DATA);
-            List<UserAppEntity> userApps = new ArrayList<>(packages.size());
+    @Override
+    public Observable<List<UserAppEntity>> search(@NonNull AppsSorting sorting, @NonNull String query) {
+        return getSortedApps(sorting)
+                .map(userAppEntities -> filterByNameQuery(userAppEntities,query));
+    }
 
-            for (ApplicationInfo appInfo : packages) {
-                // get info for non system apps only
-                if( pm.getLaunchIntentForPackage(appInfo.packageName) != null ){
-                    // extract installed app information
-                    String appId = appInfo.packageName;
-                    String appName = pm.getApplicationLabel(appInfo).toString();
-                    File file = new File(appInfo.publicSourceDir);
-                    double appSize = Long.valueOf(file.length()).doubleValue() / (1024 * 1024);
-                    Uri uri = Uri.parse("android.resource://" + appInfo.packageName + "/"
-                            + appInfo.icon);
+    private List<UserAppEntity> sortApps(@NonNull List<UserAppEntity> apps, @NonNull AppsSorting sorting) {
+        List<UserAppEntity> sortedApps = new ArrayList<>(apps);
+        switch (sorting.getType()) {
+            case NAME:
+                Collections.sort(sortedApps,(o1, o2) -> o1.getName().compareTo(o2.getName()));
+                break;
 
-                    // add to user apps result list
-                    userApps.add(new UserAppEntity(appId,
-                            appName,
-                            appSize,
-                            uri.toString()));
-                }
+            case SIZE:
+                Collections.sort(sortedApps,(o1, o2) -> Double.compare(o1.getSize(),o2.getSize()));
+                break;
+
+            default:
+                break;
+        }
+
+        if (!sorting.isAscending()) {
+            Collections.reverse(sortedApps);
+        }
+
+        return sortedApps;
+    }
+
+    private List<UserAppEntity> filterByNameQuery(@NonNull List<UserAppEntity> userAppEntities, @NonNull String query) {
+        List<UserAppEntity> filtered = new ArrayList<>(userAppEntities.size());
+
+        for (UserAppEntity sortedEntity : userAppEntities) {
+            if (sortedEntity.getName().toLowerCase().contains(query.toLowerCase())) {
+                filtered.add(sortedEntity);
             }
+        }
 
-            switch (sorting.getType()) {
-                case NAME:
-                    Collections.sort(userApps,(o1, o2) -> o1.getName().compareTo(o2.getName()));
-                    break;
-
-                case SIZE:
-                    Collections.sort(userApps,(o1, o2) -> Double.compare(o1.getSize(),o2.getSize()));
-                    break;
-
-                default:
-                    break;
-            }
-
-            if (!sorting.isAscending()) {
-                Collections.reverse(userApps);
-            }
-
-            emitter.onNext(userApps);
-            emitter.onComplete();
-        });
+        return filtered;
     }
 }

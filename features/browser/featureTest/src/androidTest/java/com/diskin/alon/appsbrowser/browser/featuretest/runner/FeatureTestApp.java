@@ -13,7 +13,6 @@ import dagger.android.DispatchingAndroidInjector;
 import dagger.android.support.HasSupportFragmentInjector;
 
 public class FeatureTestApp extends Application implements HasSupportFragmentInjector {
-
     @Inject
     DispatchingAndroidInjector<Fragment> dispatchingFragmentInjector;
 

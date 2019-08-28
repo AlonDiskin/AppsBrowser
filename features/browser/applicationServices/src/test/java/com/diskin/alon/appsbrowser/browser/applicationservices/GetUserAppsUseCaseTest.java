@@ -1,5 +1,9 @@
 package com.diskin.alon.appsbrowser.browser.applicationservices;
 
+import com.diskin.alon.appsbrowser.browser.applicationservices.interfaces.UserAppsRepository;
+import com.diskin.alon.appsbrowser.browser.applicationservices.model.AppsSorting;
+import com.diskin.alon.appsbrowser.browser.applicationservices.model.UserAppDto;
+import com.diskin.alon.appsbrowser.browser.applicationservices.usecase.GetUserAppsUseCase;
 import com.diskin.alon.appsbrowser.browser.domain.UserAppEntity;
 import com.diskin.alon.appsbrowser.common.applicationservices.Mapper;
 
@@ -28,7 +32,6 @@ import static org.mockito.Mockito.when;
  */
 @RunWith(JUnitParamsRunner.class)
 public class GetUserAppsUseCaseTest {
-
     // System under test
     private GetUserAppsUseCase useCase;
 
@@ -36,7 +39,7 @@ public class GetUserAppsUseCaseTest {
     @Mock
     public UserAppsRepository repository;
     @Mock
-    public Mapper<UserAppEntity,UserAppDto> mapper;
+    public Mapper<UserAppEntity, UserAppDto> mapper;
 
     @Before
     public void setUp() {
@@ -56,9 +59,9 @@ public class GetUserAppsUseCaseTest {
 
     @Test
     @Parameters(method = "executionParams")
-    public void shouldFetchUserApps_whenExecuted(AppsSorting sorting,List<UserAppEntity> repositoryApps, List<UserAppDto> expectedApps) {
+    public void shouldFetchUserApps_whenExecuted(AppsSorting sorting, List<UserAppEntity> repositoryApps, List<UserAppDto> expectedApps) {
         // Given ann initialized use case, and existing apps in repository
-        when(repository.getUserApps(eq(sorting))).thenReturn(Observable.just(repositoryApps));
+        when(repository.getSortedApps(eq(sorting))).thenReturn(Observable.just(repositoryApps));
 
         // When use case is executed
         Observable<List<UserAppDto>> useCaseResult = useCase.execute(sorting);

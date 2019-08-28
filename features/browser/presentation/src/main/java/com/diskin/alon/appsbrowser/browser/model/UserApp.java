@@ -6,7 +6,6 @@ import java.util.Objects;
  * Holds the values for a on device installed application,
  */
 public class UserApp {
-
     private final String packageName;
     private final String name;
     private final String size;
@@ -62,5 +61,15 @@ public class UserApp {
         result = 31 * result + (packageName != null ? packageName.hashCode() : 0);
         result = 31 * result + (iconUri != null ? iconUri.hashCode() : 0);
         return result;
+    }
+
+    @Override
+    public String toString() {
+        return "UserApp{" +
+                "packageName='" + packageName + '\'' +
+                ", name='" + name + '\'' +
+                ", size='" + size + '\'' +
+                ", iconUri='" + iconUri + '\'' +
+                '}';
     }
 }

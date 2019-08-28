@@ -1,50 +1,45 @@
 package com.diskin.alon.appsbrowser.browser.featuretest.steps;
 
-import android.util.Log;
-
 import androidx.test.core.app.ActivityScenario;
 
-import com.diskin.alon.appsbrowser.browser.applicationservices.AppsSorting;
-import com.diskin.alon.appsbrowser.browser.applicationservices.UserAppsRepository;
 import com.diskin.alon.appsbrowser.browser.controller.BrowserFragment;
+import com.diskin.alon.appsbrowser.browser.data.AppsDataStore;
 import com.diskin.alon.appsbrowser.browser.domain.UserAppEntity;
 import com.diskin.alon.appsbrowser.common.presentation.FragmentTestActivity;
 import com.mauriciotogneri.greencoffee.GreenCoffeeSteps;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import javax.inject.Inject;
 
 import gherkin.ast.TableRow;
 import io.reactivex.Observable;
-import io.reactivex.schedulers.Schedulers;
 
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
+/**
+ * Common background in 'browser' feature steps definitions.
+ */
 public class BackgroundSteps extends GreenCoffeeSteps {
-
     protected static final String TAG = "BackgroundSteps";
     protected ActivityScenario<FragmentTestActivity> scenario;
-    protected List<UserAppEntity> userAppEntities = new ArrayList<>();
-    protected List<TableRow> appsTestData;
-
+    private List<UserAppEntity> userAppEntities = new ArrayList<>();
     @Inject
-    public UserAppsRepository repository;
+    public AppsDataStore appsDataStore;
 
     protected void userHasTheNextAppsOnDevice(List<TableRow> userApps) {
-        // set given user apps as the existing repository apps
+        List<TableRow> appsTestData  = new ArrayList<>(userApps);
         int nameCellIndex = 0;
         int sizeCellIndex = 1;
         int iconCellIndex = 2;
         int idCellIndex = 3;
 
-        appsTestData = new ArrayList<>(userApps);
+        // remove firs row containing column names(not needed)
         appsTestData.remove(0);
 
-        for (TableRow row : this.appsTestData) {
+        // extract user apps from test table param
+        for (TableRow row : appsTestData) {
             String id = row.getCells().get(idCellIndex).getValue();
             String name = row.getCells().get(nameCellIndex).getValue();
             double size = Double.parseDouble(row.getCells().get(sizeCellIndex).getValue());
@@ -53,36 +48,17 @@ public class BackgroundSteps extends GreenCoffeeSteps {
             userAppEntities.add(new UserAppEntity(id,name,size,iconUri));
         }
 
-        // stub mocked repository
-        when(repository.getUserApps(any(AppsSorting.class))).then(invocation -> {
-            AppsSorting sorting = invocation.getArgument(0);
-            switch (sorting.getType()) {
-                case NAME:
-                    Collections.sort(userAppEntities,(o1, o2) -> o1.getName().compareTo(o2.getName()));
-                    break;
-
-                case SIZE:
-                    Collections.sort(userAppEntities,(o1, o2) -> Double.compare(o1.getSize(),o2.getSize()));
-                    break;
-
-                default:
-                    break;
-            }
-
-            if (!sorting.isAscending()) {
-                Collections.reverse(userAppEntities);
-            }
-
-            Log.d("VROT", "repository: " + sorting);
-
-            return Observable.just(userAppEntities)
-                    .subscribeOn(Schedulers.io());
-        });
+        // stub mocked apps data store with test apps
+        when(appsDataStore.getAll()).thenReturn(Observable.just(userAppEntities));
     }
 
     protected void userOpensBrowserScreen() {
         // launch browser screen
         scenario = ActivityScenario.launch(FragmentTestActivity.class);
         scenario.onActivity(activity -> activity.setFragment(new BrowserFragment(),TAG));
+    }
+
+    protected List<UserAppEntity> getTestUserApp() {
+        return new ArrayList<>(this.userAppEntities);
     }
 }

@@ -35,9 +35,14 @@ android {
         targetCompatibility JavaVersion.VERSION_1_8
     }
 
+    testOptions {
+        unitTests {
+            includeAndroidResources = true
+        }
+    }
+
     dataBinding {
         enabled = true
-        enabledForTests = true
     }
 }
 
@@ -46,6 +51,7 @@ dependencies {
 
     implementation project(':features:common:presentation')
     implementation project(':features:common:applicationServices')
+    implementation project(':features:common:espressoidlingresource')
     implementation project(':features:browser:applicationServices')
 
     // Support library
@@ -74,11 +80,12 @@ dependencies {
     implementation 'io.reactivex.rxjava2:rxandroid:2.1.1'
     implementation 'io.reactivex.rxjava2:rxjava:2.2.6'
 
-    // Unit testing
+    // Local testing
     testImplementation 'junit:junit:4.12'
     testImplementation 'org.mockito:mockito-core:2.23.4'
-    testImplementation "androidx.arch.core:core-testing:2.0.1"
     testImplementation 'pl.pragmatists:JUnitParams:1.1.1'
+    // lifecycle testing
+    testImplementation "androidx.arch.core:core-testing:2.0.1"
 
     // Instrumentation testing
     androidTestImplementation 'androidx.test:core:1.2.0'

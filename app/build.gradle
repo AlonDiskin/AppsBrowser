@@ -28,17 +28,15 @@ android {
 dependencies {
     def nav_version = "2.1.0-beta02"
 
-    // home feature modules
     implementation project(':features:home')
-    // browser feature modules
     implementation project(':features:browser:presentation')
     implementation project(':features:browser:applicationServices')
     implementation project(':features:browser:domain')
     implementation project(':features:browser:data')
-    // common modules
     implementation project(':features:common:presentation')
     implementation project(':features:common:applicationServices')
-    // settings feature module
+    implementation project(':features:common:espressoidlingresource')
+
     implementation project(':features:settings')
 
     // Support library

@@ -15,7 +15,6 @@ import dagger.android.ContributesAndroidInjector;
 
 @Module(includes = {AndroidInjectionModule.class})
 public abstract class TestAppModule {
-
     @Singleton
     @Provides
     public static BrowserViewModel provideBrowserViewModel() {
