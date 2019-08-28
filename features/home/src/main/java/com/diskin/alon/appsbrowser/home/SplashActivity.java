@@ -17,13 +17,13 @@ public class SplashActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        EspressoIdlingResource.increment();
         setContentView(R.layout.activity_splash);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        EspressoIdlingResource.increment();
         launchSplashAnimation();
     }
 
@@ -37,6 +37,7 @@ public class SplashActivity extends AppCompatActivity {
         animation.addListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationEnd(Animator animation) {
+                EspressoIdlingResource.decrement();
                 launchHomeActivity();
             }
         });
@@ -46,6 +47,5 @@ public class SplashActivity extends AppCompatActivity {
     private void launchHomeActivity() {
         startActivity(new Intent(SplashActivity.this,MainActivity.class));
         finish();
-        EspressoIdlingResource.decrement();
     }
 }

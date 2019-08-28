@@ -1,6 +1,7 @@
 package com.diskin.alon.appsbrowser.stepsrunner;
 
 import androidx.test.espresso.IdlingRegistry;
+import androidx.test.espresso.intent.Intents;
 
 import com.diskin.alon.appsbrowser.browser.data.AppsDataStoreImpl;
 import com.diskin.alon.appsbrowser.browser.viewmodel.BrowserViewModelImpl;
@@ -37,13 +38,14 @@ public class BrowserStepsRunner extends GreenCoffeeTest {
 
     @Test
     public void test() {
-        // register espresso idlingResource
-        IdlingRegistry.getInstance().register(EspressoIdlingResource.getIdlingResource());
-
         // indicate idling resource usage in app implementation
         BrowserViewModelImpl.DECREMENT_TEST = true;
         AppsDataStoreImpl.INCREMENT_TEST = true;
 
+        // register espresso idlingResource
+        IdlingRegistry.getInstance().register(EspressoIdlingResource.getIdlingResource());
+        // register sent intents observer
+        Intents.init();
         // start test
         start(new BrowserSteps());
     }
@@ -53,5 +55,7 @@ public class BrowserStepsRunner extends GreenCoffeeTest {
         super.afterScenarioEnds(scenario, locale);
         // unregister espresso idlingResource
         IdlingRegistry.getInstance().unregister(EspressoIdlingResource.getIdlingResource());
+        // unregister sent intents observer
+        Intents.release();
     }
 }

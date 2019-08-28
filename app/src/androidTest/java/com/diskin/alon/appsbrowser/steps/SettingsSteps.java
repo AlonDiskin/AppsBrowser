@@ -6,6 +6,7 @@ import androidx.test.core.app.ApplicationProvider;
 import androidx.test.espresso.contrib.RecyclerViewActions;
 import androidx.test.espresso.matcher.ViewMatchers;
 
+import com.diskin.alon.appsbrowser.R;
 import com.diskin.alon.appsbrowser.util.Device;
 import com.mauriciotogneri.greencoffee.annotations.And;
 import com.mauriciotogneri.greencoffee.annotations.Given;
@@ -42,7 +43,7 @@ public class SettingsSteps extends BackgroundSteps {
     @And("^Navigates to settings screen$")
     public void navigatesToSettingsScreen() {
         openActionBarOverflowOrOptionsMenu(ApplicationProvider.getApplicationContext());
-        onView(withText(com.diskin.alon.appsbrowser.home.R.string.title_action_settings))
+        onView(withText(R.string.title_action_settings))
                 .perform(click());
     }
 

@@ -6,7 +6,6 @@ import android.net.Uri;
 import android.widget.CheckBox;
 
 import androidx.test.core.app.ApplicationProvider;
-import androidx.test.espresso.intent.Intents;
 import androidx.test.espresso.matcher.ViewMatchers;
 
 import com.diskin.alon.appsbrowser.browser.applicationservices.model.AppsSorting;
@@ -36,8 +35,6 @@ import static androidx.test.espresso.intent.matcher.IntentMatchers.hasAction;
 import static androidx.test.espresso.intent.matcher.IntentMatchers.hasData;
 import static androidx.test.espresso.matcher.ViewMatchers.hasDescendant;
 import static androidx.test.espresso.matcher.ViewMatchers.isAssignableFrom;
-import static androidx.test.espresso.matcher.ViewMatchers.withHint;
-import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static com.diskin.alon.appsbrowser.util.TextViewContainsMatcher.withTextContainsIgnoreCase;
 import static org.hamcrest.core.AllOf.allOf;
@@ -57,7 +54,6 @@ public class BrowserSteps extends BackgroundSteps {
     @When("^User launch application$")
     public void userLaunchApplication() {
         super.userLaunchApplication();
-        Intents.init();
     }
 
     @Then("^All device apps should be listed in home screen sorted by name$")
