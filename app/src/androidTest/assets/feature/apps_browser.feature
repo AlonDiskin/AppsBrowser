@@ -1,4 +1,4 @@
-Feature: Application features e2e acceptance tests
+Feature: Application features e2e tests
 
   Background:
     Given User is in device home screen
@@ -12,11 +12,26 @@ Feature: Application features e2e acceptance tests
     When User return to browser screen
     And Sort apps by size in descending order
     Then Apps should be displayed sorted by size in descending order
+    When User searches for apps that begins with letter 'a'
+    Then All apps that begin with letter 'a' displayed sorted by size in descending order
 
   @settings
-  Scenario: Settings feature workflow
+  Scenario: Settings workflow
     And Navigates to settings screen
     And Set theme to dark
     Then App visual theme should be changed to dark
     When User exist app and returns
     Then App theme should be dark
+
+ @app-workflow
+ Scenario: User uses apps
+   And User sort apps by size in ascending order
+   Then Apps should be displayed sorted by size in ascending order
+   When User performs a search with query 'go'
+   And Changes app theme to dark
+   When User return to browser screen
+   Then All apps containing 'go' in name should be displayed
+   When user rotates the app
+   And System kill and recreates app
+   Then All apps containing 'go' in name should be displayed
+   And app theme should be dark

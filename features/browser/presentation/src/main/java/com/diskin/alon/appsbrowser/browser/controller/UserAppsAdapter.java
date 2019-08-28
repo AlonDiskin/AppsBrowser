@@ -4,17 +4,19 @@ import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.databinding.DataBindingUtil;
+import androidx.databinding.ViewDataBinding;
+import androidx.databinding.library.baseAdapters.BR;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.diskin.alon.appsbrowser.browser.R;
 import com.diskin.alon.appsbrowser.browser.model.UserApp;
-import com.diskin.alon.appsbrowser.browser.databinding.UserAppBinding;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class UserAppsAdapter extends RecyclerView.Adapter<UserAppsAdapter.UserAppHolder>{
-
     @NonNull
     private List<UserApp> apps;
     @NonNull
@@ -28,8 +30,8 @@ public class UserAppsAdapter extends RecyclerView.Adapter<UserAppsAdapter.UserAp
     @NonNull
     @Override
     public UserAppHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        UserAppBinding binding = UserAppBinding.inflate(LayoutInflater.from(parent.getContext()),
-                parent,false);
+        ViewDataBinding binding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()),
+                R.layout.user_app,parent,false);
 
         return new UserAppHolder(binding,listener);
     }
@@ -45,33 +47,31 @@ public class UserAppsAdapter extends RecyclerView.Adapter<UserAppsAdapter.UserAp
     }
 
     public void updateApps(@NonNull List<UserApp> appsUpdate) {
-        DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(
-                new UserAppsDiffCallback(this.apps,appsUpdate));
+        DiffUtil.Callback callback = new UserAppsDiffCallback(this.apps,appsUpdate);
+        DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(callback);
 
+        this.apps.clear();
+        this.apps.addAll(appsUpdate);
         diffResult.dispatchUpdatesTo(this);
-        apps.clear();
-        apps.addAll(new ArrayList<>(appsUpdate));
     }
 
     public static class UserAppHolder extends RecyclerView.ViewHolder {
-
         @NonNull
-        private UserAppBinding binding;
+        private ViewDataBinding binding;
 
-        public UserAppHolder(@NonNull UserAppBinding binding, @NonNull UserAppClickListener listener) {
+        public UserAppHolder(@NonNull ViewDataBinding binding, @NonNull UserAppClickListener listener) {
             super(binding.getRoot());
             this.binding = binding;
-            this.binding.setClickListener(listener);
+            this.binding.setVariable(BR.clickListener,listener);
         }
 
         public void bind(@NonNull UserApp app) {
-            binding.setApp(app);
+            binding.setVariable(BR.app,app);
             binding.executePendingBindings();
         }
     }
 
     public interface UserAppClickListener {
-
         void onClick(@NonNull UserApp app);
     }
 }

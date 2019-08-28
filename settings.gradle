@@ -1,4 +1,5 @@
 include ':app',
+        ':features:common:espressoidlingresource',
         ':features:settings',
         ':features:browser:data',
         ':features:browser:domain',

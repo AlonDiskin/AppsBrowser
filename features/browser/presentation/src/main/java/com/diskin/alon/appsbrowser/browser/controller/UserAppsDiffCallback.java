@@ -11,7 +11,6 @@ import java.util.List;
  * Calculates the difference between {@link UserApp}s lists.
  */
 public class UserAppsDiffCallback extends DiffUtil.Callback {
-
     @NonNull
     private final List<UserApp> oldApps;
     @NonNull
@@ -34,7 +33,7 @@ public class UserAppsDiffCallback extends DiffUtil.Callback {
 
     @Override
     public boolean areItemsTheSame(int oldItemPosition, int newItemPosition) {
-        return oldApps.get(oldItemPosition).getPackageName().equals(newApps.get(newItemPosition).getPackageName());
+        return oldApps.get(oldItemPosition).equals(newApps.get(newItemPosition));
     }
 
     @Override

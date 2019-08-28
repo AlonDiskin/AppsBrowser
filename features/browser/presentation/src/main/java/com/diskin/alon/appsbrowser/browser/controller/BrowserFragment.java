@@ -1,25 +1,27 @@
 package com.diskin.alon.appsbrowser.browser.controller;
 
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.MenuItem.OnActionExpandListener;
 import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.SearchView;
+import androidx.appcompat.widget.SearchView.OnQueryTextListener;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.diskin.alon.appsbrowser.browser.R;
-import com.diskin.alon.appsbrowser.browser.applicationservices.AppsSorting;
-import com.diskin.alon.appsbrowser.browser.applicationservices.AppsSorting.SortingType;
-import com.diskin.alon.appsbrowser.browser.model.UserApp;
+import com.diskin.alon.appsbrowser.browser.applicationservices.model.AppsSorting;
+import com.diskin.alon.appsbrowser.browser.applicationservices.model.AppsSorting.SortingType;
 import com.diskin.alon.appsbrowser.browser.viewmodel.BrowserViewModel;
 
-import java.util.List;
 import java.util.Objects;
 
 import javax.inject.Inject;
@@ -30,16 +32,17 @@ import dagger.android.support.AndroidSupportInjection;
  * Browser screen ui controller.
  */
 public class BrowserFragment extends Fragment {
-
-    // saved instance state keys
+    // saved instance keys
     private static final String KEY_SORT = "sort";
     private static final String KEY_ORDER = "order";
+    private static final String KEY_QUERY = "query";
+    private static final String KEY_SEARCH_OPEN = "open";
 
     @Inject
     BrowserViewModel viewModel;
     @Inject
     BrowserNavigator navigator;
-    private UserAppsAdapter appsAdapter;
+    private boolean isSearchViewExpanded = false;
 
     public BrowserFragment() {
         // Required empty public constructor
@@ -52,18 +55,25 @@ public class BrowserFragment extends Fragment {
         // inject fragment
         AndroidSupportInjection.inject(this);
 
-        // resolving instance state sorting state
         // set default sorting values
         SortingType sorting = SortingType.NAME;
         boolean isAscending = true;
 
+        // resolve instance state
         if (savedInstanceState != null) {
             // if pref state exist, extract it
             sorting = SortingType.values()[savedInstanceState.getInt(KEY_SORT)];
             isAscending = savedInstanceState.getBoolean(KEY_ORDER);
+            String query = savedInstanceState.getString(KEY_QUERY);
+            isSearchViewExpanded = savedInstanceState.getBoolean(KEY_SEARCH_OPEN);
+
+            // if prev query exist,set it to view model
+            if (query != null) {
+                viewModel.searchApps(query);
+            }
         }
 
-        // sort according to resolved instance sorting state
+        // sort user apps
         viewModel.sortApps(new AppsSorting(sorting,isAscending));
     }
 
@@ -78,15 +88,21 @@ public class BrowserFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        // setup user apps recycler view
-        appsAdapter = new UserAppsAdapter(app -> navigator.openAppDetail(this,app.getPackageName()));
-
+        // setup apps recycler view
+        UserAppsAdapter appsAdapter = new UserAppsAdapter(app -> navigator.openAppDetail(this,app.getPackageName()));
         RecyclerView recyclerView = view.findViewById(R.id.userApps);
 
         recyclerView.setAdapter(appsAdapter);
 
         // observe user apps from view model upon view creation
-        viewModel.getUserApps().observe(getViewLifecycleOwner(),this::updateUserApps);
+        viewModel.getUserApps().observe(getViewLifecycleOwner(), userApps -> {
+            // save and restore recycler vew scroll position, to prevent auto scroll jumps
+            // during updates
+            //noinspection ConstantConditions
+            Parcelable recyclerViewState = recyclerView.getLayoutManager().onSaveInstanceState();
+            appsAdapter.updateApps(userApps);
+            recyclerView.getLayoutManager().onRestoreInstanceState(recyclerViewState);
+        });
     }
 
     @Override
@@ -111,6 +127,48 @@ public class BrowserFragment extends Fragment {
             }
 
             menu.findItem(R.id.action_ascending).setChecked(appsSorting.isAscending());
+        });
+
+        // configure the searchApps view
+        MenuItem searchItem = menu.findItem(R.id.action_search);
+        SearchView searchView = (SearchView) searchItem.getActionView();
+
+        // restore search view state if needed
+        if (isSearchViewExpanded) {
+            searchItem.expandActionView();
+            searchView.setQuery(viewModel.getSearchQuery(),false);
+        }
+
+        searchView.setIconifiedByDefault(true);
+        searchView.setQueryHint(getString(R.string.search_hint));
+        searchView.setOnQueryTextListener(new OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                // prevent updates when fragment is replaced in back stack
+                if (BrowserFragment.this.isResumed()) {
+                    viewModel.searchApps(newText);
+                }
+
+                return true;
+            }
+        });
+        searchItem.setOnActionExpandListener(new OnActionExpandListener() {
+            @Override
+            public boolean onMenuItemActionExpand(MenuItem item) {
+                isSearchViewExpanded = true;
+                return true;
+            }
+
+            @Override
+            public boolean onMenuItemActionCollapse(MenuItem item) {
+                isSearchViewExpanded = false;
+                return true;
+            }
         });
     }
 
@@ -137,16 +195,12 @@ public class BrowserFragment extends Fragment {
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
-        // save sorting values state
         AppsSorting currentSorting = Objects.requireNonNull(viewModel.getSorting().getValue(),
                 "sorting state should be already set!");
 
         outState.putInt(KEY_SORT,currentSorting.getType().ordinal());
         outState.putBoolean(KEY_ORDER,currentSorting.isAscending());
-    }
-
-    private void updateUserApps(@NonNull List<UserApp> userApps) {
-        // update apps layout adapter
-        appsAdapter.updateApps(userApps);
+        outState.putString(KEY_QUERY,viewModel.getSearchQuery());
+        outState.putBoolean(KEY_SEARCH_OPEN,isSearchViewExpanded);
     }
 }

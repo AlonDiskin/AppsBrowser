@@ -1,7 +1,6 @@
 package com.diskin.alon.appsbrowser.settings.ui;
 
 import android.content.Context;
-import android.content.pm.ActivityInfo;
 import android.view.Menu;
 
 import androidx.appcompat.app.AppCompatDelegate;
@@ -31,7 +30,6 @@ import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withClassName;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.AllOf.allOf;
 import static org.mockito.Mockito.verify;

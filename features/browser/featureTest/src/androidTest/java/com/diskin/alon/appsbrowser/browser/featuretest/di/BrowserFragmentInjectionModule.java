@@ -10,7 +10,6 @@ import dagger.multibindings.IntoMap;
 
 @Module(subcomponents = BrowserSubcomponent.class)
 public abstract class BrowserFragmentInjectionModule {
-
     @Binds
     @IntoMap
     @ClassKey(BrowserFragment.class)

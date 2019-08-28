@@ -5,4 +5,5 @@
     <color name="colorBackground">#303030</color>
     <color name="colorAccent">#c158dc</color>
     <color name="cardBackground">#424242</color>
+    <color name="colorQuery">#8e24aa</color>
 </resources>

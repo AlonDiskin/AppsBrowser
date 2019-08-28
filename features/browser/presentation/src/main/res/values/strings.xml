@@ -4,4 +4,6 @@
     <string name="action_sort_by_name_title">Sort by name</string>
     <string name="action_sort_by_size_title">Sort by size</string>
     <string name="action_ascending_title">Ascending</string>
+    <string name="action_search_title">Search</string>
+    <string name="search_hint">Search apps</string>
 </resources>

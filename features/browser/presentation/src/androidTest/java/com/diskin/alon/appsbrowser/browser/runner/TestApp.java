@@ -11,7 +11,6 @@ import dagger.android.DispatchingAndroidInjector;
 import dagger.android.support.HasSupportFragmentInjector;
 
 public class TestApp extends Application implements HasSupportFragmentInjector {
-
     @Inject
     DispatchingAndroidInjector<Fragment> dispatchingFragmentInjector;
 

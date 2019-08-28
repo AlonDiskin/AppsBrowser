@@ -42,20 +42,20 @@
 
             <TextView
                 android:id="@+id/name"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
                 android:ellipsize="end"
                 android:lines="1"
-                android:text="@{app.name}"
                 android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
                 android:textSize="18sp"
                 android:textStyle="normal"
+                app:appName="@{app}"
                 app:layout_constraintBottom_toTopOf="@+id/size"
                 app:layout_constraintEnd_toStartOf="@+id/imageButton"
-                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toEndOf="@+id/icon"
                 app:layout_constraintTop_toTopOf="@+id/icon"
                 app:layout_constraintVertical_chainStyle="packed"
@@ -73,7 +73,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/ic_more_vert_black_24dp" />
+                app:srcCompat="@drawable/ic_more_vert_24dp" />
 
             <TextView
                 android:id="@+id/size"

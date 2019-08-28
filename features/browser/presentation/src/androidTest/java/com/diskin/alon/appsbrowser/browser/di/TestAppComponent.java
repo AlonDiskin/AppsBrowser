@@ -12,7 +12,6 @@ import dagger.android.AndroidInjector;
 @Singleton
 @Component(modules = TestAppModule.class)
 public interface TestAppComponent extends AndroidInjector<TestApp> {
-
     @Component.Builder
     interface Builder {
 
