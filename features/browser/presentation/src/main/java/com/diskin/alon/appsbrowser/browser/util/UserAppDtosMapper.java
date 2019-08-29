@@ -12,6 +12,9 @@ import javax.inject.Inject;
 
 import io.reactivex.Observable;
 
+/**
+ * Mapper that converts {@link UserAppDto}s emitted by their observable to {@link UserApp}s.
+ */
 public class UserAppDtosMapper implements Mapper<Observable<List<UserAppDto>>,Observable<List<UserApp>>> {
     @Inject
     public UserAppDtosMapper() {}

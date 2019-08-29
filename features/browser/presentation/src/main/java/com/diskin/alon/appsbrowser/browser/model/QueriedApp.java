@@ -4,6 +4,9 @@ import android.text.SpannableString;
 
 import androidx.annotation.NonNull;
 
+/**
+ * Data wrapper for searched for {@link UserApp}.
+ */
 public class QueriedApp extends UserApp {
     @NonNull
     private final SpannableString highlightedName;
@@ -16,9 +19,10 @@ public class QueriedApp extends UserApp {
      * @param name        app name.
      * @param size        app size in megabits.
      * @param iconUri     app icon resource identifier.
-     * @param highlightedName
+     * @param highlightedName the app name containing highlighted search query
+     * @param query search query which resulted this app.
      */
-    public QueriedApp(String packageName, String name, String size, String iconUri, SpannableString highlightedName,@NonNull String query) {
+    public QueriedApp(String packageName, String name, String size, String iconUri,@NonNull SpannableString highlightedName,@NonNull String query) {
         super(packageName, name, size, iconUri);
         this.highlightedName = highlightedName;
         this.query = query;

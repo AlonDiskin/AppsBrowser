@@ -16,7 +16,6 @@ import dagger.android.AndroidInjection;
  * Home screen controller.
  */
 public class MainActivity extends AppCompatActivity {
-
     @Inject
     HomeNavigator navigator;
 

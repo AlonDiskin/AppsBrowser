@@ -9,7 +9,6 @@ import androidx.appcompat.widget.Toolbar;
  * Home screen navigator
  */
 public interface HomeNavigator {
-
     /**
      * Sets the navigation graph for home screen.
      *

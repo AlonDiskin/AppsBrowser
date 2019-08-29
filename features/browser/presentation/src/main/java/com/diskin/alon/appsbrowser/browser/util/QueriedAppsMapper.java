@@ -21,6 +21,10 @@ import javax.inject.Inject;
 
 import io.reactivex.Observable;
 
+/**
+ * Mapper that converts {@link UserAppDto}s emitted by their observable to {@link UserApp}s
+ * of {@link QueriedApp} type.
+ */
 public class QueriedAppsMapper implements Mapper<Observable<SearchResults>,Observable<List<UserApp>>> {
     @NonNull
     private final Application app;

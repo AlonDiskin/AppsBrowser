@@ -14,7 +14,6 @@ import androidx.preference.PreferenceFragmentCompat;
  * Application preferences fragment.
  */
 public class SettingsFragment extends PreferenceFragmentCompat {
-
     private SharedPreferences.OnSharedPreferenceChangeListener sharedPreferenceChangeListener =
             (prefs, key) -> {
                 String appThemeKey = getString(R.string.theme_pref_key);

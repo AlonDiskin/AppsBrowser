@@ -3,7 +3,7 @@ package com.diskin.alon.appsbrowser.browser.model;
 import java.util.Objects;
 
 /**
- * Holds the values for a on device installed application,
+ * Data wrapper for existing on device user app info shown in UI.
  */
 public class UserApp {
     private final String packageName;

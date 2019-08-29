@@ -3,7 +3,7 @@ package com.diskin.alon.appsbrowser.browser.domain;
 import java.util.Objects;
 
 /**
- * Domain entity that represents an existing user app
+ * Domain entity that represents an installed application on user device.
  */
 public class UserAppEntity {
     private final String id;
@@ -11,6 +11,14 @@ public class UserAppEntity {
     private final double size;
     private final String iconUri;
 
+    /**
+     * Create new {@link UserAppEntity} instance.
+     *
+     * @param id app unique identifier.
+     * @param name app name.
+     * @param size app size in mb.
+     * @param iconUri app icon url.
+     */
     public UserAppEntity(String id, String name, double size, String iconUri) {
         this.id = id;
         this.name = name;

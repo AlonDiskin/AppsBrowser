@@ -4,13 +4,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
-import android.os.RemoteException;
 
 import androidx.test.uiautomator.By;
 import androidx.test.uiautomator.UiDevice;
-import androidx.test.uiautomator.UiObject;
-import androidx.test.uiautomator.UiObjectNotFoundException;
-import androidx.test.uiautomator.UiSelector;
 import androidx.test.uiautomator.Until;
 
 import static androidx.test.core.app.ApplicationProvider.getApplicationContext;
@@ -19,15 +15,15 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.IsNull.notNullValue;
 
 /**
- *
+ * Test device utility methods. Performs various operations on device
+ * running test apk.
  */
 public class Device {
-
     private static final int LAUNCH_TIMEOUT = 5000;
     private static final String APP_PACKAGE = "com.diskin.alon.appsbrowser";
 
     /**
-     *
+     * Opens test device home screen.
      */
     public static void openHomeScreen() {
         // Start from the home screen
@@ -35,7 +31,7 @@ public class Device {
     }
 
     /**
-     *
+     * Launches app under test in test device.
      */
     public static void launchApp() {
         // Wait for launcher
@@ -70,14 +66,10 @@ public class Device {
         return resolveInfo.activityInfo.packageName;
     }
 
+    /**
+     * Performs a back press in test device.
+     */
     public static void pressBack() {
         UiDevice.getInstance(getInstrumentation()).pressBack();
-    }
-
-    public static void removeFromRecents() throws RemoteException, UiObjectNotFoundException {
-        UiDevice.getInstance(getInstrumentation()).pressRecentApps();
-        //app = uiDevice.findObject(new UiSelector().textContains("SDK Test App"));
-        UiObject closeAllButton = UiDevice.getInstance(getInstrumentation()).findObject(new UiSelector().textContains("Close"));
-        closeAllButton.click();
     }
 }

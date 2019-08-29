@@ -12,9 +12,9 @@ public abstract class BaseViewModel extends ViewModel {
     private final ServiceExecutor serviceExecutor;
 
     /**
-     * Instantiates {@link BaseViewModel} base state.
+     * Initialize {@link BaseViewModel} state.
      *
-     * @param serviceExecutor an implementation of {@link ServiceExecutor} to handle the view models
+     * @param serviceExecutor an implementation of {@link ServiceExecutor} that will handle view models
      * service requests.
      */
     protected BaseViewModel(@NonNull ServiceExecutor serviceExecutor) {
@@ -22,7 +22,7 @@ public abstract class BaseViewModel extends ViewModel {
     }
 
     /**
-     * Passes the given request to {@link ServiceExecutor} for execution.
+     * Serves given request to via view models {@link ServiceExecutor}.
      *
      * @param request the service request to be executed.
      * @param <P> request input params data type.

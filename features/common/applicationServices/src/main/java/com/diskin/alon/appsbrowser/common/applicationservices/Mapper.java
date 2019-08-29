@@ -9,10 +9,10 @@ package com.diskin.alon.appsbrowser.common.applicationservices;
 public interface Mapper<S,R> {
 
     /**
-     * Maps the given source arg to contracted data type.
+     * Maps the given arg to contracted data type.
      *
-     * @param source the object to copy
-     * @return mapped result of source to contracted dat type.
+     * @param source the object to map
+     * @return mapped result of passed source.
      */
     R map(S source);
 }

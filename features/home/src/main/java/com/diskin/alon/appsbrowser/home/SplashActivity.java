@@ -12,6 +12,10 @@ import android.widget.TextView;
 
 import com.diskin.alon.appsbrowser.common.espressoidlingresource.EspressoIdlingResource;
 
+/**
+ * App launcher activity, shows splash animation upon app launch,followed by
+ * user redirection to home screen.
+ */
 public class SplashActivity extends AppCompatActivity {
 
     @Override

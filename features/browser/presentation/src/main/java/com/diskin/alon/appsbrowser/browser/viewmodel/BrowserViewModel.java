@@ -13,13 +13,13 @@ import java.util.List;
  */
 public interface BrowserViewModel {
     /**
-     * Gets {@link UserApp}s observable.
+     * Get a {@link UserApp}s observable.
      */
     @NonNull
     LiveData<List<UserApp>> getUserApps();
 
     /**
-     * Gets {@link AppsSorting} observable.
+     * Get a {@link AppsSorting} observable.
      */
     @NonNull
     LiveData<AppsSorting> getSorting();

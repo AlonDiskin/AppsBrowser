@@ -28,7 +28,6 @@ import static org.mockito.Mockito.when;
  */
 @RunWith(JUnitParamsRunner.class)
 public class UseCaseMediatorTest {
-
     // System under test
     private UseCaseMediator mediator;
 
