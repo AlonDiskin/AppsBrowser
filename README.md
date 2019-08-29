@@ -1,3 +1,11 @@
 # AppsBrowser
-[![CircleCI](https://circleci.com/gh/AlonDiskin/AppsBrowser/tree/master.svg?style=svg)](https://circleci.com/gh/AlonDiskin/AppsBrowser/tree/master)
-android application that provide the user with a detailed information of all her installed apps 
+
+> Browse your android device apps!
+
+[![CircleCI](https://circleci.com/gh/AlonDiskin/AppsBrowser/tree/master.svg?style=svg)](https://circleci.com/gh/AlonDiskin/AppsBrowser/tree/master) 
+
+![GIF](https://media.giphy.com/media/efsaZ0isognOrNzwwn/giphy.gif)   ![GIF](https://media.giphy.com/media/h2le0vt33PMVSbpA7s/giphy.gif)
+
+## License
+
+- **[MIT license](http://opensource.org/licenses/mit-license.php)**
