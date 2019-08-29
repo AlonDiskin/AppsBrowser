@@ -1,14 +1,36 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="GradleMigrationSettings" migrationVersion="1" />
   <component name="GradleSettings">
     <option name="linkedExternalProjectsSettings">
       <GradleProjectSettings>
         <compositeConfiguration>
           <compositeBuild compositeDefinitionSource="SCRIPT" />
         </compositeConfiguration>
+        <option name="delegatedBuild" value="false" />
         <option name="distributionType" value="DEFAULT_WRAPPED" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="modules">
+          <set>
+            <option value="$PROJECT_DIR$" />
+            <option value="$PROJECT_DIR$/app" />
+            <option value="$PROJECT_DIR$/features" />
+            <option value="$PROJECT_DIR$/features/browser" />
+            <option value="$PROJECT_DIR$/features/browser/applicationServices" />
+            <option value="$PROJECT_DIR$/features/browser/data" />
+            <option value="$PROJECT_DIR$/features/browser/domain" />
+            <option value="$PROJECT_DIR$/features/browser/featureTest" />
+            <option value="$PROJECT_DIR$/features/browser/presentation" />
+            <option value="$PROJECT_DIR$/features/common" />
+            <option value="$PROJECT_DIR$/features/common/applicationServices" />
+            <option value="$PROJECT_DIR$/features/common/espressoidlingresource" />
+            <option value="$PROJECT_DIR$/features/common/presentation" />
+            <option value="$PROJECT_DIR$/features/home" />
+            <option value="$PROJECT_DIR$/features/settings" />
+          </set>
+        </option>
         <option name="resolveModulePerSourceSet" value="false" />
+        <option name="testRunner" value="PLATFORM" />
       </GradleProjectSettings>
     </option>
   </component>
