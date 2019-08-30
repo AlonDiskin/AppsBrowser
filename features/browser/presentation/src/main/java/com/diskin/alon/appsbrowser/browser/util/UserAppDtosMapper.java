@@ -4,7 +4,6 @@ import com.diskin.alon.appsbrowser.browser.applicationservices.model.UserAppDto;
 import com.diskin.alon.appsbrowser.browser.model.UserApp;
 import com.diskin.alon.appsbrowser.common.applicationservices.Mapper;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
@@ -21,17 +20,12 @@ public class UserAppDtosMapper implements Mapper<Observable<List<UserAppDto>>,Ob
 
     @Override
     public Observable<List<UserApp>> map(Observable<List<UserAppDto>> source) {
-        return source.map(userAppDtos -> {
-            List<UserApp> userApps = new ArrayList<>(userAppDtos.size());
-
-            for (UserAppDto userAppDto : userAppDtos) {
-                userApps.add(new UserApp(userAppDto.getId(),
-                        userAppDto.getName(),
-                        String.format(Locale.getDefault(),"%.1f", userAppDto.getSize()) + " MB",
-                        userAppDto.getIconUri()));
-            }
-
-            return userApps;
-        });
+        return source.flatMap(userAppDtos -> Observable.fromIterable(userAppDtos)
+                .map(userAppDto -> new UserApp(userAppDto.getId(),
+                     userAppDto.getName(),
+                     String.format(Locale.getDefault(),"%.1f", userAppDto.getSize()) + " MB",
+                     userAppDto.getIconUri()))
+                .toList()
+                .toObservable());
     }
 }

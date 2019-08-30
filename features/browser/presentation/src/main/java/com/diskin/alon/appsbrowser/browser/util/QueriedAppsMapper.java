@@ -13,7 +13,6 @@ import com.diskin.alon.appsbrowser.browser.model.QueriedApp;
 import com.diskin.alon.appsbrowser.browser.model.UserApp;
 import com.diskin.alon.appsbrowser.common.applicationservices.Mapper;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
@@ -36,25 +35,20 @@ public class QueriedAppsMapper implements Mapper<Observable<SearchResults>,Obser
 
     @Override
     public Observable<List<UserApp>> map(Observable<SearchResults> source) {
-        return source.map(this::convertDtosToQueriedApps);
+        return source.flatMap(this::convertDtosToQueriedApps);
     }
 
-    private List<UserApp> convertDtosToQueriedApps(@NonNull SearchResults results) {
-        List<UserApp> userApps = new ArrayList<>(results.getApps().size());
-
-        for (UserAppDto userAppDto : results.getApps()) {
-            UserApp userApp = new QueriedApp(
+    private Observable<List<UserApp>> convertDtosToQueriedApps(@NonNull SearchResults results) {
+        return Observable.fromIterable(results.getApps())
+                .map(userAppDto -> (UserApp)new QueriedApp(
                     userAppDto.getId(),
                     userAppDto.getName(),
                     String.format(Locale.getDefault(),"%.1f", userAppDto.getSize()) + " MB",
                     userAppDto.getIconUri(),
                     createSpannableName(userAppDto.getName(),results.getQuery()),
-                    results.getQuery());
-
-            userApps.add(userApp);
-        }
-
-        return userApps;
+                    results.getQuery()))
+                .toList()
+                .toObservable();
     }
 
     private SpannableString createSpannableName(@NonNull String appName, @NonNull String query) {
