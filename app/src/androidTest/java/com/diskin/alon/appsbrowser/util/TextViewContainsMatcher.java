@@ -21,6 +21,7 @@ public class TextViewContainsMatcher extends BoundedMatcher<View, TextView> {
         this.containedText = containedText;
     }
 
+    @NonNull
     public static Matcher<View> withTextContainsIgnoreCase(@NonNull String text,@NonNull String containedText) {
         return new TextViewContainsMatcher(TextView.class,text, containedText);
     }

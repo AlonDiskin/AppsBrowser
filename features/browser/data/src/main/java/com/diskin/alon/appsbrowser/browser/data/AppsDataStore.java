@@ -7,11 +7,11 @@ import java.util.List;
 import io.reactivex.Observable;
 
 /**
- *
+ * Device applications data store.
  */
 public interface AppsDataStore {
     /**
-     * @return
+     * Get a device user apps observable.
      */
     Observable<List<UserAppEntity>> getAll();
 }

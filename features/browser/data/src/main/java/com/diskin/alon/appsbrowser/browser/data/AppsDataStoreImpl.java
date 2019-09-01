@@ -7,6 +7,7 @@ import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
 import android.net.Uri;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.VisibleForTesting;
@@ -65,6 +66,14 @@ public class AppsDataStoreImpl implements AppsDataStore {
         PackageManager pm = application.getPackageManager();
         List<ApplicationInfo> packages = pm.getInstalledApplications(PackageManager.GET_META_DATA);
         List<UserAppEntity> userApps = new ArrayList<>(packages.size());
+        int defaultIcon = 0;
+        String currentPackage = "com.diskin.alon.appsbrowser";
+
+        for (ApplicationInfo appInfo : packages) {
+            if (appInfo.packageName.equals(currentPackage)) {
+                defaultIcon = appInfo.icon;
+            }
+        }
 
         for (ApplicationInfo appInfo : packages) {
             // get info for non system apps only
@@ -74,8 +83,12 @@ public class AppsDataStoreImpl implements AppsDataStore {
                 String appName = pm.getApplicationLabel(appInfo).toString();
                 File file = new File(appInfo.publicSourceDir);
                 double appSize = Long.valueOf(file.length()).doubleValue() / (1024 * 1024);
-                Uri uri = Uri.parse("android.resource://" + appInfo.packageName + "/"
-                        + appInfo.icon);
+
+                Uri uri = new Uri.Builder()
+                        .scheme("android.resource")
+                        .authority(appId)
+                        .path(String.valueOf(appInfo.icon ))
+                        .build();
 
                 // add to user apps result list
                 userApps.add(new UserAppEntity(appId,

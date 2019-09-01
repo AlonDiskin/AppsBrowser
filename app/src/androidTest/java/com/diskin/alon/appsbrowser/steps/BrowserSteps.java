@@ -152,8 +152,6 @@ public class BrowserSteps extends BackgroundSteps {
                             hasDescendant(withTextContainsIgnoreCase(userApp.getName(),"a")),
                             hasDescendant(withText(userApp.getSize())))));
         }
-
-
     }
 
     private List<UserApp> getExpectedDisplayedApps(String query, AppsSorting sorting) {

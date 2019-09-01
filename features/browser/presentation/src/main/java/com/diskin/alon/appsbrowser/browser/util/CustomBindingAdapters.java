@@ -1,13 +1,14 @@
 package com.diskin.alon.appsbrowser.browser.util;
 
+import android.net.Uri;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.databinding.BindingAdapter;
 
+import com.bumptech.glide.Glide;
 import com.diskin.alon.appsbrowser.browser.model.QueriedApp;
 import com.diskin.alon.appsbrowser.browser.model.UserApp;
-import com.squareup.picasso.Picasso;
 
 /**
  * Layout data binding custom adapter implementations.
@@ -21,7 +22,9 @@ public abstract class CustomBindingAdapters {
      */
     @BindingAdapter({"imageUrl"})
     public static void loadImage(ImageView view, String url) {
-        Picasso.get().load(url).into(view);
+        Glide.with(view.getContext())
+                .load(Uri.parse(url))
+                .into(view);
     }
 
     /**
