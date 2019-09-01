@@ -23,7 +23,7 @@ import io.reactivex.schedulers.Schedulers;
 
 public class AppsDataStoreImpl implements AppsDataStore {
     @VisibleForTesting
-    public static boolean INCREMENT_TEST = false;
+    public static boolean TEST = false;
 
     @NonNull
     private final Application application;
@@ -59,7 +59,7 @@ public class AppsDataStoreImpl implements AppsDataStore {
     }
 
     private List<UserAppEntity> getDeviceApps() {
-        if (INCREMENT_TEST) {
+        if (TEST) {
             EspressoIdlingResource.increment();
         }
         PackageManager pm = application.getPackageManager();

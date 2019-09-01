@@ -6,6 +6,7 @@ import androidx.test.espresso.intent.Intents;
 import com.diskin.alon.appsbrowser.browser.data.AppsDataStoreImpl;
 import com.diskin.alon.appsbrowser.browser.viewmodel.BrowserViewModelImpl;
 import com.diskin.alon.appsbrowser.common.espressoidlingresource.EspressoIdlingResource;
+import com.diskin.alon.appsbrowser.home.SplashActivity;
 import com.diskin.alon.appsbrowser.steps.BrowserSteps;
 import com.mauriciotogneri.greencoffee.GreenCoffeeConfig;
 import com.mauriciotogneri.greencoffee.GreenCoffeeTest;
@@ -39,8 +40,9 @@ public class BrowserStepsRunner extends GreenCoffeeTest {
     @Test
     public void test() {
         // indicate idling resource usage in app implementation
-        BrowserViewModelImpl.DECREMENT_TEST = true;
-        AppsDataStoreImpl.INCREMENT_TEST = true;
+        BrowserViewModelImpl.TEST = true;
+        AppsDataStoreImpl.TEST = true;
+        SplashActivity.TEST = true;
 
         // register espresso idlingResource
         IdlingRegistry.getInstance().register(EspressoIdlingResource.getIdlingResource());

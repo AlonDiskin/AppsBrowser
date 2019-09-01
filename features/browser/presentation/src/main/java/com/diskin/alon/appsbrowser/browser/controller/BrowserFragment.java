@@ -109,25 +109,23 @@ public class BrowserFragment extends Fragment {
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.menu_browser,menu);
-        // observe user sorting selection
-        viewModel.getSorting().observe(this, appsSorting -> {
-            switch (appsSorting.getType()) {
-                case NAME:
-                    menu.findItem(R.id.action_sort_by_name)
-                            .setChecked(true);
-                    break;
+        // setup sorting menu according to view model state
+        switch (viewModel.getAppsSorting().getType()) {
+            case NAME:
+                menu.findItem(R.id.action_sort_by_name)
+                        .setChecked(true);
+                break;
 
-                case SIZE:
-                    menu.findItem(R.id.action_sort_by_size)
-                            .setChecked(true);
-                    break;
+            case SIZE:
+                menu.findItem(R.id.action_sort_by_size)
+                        .setChecked(true);
+                break;
 
-                default:
-                    break;
-            }
+            default:
+                break;
+        }
 
-            menu.findItem(R.id.action_ascending).setChecked(appsSorting.isAscending());
-        });
+        menu.findItem(R.id.action_ascending).setChecked(viewModel.getAppsSorting().isAscending());
 
         // configure the searchApps view
         MenuItem searchItem = menu.findItem(R.id.action_search);
@@ -175,18 +173,21 @@ public class BrowserFragment extends Fragment {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
-        AppsSorting currentSorting = Objects.requireNonNull(viewModel.getSorting().getValue(),
+        AppsSorting currentSorting = Objects.requireNonNull(viewModel.getAppsSorting(),
                 "sorting state should be already set!");
 
         // pass sorting selection to view model
         if (id == R.id.action_sort_by_name && !item.isChecked()) {
+            item.setChecked(true);
             viewModel.sortApps(new AppsSorting(SortingType.NAME,currentSorting.isAscending()));
 
         } else if (id == R.id.action_sort_by_size && !item.isChecked()) {
+            item.setChecked(true);
             viewModel.sortApps(new AppsSorting(SortingType.SIZE,currentSorting.isAscending()));
 
         } else if (id == R.id.action_ascending) {
-            viewModel.sortApps(new AppsSorting(currentSorting.getType(),!item.isChecked()));
+            item.setChecked(!item.isChecked());
+            viewModel.sortApps(new AppsSorting(currentSorting.getType(),item.isChecked()));
         }
 
         return super.onOptionsItemSelected(item);
@@ -195,7 +196,7 @@ public class BrowserFragment extends Fragment {
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
-        AppsSorting currentSorting = Objects.requireNonNull(viewModel.getSorting().getValue(),
+        AppsSorting currentSorting = Objects.requireNonNull(viewModel.getAppsSorting(),
                 "sorting state should be already set!");
 
         outState.putInt(KEY_SORT,currentSorting.getType().ordinal());

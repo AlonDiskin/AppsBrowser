@@ -1,5 +1,6 @@
 package com.diskin.alon.appsbrowser.home;
 
+import androidx.annotation.VisibleForTesting;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.animation.Animator;
@@ -17,11 +18,13 @@ import com.diskin.alon.appsbrowser.common.espressoidlingresource.EspressoIdlingR
  * user redirection to home screen.
  */
 public class SplashActivity extends AppCompatActivity {
+    @VisibleForTesting
+    public static boolean TEST = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EspressoIdlingResource.increment();
+        incrementEspressoIdlRes();
         setContentView(R.layout.activity_splash);
     }
 
@@ -41,7 +44,7 @@ public class SplashActivity extends AppCompatActivity {
         animation.addListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationEnd(Animator animation) {
-                EspressoIdlingResource.decrement();
+                decrementEspressoIdlRes();
                 launchHomeActivity();
             }
         });
@@ -51,5 +54,17 @@ public class SplashActivity extends AppCompatActivity {
     private void launchHomeActivity() {
         startActivity(new Intent(SplashActivity.this,MainActivity.class));
         finish();
+    }
+
+    private void decrementEspressoIdlRes() {
+        if (TEST) {
+            EspressoIdlingResource.decrement();
+        }
+    }
+
+    private void incrementEspressoIdlRes() {
+        if (TEST) {
+            EspressoIdlingResource.increment();
+        }
     }
 }

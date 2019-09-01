@@ -2,7 +2,6 @@ package com.diskin.alon.appsbrowser.browser.viewmodel;
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule;
 import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
 
 import com.diskin.alon.appsbrowser.browser.WhiteBox;
 import com.diskin.alon.appsbrowser.browser.applicationservices.model.AppsSearch;
@@ -27,17 +26,13 @@ import java.util.List;
 
 import io.reactivex.android.plugins.RxAndroidPlugins;
 import io.reactivex.disposables.Disposable;
-import io.reactivex.disposables.SerialDisposable;
-import io.reactivex.observers.TestObserver;
 import io.reactivex.schedulers.Schedulers;
 import io.reactivex.subjects.PublishSubject;
 import junitparams.JUnitParamsRunner;
 import junitparams.Parameters;
 
 import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.CoreMatchers.sameInstance;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.core.IsNot.not;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.times;
@@ -61,7 +56,7 @@ public class BrowserViewModelImplTest {
     public ServiceExecutor serviceExecutor;
 
     // Stubbed data
-    private PublishSubject<List<UserApp>> appsObservableSubject = PublishSubject.create();
+    private PublishSubject<List<UserApp>> appsSubject = PublishSubject.create();
 
     @BeforeClass
     public static void setUpClass() {
@@ -74,7 +69,7 @@ public class BrowserViewModelImplTest {
     public void setUp() {
         MockitoAnnotations.initMocks(this);
         //noinspection unchecked
-        when(serviceExecutor.execute(isA(ServiceRequest.class))).thenReturn(appsObservableSubject);
+        when(serviceExecutor.execute(isA(ServiceRequest.class))).thenReturn(appsSubject);
 
         viewModel = new BrowserViewModelImpl(serviceExecutor);
     }
@@ -92,28 +87,10 @@ public class BrowserViewModelImplTest {
     }
 
     @Test
-    public void shouldRestAppsObservableSubscription_whenFetchesAppsObservable() {
+    public void shouldDisposeObservableAppsSubscription_whenCleared() {
         // test case fixture
-        SerialDisposable serialDisposable = (SerialDisposable) WhiteBox
-                .getInternalState(viewModel,"serialDisposable");
-        Disposable prevDisposable = TestObserver.create();
-
-        serialDisposable.set(prevDisposable);
-        // Given an initialized view model with existing observable apps subscription
-
-        // When view model fetches apps observable via service executor
-        viewModel.sortApps(new AppsSorting(SortingType.NAME,false));
-
-        // Then view model should reset current apps observable subscription
-        assertThat(serialDisposable.get(),not(sameInstance(prevDisposable)));
-    }
-
-    @Test
-    public void shouldUnsubscribeFromAppsObservable_whenCleared() {
-        // test case fixture
-        SerialDisposable actualDisposable = (SerialDisposable) WhiteBox
-                .getInternalState(viewModel,"serialDisposable");
-        actualDisposable.set(TestObserver.create());
+        Disposable actualDisposable = (Disposable) WhiteBox
+                .getInternalState(viewModel,"appsDisposable");
 
         // Given an initialized view model with existing observable apps subscription
 
@@ -126,7 +103,7 @@ public class BrowserViewModelImplTest {
 
     @Test
     @Parameters(method = "sortingParam")
-    public void shouldNotReFetchApps_whenSortedWithSameValue(AppsSorting sorting) {
+    public void shouldNotSortApps_whenLastSortReSelected(AppsSorting sorting) {
         // Given an initialized view model existing sorting
 
         // When view model is asked sort user apps
@@ -141,7 +118,7 @@ public class BrowserViewModelImplTest {
 
     @Test
     @Parameters(method = "sortingParams")
-    public void shouldFetchApps_whenSortedDifferently(AppsSorting firstSorting,AppsSorting secondSorting) {
+    public void shouldSortApps_whenNewSortSelected(AppsSorting firstSorting, AppsSorting secondSorting) {
         // Given an initialized view model
 
         // When view model is asked to sort apps
@@ -158,33 +135,29 @@ public class BrowserViewModelImplTest {
     }
 
     @Test
-    public void shouldUpdateAppsObservers_whenServiceFetchedAppsUpdated() {
+    public void shouldUpdateAppsState_whenAppsObservableUpdates() {
         List<UserApp> apps = Arrays.asList(new UserApp("facebook","45", "fc", ""),
                 new UserApp("youtube","31", "yt", ""),
                 new UserApp("twitter","78.8", "tw", ""),
                 new UserApp("whatsApp","24.6", "wa", ""));
 
-        // Given an initialized view model
-
-        // And observing view model client that sorted apps
+        // Given an initialized view model with apps observing view, and existing sort
         LiveData<List<UserApp>> userAppLiveData = viewModel.getUserApps();
         viewModel.sortApps(new AppsSorting(SortingType.NAME,true));
 
-        // When fetched users apps (from services) are updated
-        appsObservableSubject.onNext(apps);
+        // When view models apps observable is updated
+        appsSubject.onNext(apps);
 
-        // Then observing client
+        // Then apps observing view should receive updated apps
         assertThat(userAppLiveData.getValue(),equalTo(apps));
     }
 
     @Test
-    public void shouldExecuteSearch_whenAppsSearchedAndSortingSet() {
+    public void shouldSearchApps_whenNewQuerySelectedAndSortSet() {
         // Given an initialized view model, with existing sorting value
         String query = "query";
         AppsSorting sorting = new AppsSorting(SortingType.NAME,true);
-
-        //noinspection unchecked
-        ((MutableLiveData<AppsSorting>) WhiteBox.getInternalState(viewModel,"sorting")).postValue(sorting);
+        viewModel.sortApps(sorting);
 
         // When view model asked to perform search
         viewModel.searchApps(query);
@@ -194,7 +167,7 @@ public class BrowserViewModelImplTest {
     }
 
     @Test
-    public void shouldNotExecuteSearch_whenAppsSearchedAndSortingNotSet() {
+    public void shouldNotSearchApps_whenNewQuerySelectedAndSortingNotSet() {
         // Given an initialized view model, with nullable sorting value
 
         // When view model is searched for apps
@@ -205,15 +178,23 @@ public class BrowserViewModelImplTest {
     }
 
     @Test
-    public void shouldNotExecuteSearch_whenPassedEmptyQuery() {
-        // Given an initialized view model
+    public void shouldNotSearchApps_whenLastQueryReSelected() {
+        // Given an initialized view model, with existing sort and query
+        String query = "query";
+        String existingQuery = query;
+        AppsSorting sorting = new AppsSorting(SortingType.NAME,true);
 
-        // When view model is searched for apps
-        viewModel.searchApps("");
+        viewModel.sortApps(sorting);
+        viewModel.searchApps(existingQuery);
 
-        // Then view model should not execute apps search
-        verify(serviceExecutor,times(0)).execute(isA(SearchAppsRequest.class));
+        // When view model is asked to perform search with same query as last search query
+        viewModel.searchApps(query);
+
+        // Then view model should not execute request to execute search service
+        verify(serviceExecutor,times(1)).execute(isA(SearchAppsRequest.class));
     }
+
+
 
     public static Object[] sortingParam() {
         return new Object[] {new AppsSorting(SortingType.NAME,true),

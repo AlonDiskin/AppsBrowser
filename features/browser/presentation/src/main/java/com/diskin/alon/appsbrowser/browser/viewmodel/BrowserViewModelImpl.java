@@ -1,6 +1,7 @@
 package com.diskin.alon.appsbrowser.browser.viewmodel;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.annotation.VisibleForTesting;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -13,7 +14,6 @@ import com.diskin.alon.appsbrowser.browser.model.UserApp;
 import com.diskin.alon.appsbrowser.common.espressoidlingresource.EspressoIdlingResource;
 import com.diskin.alon.appsbrowser.common.presentation.BaseViewModel;
 import com.diskin.alon.appsbrowser.common.presentation.ServiceExecutor;
-import com.diskin.alon.appsbrowser.common.presentation.ServiceRequest;
 
 import java.util.List;
 
@@ -22,36 +22,51 @@ import javax.inject.Inject;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
-import io.reactivex.disposables.SerialDisposable;
+import io.reactivex.subjects.BehaviorSubject;
 
 /**
  * Browser screen view model implementation.
  */
 public class BrowserViewModelImpl extends BaseViewModel implements BrowserViewModel {
-    private static final String EMPTY_FILTER = "";
     @VisibleForTesting
-    public static boolean DECREMENT_TEST = false;
+    public static boolean TEST = false;
+    private static final String DEFAULT_QUERY = "";
 
-    @NonNull
-    private final MutableLiveData<AppsSorting> sorting = new MutableLiveData<>();
     @NonNull
     private final MutableLiveData<List<UserApp>> userApps = new MutableLiveData<>();
     @NonNull
-    private String query = EMPTY_FILTER;
+    private final BehaviorSubject<String> appsQuery = BehaviorSubject.createDefault(DEFAULT_QUERY);
     @NonNull
-    private final SerialDisposable serialDisposable = new SerialDisposable();
+    private final BehaviorSubject<AppsSorting> appsSorting = BehaviorSubject.create();
+    @NonNull
+    private final Disposable appsDisposable;
 
     @Inject
     public BrowserViewModelImpl(@NonNull ServiceExecutor serviceExecutor) {
         super(serviceExecutor);
+        // build event handling rx chain
+        appsDisposable = Observable.combineLatest(appsQuery, appsSorting, (query, sorting) ->
+                // create service request, based on user state selections
+                query.isEmpty() ? new GetSortedAppsRequest(sorting) :
+                        new SearchAppsRequest(new AppsSearch(sorting, query)))
+                .switchMap(request -> executeService(request))
+                .doOnDispose(this::decrementEspressoIdlRes)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(apps -> {
+                    decrementEspressoIdlRes();
+                    userApps.setValue(apps);
+                }, throwable -> {
+                    decrementEspressoIdlRes();
+                    throwable.printStackTrace();
+                });
     }
 
     @Override
     protected void onCleared() {
         super.onCleared();
-        // unregister from apps observable stream
-        if (!serialDisposable.isDisposed()) {
-            serialDisposable.dispose();
+        // unsubscribe from apps observable
+        if (!appsDisposable.isDisposed()) {
+            appsDisposable.dispose();
         }
     }
 
@@ -61,76 +76,36 @@ public class BrowserViewModelImpl extends BaseViewModel implements BrowserViewMo
         return userApps;
     }
 
-    @NonNull
-    @Override
-    public LiveData<AppsSorting> getSorting() {
-        return sorting;
-    }
-
     @Override
     public void sortApps(@NonNull AppsSorting sorting) {
-        // update sorting data if passed arg is different then existing value
-        if (this.sorting.getValue() == null || !this.sorting.getValue().equals(sorting)) {
-            this.sorting.setValue(sorting);
-            // execute sorting
-            ServiceRequest<?,Observable<List<UserApp>>> request;
-
-            // if query empty,get all with no filtering
-            if (query.equals(EMPTY_FILTER)) {
-                request = new GetSortedAppsRequest(sorting);
-
-            } else {
-                request = new SearchAppsRequest(new AppsSearch(sorting,query));
-            }
-
-            fetchUserApps(request);
+        // update state if value is new (to prevent unneeded repeated service executions)
+        if (appsSorting.getValue() == null || !appsSorting.getValue().equals(sorting)) {
+            appsSorting.onNext(sorting);
         }
     }
 
     @Override
     public void searchApps(@NonNull String query) {
-        // update query data if passed arg is different then existing value and non empty
-        if (!this.query.equals(query)) {
-            this.query = query;
-            // execute search if sorting value exists
-            if (sorting.getValue() != null) {
-                AppsSearch params = new AppsSearch(sorting.getValue(), query);
-                SearchAppsRequest searchAppsRequest = new SearchAppsRequest(params);
-                fetchUserApps(searchAppsRequest);
-            }
+        // update state if value is new
+        if (!appsQuery.getValue().equals(query)) {
+            appsQuery.onNext(query);
         }
     }
 
     @NonNull
     @Override
     public String getSearchQuery() {
-        return query;
+        return appsQuery.getValue();
     }
 
-    /**
-     * Fetch observable list of device apps.
-     *
-     * @param request the selected service request for apps fetching, from possible
-     * implementations.
-     */
-    private void fetchUserApps(@NonNull ServiceRequest<?,Observable<List<UserApp>>> request) {
-        // fetch observable apps from service executor
-        Disposable appsDisposable = executeService(request)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(userApps -> {
-                    decrementEspressoIdlRes();
-                    this.userApps.setValue(userApps);
-                },throwable -> {
-                    decrementEspressoIdlRes();
-                    throwable.printStackTrace();
-                });
-
-        // replace apps observable subscription with current one
-        serialDisposable.set(appsDisposable);
+    @Nullable
+    @Override
+    public AppsSorting getAppsSorting() {
+        return appsSorting.getValue();
     }
 
     private void decrementEspressoIdlRes() {
-        if (DECREMENT_TEST) {
+        if (TEST && !EspressoIdlingResource.getIdlingResource().isIdleNow()) {
             EspressoIdlingResource.decrement();
         }
     }

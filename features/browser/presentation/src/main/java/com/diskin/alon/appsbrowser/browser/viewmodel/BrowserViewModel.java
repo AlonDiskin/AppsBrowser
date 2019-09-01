@@ -1,6 +1,7 @@
 package com.diskin.alon.appsbrowser.browser.viewmodel;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.lifecycle.LiveData;
 
 import com.diskin.alon.appsbrowser.browser.applicationservices.model.AppsSorting;
@@ -13,28 +14,22 @@ import java.util.List;
  */
 public interface BrowserViewModel {
     /**
-     * Get a {@link UserApp}s observable.
+     * Get {@link UserApp}s observable live data.
      */
     @NonNull
     LiveData<List<UserApp>> getUserApps();
 
     /**
-     * Get a {@link AppsSorting} observable.
-     */
-    @NonNull
-    LiveData<AppsSorting> getSorting();
-
-    /**
-     * Sorts the {@link UserApp}s list by given sort value,
+     * Sorts the current {@link UserApp}s list.
      *
-     * @param sorting sorting param.
+     * @param sorting user apps list sorting value.
      */
     void sortApps(@NonNull AppsSorting sorting);
 
     /**
-     * Filters the {@link UserApp}s list by given query.
+     * Filters the {@link UserApp}s list.
      *
-     * @param query search query.
+     * @param query search query by witch user apps list wil be filtered.
      */
     void searchApps(@NonNull String query);
 
@@ -43,4 +38,10 @@ public interface BrowserViewModel {
      */
     @NonNull
     String getSearchQuery();
+
+    /**
+     * Gets the current sorting value of user apps list.
+     */
+    @Nullable
+    AppsSorting getAppsSorting();
 }

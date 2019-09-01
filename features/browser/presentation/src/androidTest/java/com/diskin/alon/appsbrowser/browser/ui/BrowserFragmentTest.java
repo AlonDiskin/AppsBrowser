@@ -71,7 +71,6 @@ public class BrowserFragmentTest {
 
     // Test stubs
     private MutableLiveData<List<UserApp>> userAppsData = new MutableLiveData<>();
-    private MutableLiveData<AppsSorting> appsSortingData = new MutableLiveData<>();
     private List<UserApp> apps = Arrays.asList(
             new UserApp("facebook","45 MB", "fc", "file:///android_asset/facebookicon.png"),
             new UserApp("youtube","31 MB", "yt", "file:///android_asset/youtubeicon.png"),
@@ -85,9 +84,8 @@ public class BrowserFragmentTest {
 
         // stub mocked view model
         when(viewModel.getUserApps()).thenReturn(userAppsData);
-        when(viewModel.getSorting()).thenReturn(appsSortingData);
         doAnswer(invocation -> {
-            appsSortingData.postValue((AppsSorting) invocation.getArguments()[0]);
+            when(viewModel.getAppsSorting()).thenReturn((AppsSorting) invocation.getArguments()[0]);
             return null;
         }).when(viewModel).sortApps(any(AppsSorting.class));
         doAnswer(invocation -> {
